@@ -3,31 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities.roles;
+package dtos;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
 
-@Entity
-public class Client extends User implements Serializable {
+
+/**
+ *
+ * @author Ruben Lauro
+ */
+
+public class ClientDTO extends UserDTO implements Serializable {
     
-    @NotNull(message = "Address can not be empty")
     private String address;
-    
-    @NotNull(message = "Contact person can not be empty")
     private String contactPerson;
-    
-    @NotNull(message = "Company Name can not be empty")
     private String companyName;
 
-    public Client(String username, String password, String address, String contactPerson, String companyName) {
+    public ClientDTO() {
+    }
+
+    public ClientDTO(String username, String password, String address, String contactPerson, String companyName) {
         super(username, password);
         this.address = address;
         this.contactPerson = contactPerson;
         this.companyName = companyName;
     }
 
+    @Override
+    public void reset() {
+        super.reset(); //To change body of generated methods, choose Tools | Templates.
+        setAddress(null);
+        setContactPerson(null);
+    }
+    
     public String getAddress() {
         return address;
     }

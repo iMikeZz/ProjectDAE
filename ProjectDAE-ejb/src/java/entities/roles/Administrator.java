@@ -19,7 +19,6 @@ import javax.validation.constraints.Pattern;
  * @author migue
  */
 @Entity
-@Table(name = "ADMINISTRATORS")
 @NamedQueries({
     @NamedQuery(
             name = "getAllAdministrators",
@@ -33,13 +32,17 @@ public class Administrator extends User implements Serializable{
             + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+"
             + "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{invalid.email}")
-    protected String email;
+    private String email;
     
     @NotNull(message = "Role can not be empty")
-    protected String role; //se der problema mudar 
+    private String role; //se der problema mudar 
+    
+    @NotNull(message = "Name can not be empty")
+    protected String name;
 
     public Administrator(String username, String password, String name, String email, String role) {
-        super(username, password, name);
+        super(username, password);
+        this.name = name;
         this.email = email;
         this.role = role;
     }
@@ -58,5 +61,13 @@ public class Administrator extends User implements Serializable{
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
