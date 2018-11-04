@@ -5,12 +5,10 @@
  */
 package entities.roles;
 
-import javax.persistence.Column;
+import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -19,23 +17,13 @@ import javax.validation.constraints.Pattern;
  * @author migue
  */
 @Entity
-@Table(name = Administrator.TABLE_NAME)
 @NamedQueries({
     @NamedQuery(
-            name = Administrator.getAll,
-            query = "SELECT t FROM " + Administrator.TABLE_NAME + " t ORDER BY t.name"
+            name = "getAllAdministrators",
+            query = "SELECT t FROM Administrator t ORDER BY t.nome"
     )
 })
-public class Administrator {
-     @Id
-    @Column(name = Administrator.ID_FIELD)
-    protected String username;
-     
-    @NotNull(message = "Password não pode estar vazia")
-    protected String password;
-
-    @NotNull(message = "Nome não pode estar vazio")
-    protected String nome;
+public class Administrator extends User implements Serializable {
     
     @NotNull(message = "Email não pode estar vazio")
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
