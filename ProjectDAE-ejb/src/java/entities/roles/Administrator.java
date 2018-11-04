@@ -26,23 +26,37 @@ import javax.validation.constraints.Pattern;
             query = "SELECT t FROM Administrator t ORDER BY t.name"
     )
 })
-public class Administrator implements Serializable{
-    @Id
-    protected String username;
-     
-    @NotNull(message = "Password não pode estar vazia")
-    protected String password;
-
-    @NotNull(message = "Nome não pode estar vazio")
-    protected String name;
+public class Administrator extends User implements Serializable{
     
-    @NotNull(message = "Email não pode estar vazio")
+    @NotNull(message = "Email can not be empty")
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+"
             + "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{invalid.email}")
     protected String email;
     
-    @NotNull(message = "Cargo não pode estar vazio")
-    protected String cargo;
+    @NotNull(message = "Role can not be empty")
+    protected String role; //se der problema mudar 
+
+    public Administrator(String username, String password, String name, String email, String role) {
+        super(username, password, name);
+        this.email = email;
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

@@ -12,11 +12,17 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Client extends User implements Serializable {
     
-    @NotNull(message = "Morada não pode estar vazia")
+    @NotNull(message = "Address can not be empty")
     protected String address;
     
-    @NotNull(message = "Pessoa de contacto não pode estar vazio")
+    @NotNull(message = "Contact person can not be empty")
     protected String contactPerson;
+
+    public Client(String username, String password, String name, String address, String contactPerson) {
+        super(username, password, name);
+        this.address = address;
+        this.contactPerson = contactPerson;
+    }
 
     protected String getAddress() {
         return address;
@@ -25,4 +31,13 @@ public class Client extends User implements Serializable {
     protected void setAddress(String address) {
         this.address = address;
     }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+    
 }

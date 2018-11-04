@@ -16,11 +16,17 @@ public class User implements Serializable {
     @Id
     protected String username;
     
-    @NotNull(message = "Password não pode estar vazia")
+    @NotNull(message = "Password can not be empty")
     protected String password;
 
-    @NotNull(message = "Nome não pode estar vazio")
-    protected String nome;
+    @NotNull(message = "Name can not be empty")
+    protected String name;
+
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
     
     protected String getUsername() {
         return username;
@@ -37,12 +43,13 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public String getNome() {
-        return nome;
+
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
+    
 }
