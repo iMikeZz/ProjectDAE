@@ -5,16 +5,17 @@
  */
 package ejbs;
 
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.Stateless;
 
 /**
  *
  * @author Ruben Lauro
  */
-@Stateless
+@Singleton
 @Startup
 public class ConfigBean {
     @EJB

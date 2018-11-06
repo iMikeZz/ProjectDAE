@@ -19,7 +19,7 @@ public class AdministratorManager implements Serializable {
     public AdministratorManager() {
     }
     
-    public void login(){
-        
+    public String login(){
+        return "admin_index?faces-redirect=true";
     }
 }
