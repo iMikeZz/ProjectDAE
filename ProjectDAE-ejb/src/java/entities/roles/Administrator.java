@@ -40,6 +40,9 @@ public class Administrator extends User implements Serializable{
     @NotNull(message = "Name can not be empty")
     protected String name;
 
+    public Administrator() {
+    }
+
     public Administrator(String username, String password, String name, String email, String role) {
         super(username, password);
         this.name = name;

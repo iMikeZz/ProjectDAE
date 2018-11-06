@@ -21,6 +21,9 @@ public class Client extends User implements Serializable {
     @NotNull(message = "Company Name can not be empty")
     private String companyName;
 
+    public Client() {
+    }
+    
     public Client(String username, String password, String address, String contactPerson, String companyName) {
         super(username, password);
         this.address = address;

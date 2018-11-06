@@ -21,6 +21,9 @@ public class User implements Serializable {
     @NotNull(message = "Password can not be empty")
     protected String password;
 
+    public User() {
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;

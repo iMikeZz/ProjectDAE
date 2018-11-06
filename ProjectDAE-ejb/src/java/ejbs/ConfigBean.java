@@ -17,10 +17,6 @@ import javax.ejb.Stateless;
 @Stateless
 @Startup
 public class ConfigBean {
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
     @EJB
     private AdministratorBean administratorBean;
     
