@@ -11,7 +11,7 @@ Project of Desenvolvimento de Aplicações Empresariais
   <li><b>Database Name:</b> DAE_PROJECT</li>
   <li><b>User Name:</b> dae</li>
   <li><b>Password:</b> dae</li>
-  <li><b>JNDI in file persistence.xml:</b> dae_project</li>
+  <li><b>JNDI in file persistence.xml:</b>java:app/dae_project_management</li>
 </ol>
 
 <ol>
