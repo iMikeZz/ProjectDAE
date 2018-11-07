@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+ 
+            <h:panelGrid columns="3">
+ 
+                <h:outputLabel for="username" value="Username: " />
+                <h:outputText
+                    id="username"
+                    value="#{administratorManager.currentClient.username}" />
+                <h:message for="username" errorStyle="color:red" />
+ 
+                <h:outputLabel for="password" value="Password: " />
+                <h:inputSecret
+                    id="password"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: password cannot be empty"
+                    value="#{administratorManager.currentClient.password}" />
+                <h:message for="password" errorStyle="color:red" />
+ 
+                <h:outputLabel for="companyName" value="Company Name: " />
+                <h:inputText
+                    id="companyName"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Company Name cannot be empty"
+                    value="#{administratorManager.currentClient.companyName}" />
+                <h:message for="name" errorStyle="color:red" />
+                
+                <h:outputLabel for="contactPerson" value="Contact Person: " />
+                <h:inputText
+                    id="contactPerson"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Contact Person cannot be empty"
+                    value="#{administratorManager.currentClient.contactPerson}" >
+                </h:inputText>    
+                <h:message for="email" errorStyle="color:red" />
+                
+                <h:outputLabel for="address" value="Address: " />
+                <h:inputText
+                    id="address"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Address cannot be empty"
+                    value="#{administratorManager.currentClient.address}" >
+                </h:inputText>    
+                <h:message for="contactPerson" errorStyle="color:red" />
+  
+                <br></br>
+ 
+                <h:commandButton
+                    id="submit"
+                    value="Update"
+                    action="#{administratorManager.updateClient}" />
+                <h:message for="submit" errorStyle="color:red" />
+                
+                 <h:link value="Cancel" outcome="admin_index" />
+            </h:panelGrid >
+            </h:form>
+    </h:body>
+</html>
+

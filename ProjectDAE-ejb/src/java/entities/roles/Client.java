@@ -7,9 +7,17 @@ package entities.roles;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllClients",
+            query = "SELECT t FROM Client t ORDER BY t.companyName"
+    )
+})
 public class Client extends User implements Serializable {
     
     @NotNull(message = "Address can not be empty")

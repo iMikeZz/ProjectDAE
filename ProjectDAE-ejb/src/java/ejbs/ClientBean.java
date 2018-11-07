@@ -32,16 +32,53 @@ public class ClientBean {
         }
     }
     
+    public void update(String username, String password, String address, String contactPerson, String companyName){
+        try{
+            Client client = (Client) em.find(Client.class, username);
+            if (client == null) {
+                return;
+            }
+            
+            client.setPassword(password);
+            client.setCompanyName(companyName);
+            client.setAddress(address);
+            client.setContactPerson(contactPerson);
+        }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void remove(String username){
+        try{
+            Client client = (Client) em.find(Client.class, username);
+            if (client == null) {
+                return;
+            }
+            em.remove(client); 
+        }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public ClientDTO clientToDTO(Client client){
         return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getCompanyName());
     }
     
     
-    public List<ClientDTO> administratorsToDTO(List<Client> clients){
+    public List<ClientDTO> clientsToDTO(List<Client> clients){
         List<ClientDTO> dtos = new ArrayList<>();
         for (Client client : clients) {
             dtos.add(clientToDTO(client));
         }
         return dtos;
+    }
+    
+    public List<ClientDTO> getAll(){
+        try {
+            List<Client> clients = em.createNamedQuery("getAllClients").getResultList();
+            return clientsToDTO(clients);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
     }
 }

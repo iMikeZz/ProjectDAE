@@ -1,12 +1,90 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form>
+            <h:dataTable
+            var="administrator"
+            summary="List of all Admins"
+            value="#{administratorManager.allAdministrators}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.name}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}">
+                         <f:param name="deleteStudentId" id="deleteAdministratorId" value="#{administrator.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        <h:link value="New Administrator" outcome="admin_create"/>
+        
+        <h:form>
+            <h:dataTable
+            var="client"
+            summary="List of all Clients"
+            value="#{administratorManager.allClients}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Company Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.companyName}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_client_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_client_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeClient}">
+                         <f:param name="deleteStudentId" id="deleteClientId" value="#{client.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        <h:link value="New Client" outcome="admin_client_create"/>
+        
     </h:body>
 </html>
 
