@@ -33,7 +33,7 @@ public class Client extends User implements Serializable {
     }
     
     public Client(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password);
+        super(username, password, UserGroup.GROUP.Client);
         this.address = address;
         this.contactPerson = contactPerson;
         this.companyName = companyName;

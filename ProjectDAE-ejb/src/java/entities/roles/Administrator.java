@@ -42,7 +42,7 @@ public class Administrator extends User implements Serializable{
     }
 
     public Administrator(String username, String password, String name, String email, String role) {
-        super(username, password);
+        super(username, password, UserGroup.GROUP.Administrator);
         this.name = name;
         this.email = email;
         this.role = role;

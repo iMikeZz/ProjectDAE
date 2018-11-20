@@ -26,8 +26,10 @@ public class ConfigBean {
     
     @PostConstruct
     public void populateDB() { 
-        administratorBean.create("7894561", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "ADMIN");
+        // Administrators
+        administratorBean.create("7894561", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor");
         
+        // Clients
         clientBean.create("1234567", "Joao", "Leiria", "ADMIN", "IPL");
     }
 }
