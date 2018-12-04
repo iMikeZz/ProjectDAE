@@ -6,6 +6,8 @@
 package ejbs;
 
 
+import dtos.AdministratorDTO;
+import dtos.ClientDTO;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -27,9 +29,11 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() { 
         // Administrators
-        administratorBean.create("7894561", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor");
+        administratorBean.create(new AdministratorDTO("7894561", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("a1", "a1", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor"));
         
         // Clients
-        clientBean.create("1234567", "Joao", "Leiria", "ADMIN", "IPL");
+        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "IPL"));
+        clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
     }
 }

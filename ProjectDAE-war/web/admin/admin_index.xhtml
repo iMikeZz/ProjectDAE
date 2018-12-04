@@ -8,6 +8,18 @@
     </h:head>
     <h:body>
         <h:form>
+         <h:inputText
+                    id="searchValue"
+                    size="20"
+                    value="#{administratorManager.searchValue}" />
+         
+         <h:commandButton
+                    id="submit"
+                    value="Search"
+                    action="#{administratorManager.adminsByName}" 
+                    />
+        </h:form>
+        <h:form>
             <h:dataTable
             var="administrator"
             summary="List of all Admins"
@@ -39,7 +51,7 @@
                      </h:commandLink>
                      &nbsp;
                      <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}">
-                         <f:param name="deleteStudentId" id="deleteAdministratorId" value="#{administrator.username}" />
+                         <f:param name="deleteAdministratorId" id="deleteAdministratorId" value="#{administrator.username}" />
                      </h:commandLink>
                 </h:column>
             </h:dataTable>
@@ -78,7 +90,7 @@
                      </h:commandLink>
                      &nbsp;
                      <h:commandLink value="Remove" actionListener="#{administratorManager.removeClient}">
-                         <f:param name="deleteStudentId" id="deleteClientId" value="#{client.username}" />
+                         <f:param name="deleteClientId" id="deleteClientId" value="#{client.username}" />
                      </h:commandLink>
                 </h:column>
             </h:dataTable>

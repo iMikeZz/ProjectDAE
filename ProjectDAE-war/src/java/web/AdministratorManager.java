@@ -9,19 +9,27 @@ import dtos.AdministratorDTO;
 import dtos.ClientDTO;
 import ejbs.AdministratorBean;
 import ejbs.ClientBean;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 @ManagedBean(name = "administratorManager")
 @SessionScoped
 public class AdministratorManager implements Serializable {
- 
+    
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
     
     @EJB
@@ -30,6 +38,8 @@ public class AdministratorManager implements Serializable {
     //Administrator
     private AdministratorDTO currentAdministrator;
     private AdministratorDTO newAdministrator;
+    private int adminsVersion;
+    private String searchValue;
     
     @EJB
     private ClientBean clientBean;
@@ -38,16 +48,29 @@ public class AdministratorManager implements Serializable {
     private ClientDTO currentClient;
     private ClientDTO newClient;
     
+    
+    private Client client;
+    private final String baseUri = "http://localhost:8080/ProjectDAE-war/webapi";
+    
+    @ManagedProperty("#{userManager}")
+    private UserManager userManager;
+    
     public AdministratorManager() {
         this.newAdministrator = new AdministratorDTO();
         
         this.newClient = new ClientDTO();
+        
+        
+        client = ClientBuilder.newClient();
     }
     
-    public String login(){
-        return "admin_index?faces-redirect=true";
+    @PostConstruct
+    public void init(){
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
+        client.register(feature);
     }
-
+    
+    
     //********************GETTERS&SETTERS
     
     public AdministratorBean getAdministratorBean() {
@@ -97,25 +120,77 @@ public class AdministratorManager implements Serializable {
     public void setNewClient(ClientDTO newClient) {
         this.newClient = newClient;
     }
+
+    public int getAdminsVersion() {
+        return adminsVersion;
+    }
+
+    public void setAdminsVersion(int adminsVersion) {
+        this.adminsVersion = adminsVersion;
+    }
+
+    public String getSearchValue() {
+        return searchValue;
+    }
+
+    public void setSearchValue(String searchValue) {
+        this.searchValue = searchValue;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
     
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
         try {
-            return administratorBean.getAll();
+            /*
+            System.out.println(getAdminsVersion() + "  " + getSearchValue());
+            return administratorBean.getAll(getAdminsVersion());
+            */
+            return client.target(baseUri)
+                    .path("/administrators/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<AdministratorDTO>>() {
+                    });
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllStudents", logger);
+            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
             return null;
         }
     }
     
+    public String adminsByName(){
+        setAdminsVersion(1);
+        System.out.println("passei no admins by name " + getAdminsVersion() + "  " + getSearchValue());
+        return "admin_index?faces-redirect=true";
+    }
+    
     public String createAdministrator() {
         try {
+            /*
             administratorBean.create(
                     newAdministrator.getUsername(),
                     newAdministrator.getPassword(),
                     newAdministrator.getName(),
                     newAdministrator.getEmail(),
                     newAdministrator.getRole());
+            */
+            client.target(baseUri)
+                    .path("administrators/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newAdministrator));
             newAdministrator.reset();
         }
         catch (Exception e) {
@@ -127,11 +202,18 @@ public class AdministratorManager implements Serializable {
     
     public String updateAdministrator(){
         try {
+            /*
             administratorBean.update(currentAdministrator.getUsername(),
                     currentAdministrator.getPassword(), 
                     currentAdministrator.getName(), 
                     currentAdministrator.getEmail(), 
                     currentAdministrator.getRole());
+            
+            */
+            client.target(baseUri)
+                    .path("administrators/update")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentAdministrator));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating administrator in method updateAdministrator", logger);
             return null;
@@ -143,7 +225,13 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteAdministratorId");
             String username = param.getValue().toString();
+            /*
             administratorBean.remove(username);
+            */
+            client.target(baseUri)
+                    .path("administrators/" + username)
+                    .request(MediaType.APPLICATION_XML)
+                    .delete(Boolean.class);
         } 
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing administrator in method removeAdministrator", logger);
@@ -155,7 +243,12 @@ public class AdministratorManager implements Serializable {
     //********************CLIENTS**************************************
     public List<ClientDTO> getAllClients(){
         try {
-            return clientBean.getAll();
+            //return clientBean.getAll();
+            return client.target(baseUri)
+                    .path("/clients/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ClientDTO>>() {
+                    });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all clients in method getAllClients", logger);
             return null;
@@ -164,12 +257,19 @@ public class AdministratorManager implements Serializable {
     
     public String createClient() {
         try {
+            /*
             clientBean.create(
                     newClient.getUsername(),
                     newClient.getPassword(),
                     newClient.getAddress(),
                     newClient.getContactPerson(),
                     newClient.getName());
+            */
+            
+            client.target(baseUri)
+                    .path("clients/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newClient));
             newClient.reset();
         }
         catch (Exception e) {
@@ -181,12 +281,18 @@ public class AdministratorManager implements Serializable {
     
     public String updateClient(){
         try {
+            /*
             clientBean.update(
                     currentClient.getUsername(),
                     currentClient.getPassword(),
                     currentClient.getAddress(),
                     currentClient.getContactPerson(),
                     currentClient.getName());
+                     */
+            client.target(baseUri)
+                    .path("clients/update")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentClient));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating client in method updateClient", logger);
             return null;
@@ -198,7 +304,12 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteClientId");
             String username = param.getValue().toString();
-            clientBean.remove(username);
+            //clientBean.remove(username);
+            System.out.println("username");
+            client.target(baseUri)
+                    .path("/clients/" + username)
+                    .request(MediaType.APPLICATION_XML)
+                    .delete(Boolean.class);
         } 
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing student in method removeClient", logger);

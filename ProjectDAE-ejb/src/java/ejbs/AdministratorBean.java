@@ -9,47 +9,77 @@ import dtos.AdministratorDTO;
 import entities.roles.Administrator;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  *
  * @author Ruben Lauro
  */
+@DeclareRoles({"Administrator"})
 @Stateless
+@Path("/administrators")
 public class AdministratorBean {
     
     @PersistenceContext
     EntityManager em;
     
-    public void create(String username, String password, String name, String email, String role){
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create")
+    public void create(AdministratorDTO administratorDTO){
         try{
-            Administrator administrator = new Administrator(username, password, name, email, role);
+            if (em.find(Administrator.class, administratorDTO.getUsername()) != null) {
+                throw new EJBException("Administrator already exists");
+            }
+            Administrator administrator = new Administrator(administratorDTO.getUsername(), 
+                    administratorDTO.getPassword(), administratorDTO.getName(), administratorDTO.getEmail(), administratorDTO.getRole());
             em.persist(administrator);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
     }
     
-    public void update(String username, String password, String name, String email, String role){
+    @PUT
+    @RolesAllowed({"Administrator"})
+    @Path("update")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void update(AdministratorDTO administratorDTO){
         try{
-            Administrator administrator = (Administrator) em.find(Administrator.class, username);
+            Administrator administrator = (Administrator) em.find(Administrator.class, administratorDTO.getUsername());
             if (administrator == null) {
                 return;
             }
             
-            administrator.setPassword(password);
-            administrator.setName(name);
-            administrator.setEmail(email);
-            administrator.setRole(role);
+            administrator.setPassword(administratorDTO.getPassword());
+            administrator.setName(administratorDTO.getName());
+            administrator.setEmail(administratorDTO.getEmail());
+            administrator.setRole(administratorDTO.getRole());
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
     }
     
-    public void remove(String username){
+    
+    @DELETE
+    @RolesAllowed({"Administrator"})
+    @Path("{username}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("username") String username){
         try{
             Administrator administrator = (Administrator) em.find(Administrator.class, username);
             if (administrator == null) {
@@ -61,6 +91,10 @@ public class AdministratorBean {
         }
     }
     
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("all")
     public List<AdministratorDTO> getAll(){
         try {
             List<Administrator> admins = em.createNamedQuery("getAllAdministrators").getResultList();
