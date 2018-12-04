@@ -11,7 +11,7 @@ Project of Desenvolvimento de Aplicações Empresariais
   <li><b>Database Name:</b> DAE_PROJECT</li>
   <li><b>User Name:</b> dae</li>
   <li><b>Password:</b> dae</li>
-  <li><b>JNDI in file persistence.xml:</b>java:app/dae_project_management</li>
+  <li><b>JNDI in file persistence.xml:</b>dae_project_management</li>
 </ol>
 
 <ol>
@@ -26,7 +26,7 @@ Project of Desenvolvimento de Aplicações Empresariais
     <li>Password Column: PASSWORD</li>
     <li>Group Table: USERS_GROUPS</li>
     <li>Group Table User Name Column: USERNAME</li>
-    <li>Group Name Column: GROUP_NAME</li>
+    <li>Group Name Column: GROUPNAME</li>
     <li>Password Encryption Algorithm: SHA-256</li>
     <li>Database User: dae</li>
     <li>Database Password: dae</li>
