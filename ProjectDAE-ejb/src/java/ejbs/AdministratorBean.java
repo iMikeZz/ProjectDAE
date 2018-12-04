@@ -27,7 +27,7 @@ public class AdministratorBean {
     public void create(String username, String password, String name, String email, String role){
         try{
             Administrator administrator = new Administrator(username, password, name, email, role);
-            em.persist(administrator);   
+            em.persist(administrator);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -61,6 +61,15 @@ public class AdministratorBean {
         }
     }
     
+    public List<AdministratorDTO> getAll(){
+        try {
+            List<Administrator> admins = em.createNamedQuery("getAllAdministrators").getResultList();
+            return administratorsToDTO(admins);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public AdministratorDTO adminToDTO(Administrator admin){
         return new AdministratorDTO(admin.getUsername(), null, admin.getName(), admin.getEmail(), admin.getRole());
     }
@@ -72,15 +81,4 @@ public class AdministratorBean {
         }
         return dtos;
     }
-    
-    public List<AdministratorDTO> getAll(){
-        try {
-            List<Administrator> admins = em.createNamedQuery("getAllAdministrators").getResultList();
-            return administratorsToDTO(admins);
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-
-    
 }

@@ -33,15 +33,19 @@ public class User implements Serializable {
     @NotNull(message = "Password can not be empty")
     protected String password;
     
+    @NotNull(message = "Name can not be empty")
+    protected String name;
+    
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     protected UserGroup group;
 
     public User() {
     }
 
-    public User(String username, String password, GROUP group) {
+    public User(String username, String password, String name, GROUP group) {
         this.username = username;
         this.password = hashPassword(password);
+        this.name = name;
         this.group = new UserGroup(group, this);
     }
     
@@ -59,7 +63,15 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    } 
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     private String hashPassword(String password) {
         char[] encoded = null;

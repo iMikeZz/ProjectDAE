@@ -14,19 +14,24 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable {
     protected String username;
-    protected String password;    
+    protected String password;   
+    protected String name;
+
+    
 
     public UserDTO() {
     }    
     
-    public UserDTO(String username, String password) {
+    public UserDTO(String username, String password, String name) {
         this.username = username;
         this.password = password;
+        this.name = name;
     }
     
     public void reset() {
         setUsername(null);
         setPassword(null);
+        setName(null);
     }        
 
     public String getUsername() {
@@ -43,5 +48,13 @@ public class UserDTO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

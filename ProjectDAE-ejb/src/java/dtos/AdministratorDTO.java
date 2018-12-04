@@ -14,7 +14,6 @@ import java.io.Serializable;
 
 public class AdministratorDTO extends UserDTO implements Serializable {
     
-    private String name;
     private String email;
     private String role;
 
@@ -22,8 +21,7 @@ public class AdministratorDTO extends UserDTO implements Serializable {
     }
 
     public AdministratorDTO(String username, String password, String name, String email, String role) {
-        super(username, password);
-        this.name = name;
+        super(username, password, name);
         this.email = email;
         this.role = role;
     }
@@ -50,13 +48,4 @@ public class AdministratorDTO extends UserDTO implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
 }

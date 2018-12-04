@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(
             name = "getAllClients",
-            query = "SELECT t FROM Client t ORDER BY t.companyName"
+            query = "SELECT t FROM Client t ORDER BY t.name"
     )
 })
 public class Client extends User implements Serializable {
@@ -25,18 +25,14 @@ public class Client extends User implements Serializable {
     
     @NotNull(message = "Contact person can not be empty")
     private String contactPerson;
-    
-    @NotNull(message = "Company Name can not be empty")
-    private String companyName;
 
     public Client() {
     }
     
     public Client(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password, UserGroup.GROUP.Client);
+        super(username, password, companyName, UserGroup.GROUP.Client);
         this.address = address;
         this.contactPerson = contactPerson;
-        this.companyName = companyName;
     }
 
     public String getAddress() {
@@ -53,13 +49,5 @@ public class Client extends User implements Serializable {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 }

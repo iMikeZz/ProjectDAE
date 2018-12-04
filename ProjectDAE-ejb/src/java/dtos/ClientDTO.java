@@ -17,16 +17,14 @@ public class ClientDTO extends UserDTO implements Serializable {
     
     private String address;
     private String contactPerson;
-    private String companyName;
 
     public ClientDTO() {
     }
 
     public ClientDTO(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password);
+        super(username, password, companyName);
         this.address = address;
         this.contactPerson = contactPerson;
-        this.companyName = companyName;
     }
 
     @Override
@@ -50,13 +48,5 @@ public class ClientDTO extends UserDTO implements Serializable {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 }

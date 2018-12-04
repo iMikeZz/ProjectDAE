@@ -9,16 +9,16 @@ import dtos.AdministratorDTO;
 import dtos.ClientDTO;
 import ejbs.AdministratorBean;
 import ejbs.ClientBean;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
 
-@Named(value = "administratorManager")
+@ManagedBean(name = "administratorManager")
 @SessionScoped
 public class AdministratorManager implements Serializable {
  
@@ -169,7 +169,7 @@ public class AdministratorManager implements Serializable {
                     newClient.getPassword(),
                     newClient.getAddress(),
                     newClient.getContactPerson(),
-                    newClient.getCompanyName());
+                    newClient.getName());
             newClient.reset();
         }
         catch (Exception e) {
@@ -186,7 +186,7 @@ public class AdministratorManager implements Serializable {
                     currentClient.getPassword(),
                     currentClient.getAddress(),
                     currentClient.getContactPerson(),
-                    currentClient.getCompanyName());
+                    currentClient.getName());
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating client in method updateClient", logger);
             return null;

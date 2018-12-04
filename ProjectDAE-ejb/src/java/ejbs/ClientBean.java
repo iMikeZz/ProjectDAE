@@ -40,7 +40,7 @@ public class ClientBean {
             }
             
             client.setPassword(password);
-            client.setCompanyName(companyName);
+            client.setName(companyName);
             client.setAddress(address);
             client.setContactPerson(contactPerson);
         }catch(Exception e){
@@ -61,7 +61,7 @@ public class ClientBean {
     }
     
     public ClientDTO clientToDTO(Client client){
-        return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getCompanyName());
+        return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getName());
     }
     
     

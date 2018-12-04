@@ -35,15 +35,11 @@ public class Administrator extends User implements Serializable{
     @NotNull(message = "Role can not be empty")
     private String role; //se der problema mudar 
     
-    @NotNull(message = "Name can not be empty")
-    protected String name;
-
     public Administrator() {
     }
 
     public Administrator(String username, String password, String name, String email, String role) {
-        super(username, password, UserGroup.GROUP.Administrator);
-        this.name = name;
+        super(username, password, name, UserGroup.GROUP.Administrator);
         this.email = email;
         this.role = role;
     }
@@ -62,13 +58,5 @@ public class Administrator extends User implements Serializable{
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
