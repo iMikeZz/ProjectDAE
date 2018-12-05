@@ -11,7 +11,7 @@ Project of Desenvolvimento de Aplicações Empresariais
   <li><b>Database Name:</b> DAE_PROJECT</li>
   <li><b>User Name:</b> dae</li>
   <li><b>Password:</b> dae</li>
-  <li><b>JNDI in file persistence.xml:</b>dae_project_management</li>
+  <li><b>JNDI in file persistence.xml: </b>dae_project_management</li>
 </ol>
 
 <ol>
@@ -20,7 +20,7 @@ Project of Desenvolvimento de Aplicações Empresariais
     <li>Realm name: project_dae_realm </li>
     <li>Class name: dropdown and choose "com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm"</li>
     <li>JAAS Context: jdbcRealm</li>
-    <li>JNDI: project_dae</li>
+    <li>JNDI: dae_project_management</li>
     <li>User Table: USERS</li>
     <li>User Name Column: USERNAME</li>
     <li>Password Column: PASSWORD</li>
