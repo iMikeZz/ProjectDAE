@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -19,6 +20,16 @@
                     action="#{administratorManager.adminsByName}" 
                     />
         </h:form>
+        
+        <h:form>
+        <h:commandButton
+                    id="orderByUsername"
+                    value="Order per Username"
+                    action="#{administratorManager.orderByUsername}" 
+                    />
+        </h:form>
+        
+        <c:if test="#{administratorManager.adminsVersion == 0}">
         <h:form>
             <h:dataTable
             var="administrator"
@@ -50,14 +61,119 @@
                          <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
                      </h:commandLink>
                      &nbsp;
-                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}">
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}" rendered="#{!userManager.username.equals(administrator.username)}">
                          <f:param name="deleteAdministratorId" id="deleteAdministratorId" value="#{administrator.username}" />
                      </h:commandLink>
                 </h:column>
             </h:dataTable>
         </h:form>
+        </c:if>
+        
+        
+        <c:if test="#{administratorManager.adminsVersion == 1}">
+        <h:form>
+            <h:dataTable
+            var="administrator"
+            summary="List of all Admins"
+            value="#{administratorManager.allAdministratorsByName}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.name}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}" rendered="#{!userManager.username.equals(administrator.username)}">
+                         <f:param name="deleteAdministratorId" id="deleteAdministratorId" value="#{administrator.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        </c:if>
+        
+        <c:if test="#{administratorManager.adminsVersion == 2}">
+        <h:form>
+            <h:dataTable
+            var="administrator"
+            summary="List of all Admins"
+            value="#{administratorManager.allAdministratorsOrderedByUsername}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{administrator.name}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}" rendered="#{!userManager.username.equals(administrator.username)}">
+                         <f:param name="deleteAdministratorId" id="deleteAdministratorId" value="#{administrator.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        </c:if>
+        
         <h:link value="New Administrator" outcome="admin_create"/>
         
+        <h:form>
+         <h:inputText
+                    id="searchValue"
+                    size="20"
+                    value="#{administratorManager.clientsSearchValue}" />
+         
+         <h:commandButton
+                    id="submit"
+                    value="Search"
+                    action="#{administratorManager.clientsByName}" 
+                    />
+        </h:form>
+        
+        <h:form>
+        <h:commandButton
+                    id="orderByUsername"
+                    value="Order per Username"
+                    action="#{administratorManager.orderClientsByUsername}" 
+                    />
+        </h:form>
+        
+        <c:if test="#{administratorManager.clientsVersion == 0}">
         <h:form>
             <h:dataTable
             var="client"
@@ -95,6 +211,88 @@
                 </h:column>
             </h:dataTable>
         </h:form>
+        </c:if>
+        
+        <c:if test="#{administratorManager.clientsVersion == 1}">
+        <h:form>
+            <h:dataTable
+            var="client"
+            summary="List of all Clients"
+            value="#{administratorManager.allClientsByName}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Company Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.name}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_client_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_client_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeClient}">
+                         <f:param name="deleteClientId" id="deleteClientId" value="#{client.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        </c:if>
+        
+        <c:if test="#{administratorManager.clientsVersion == 2}">
+        <h:form>
+            <h:dataTable
+            var="client"
+            summary="List of all Clients"
+            value="#{administratorManager.allClientsOrderedByUsername}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Username"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.username}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Company Name"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{client.name}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                     <h:commandLink value="Details" action="admin_client_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Update" action="admin_client_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{administratorManager.currentClient}" value="#{client}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeClient}">
+                         <f:param name="deleteClientId" id="deleteClientId" value="#{client.username}" />
+                     </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        </c:if>
+        
         <h:link value="New Client" outcome="admin_client_create"/>
         
     </h:body>

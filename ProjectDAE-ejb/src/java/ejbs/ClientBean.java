@@ -103,6 +103,34 @@ public class ClientBean {
         }
     }
     
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{name}")
+    public List<ClientDTO> getAll(@PathParam("name") String name){
+        try {
+            List<Client> clients = em.createNamedQuery("getAllClientsByName")
+                    .setParameter("name", name)
+                    .getResultList();
+            return clientsToDTO(clients);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allOrderedByUsername")
+    public List<ClientDTO> getAllAdministratorsOrderedByUsername(){
+        try {
+            List<Client> clients = em.createNamedQuery("getAllClientsOrderedByUsername").getResultList();
+            return clientsToDTO(clients);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public ClientDTO clientToDTO(Client client){
         return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getName());
     }

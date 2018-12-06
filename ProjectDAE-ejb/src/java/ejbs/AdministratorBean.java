@@ -104,6 +104,35 @@ public class AdministratorBean {
         }
     }
     
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{name}")
+    public List<AdministratorDTO> getAll(@PathParam("name") String name){
+        try {
+            List<Administrator> admins = em.createNamedQuery("getAllAdministratorsByName")
+                    .setParameter("name", name)
+                    .getResultList();
+            return administratorsToDTO(admins);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allOrderedByUsername")
+    public List<AdministratorDTO> getAllAdministratorsOrderedByUsername(){
+        try {
+            List<Administrator> admins = em.createNamedQuery("getAllAdministratorsOrderedByUsername")
+                    .getResultList();
+            return administratorsToDTO(admins);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public AdministratorDTO adminToDTO(Administrator admin){
         return new AdministratorDTO(admin.getUsername(), null, admin.getName(), admin.getEmail(), admin.getRole());
     }

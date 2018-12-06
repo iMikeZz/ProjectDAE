@@ -29,11 +29,14 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() { 
         // Administrators
-        administratorBean.create(new AdministratorDTO("7894561", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor"));
-        administratorBean.create(new AdministratorDTO("a1", "a1", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("b1", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("a1", "a1", "Alexandre", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("r3", "a1", "Joao", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("d1", "a1", "Pedro", "dae.ei.ipleiria@gmail.com", "Gestor"));
         
         // Clients
-        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "IPL"));
+        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC"));
         clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
+        clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC"));
     }
 }

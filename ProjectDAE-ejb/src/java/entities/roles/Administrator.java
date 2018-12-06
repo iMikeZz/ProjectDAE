@@ -21,6 +21,14 @@ import javax.validation.constraints.Pattern;
     @NamedQuery(
             name = "getAllAdministrators",
             query = "SELECT t FROM Administrator t ORDER BY t.name"
+    ),
+    @NamedQuery(
+            name = "getAllAdministratorsByName",
+            query = "SELECT t FROM Administrator t WHERE UPPER(t.name) LIKE UPPER(:name) ORDER BY t.name"
+    ),
+    @NamedQuery(
+            name = "getAllAdministratorsOrderedByUsername",
+            query = "SELECT t FROM Administrator t ORDER BY t.username"
     )
 })
 public class Administrator extends User implements Serializable{

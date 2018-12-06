@@ -47,7 +47,8 @@ public class AdministratorManager implements Serializable {
     //Administrator
     private ClientDTO currentClient;
     private ClientDTO newClient;
-    
+    private int clientsVersion;
+    private String clientsSearchValue;
     
     private Client client;
     private final String baseUri = "http://localhost:8080/ProjectDAE-war/webapi";
@@ -152,14 +153,26 @@ public class AdministratorManager implements Serializable {
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
     }
+
+    public int getClientsVersion() {
+        return clientsVersion;
+    }
+
+    public void setClientsVersion(int clientsVersion) {
+        this.clientsVersion = clientsVersion;
+    }
+
+    public String getClientsSearchValue() {
+        return clientsSearchValue;
+    }
+
+    public void setClientsSearchValue(String clientsSearchValue) {
+        this.clientsSearchValue = clientsSearchValue;
+    }
     
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
         try {
-            /*
-            System.out.println(getAdminsVersion() + "  " + getSearchValue());
-            return administratorBean.getAll(getAdminsVersion());
-            */
             return client.target(baseUri)
                     .path("/administrators/all")
                     .request(MediaType.APPLICATION_XML)
@@ -171,22 +184,34 @@ public class AdministratorManager implements Serializable {
         }
     }
     
-    public String adminsByName(){
-        setAdminsVersion(1);
-        System.out.println("passei no admins by name " + getAdminsVersion() + "  " + getSearchValue());
-        return "admin_index?faces-redirect=true";
+    public List<AdministratorDTO> getAllAdministratorsByName(){
+        try {
+            return client.target(baseUri)
+                    .path("/administrators/" + searchValue)
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<AdministratorDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
+            return null;
+        }
+    }
+    
+    public List<AdministratorDTO> getAllAdministratorsOrderedByUsername(){
+        try {
+            return client.target(baseUri)
+                    .path("/administrators/allOrderedByUsername")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<AdministratorDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
+            return null;
+        }
     }
     
     public String createAdministrator() {
         try {
-            /*
-            administratorBean.create(
-                    newAdministrator.getUsername(),
-                    newAdministrator.getPassword(),
-                    newAdministrator.getName(),
-                    newAdministrator.getEmail(),
-                    newAdministrator.getRole());
-            */
             client.target(baseUri)
                     .path("administrators/create")
                     .request(MediaType.APPLICATION_XML)
@@ -202,14 +227,6 @@ public class AdministratorManager implements Serializable {
     
     public String updateAdministrator(){
         try {
-            /*
-            administratorBean.update(currentAdministrator.getUsername(),
-                    currentAdministrator.getPassword(), 
-                    currentAdministrator.getName(), 
-                    currentAdministrator.getEmail(), 
-                    currentAdministrator.getRole());
-            
-            */
             client.target(baseUri)
                     .path("administrators/update")
                     .request(MediaType.APPLICATION_XML)
@@ -225,9 +242,6 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteAdministratorId");
             String username = param.getValue().toString();
-            /*
-            administratorBean.remove(username);
-            */
             client.target(baseUri)
                     .path("administrators/" + username)
                     .request(MediaType.APPLICATION_XML)
@@ -240,10 +254,20 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
     
+    public void adminsByName(){
+        if (!searchValue.equals("")) {
+            setAdminsVersion(1);
+        }else
+            setAdminsVersion(0);
+    }
+    
+    public void orderByUsername(){
+        setAdminsVersion(2);
+    }
+    
     //********************CLIENTS**************************************
     public List<ClientDTO> getAllClients(){
         try {
-            //return clientBean.getAll();
             return client.target(baseUri)
                     .path("/clients/all")
                     .request(MediaType.APPLICATION_XML)
@@ -255,17 +279,34 @@ public class AdministratorManager implements Serializable {
         }
     }
     
+    public List<ClientDTO> getAllClientsByName(){
+        try {
+            return client.target(baseUri)
+                    .path("/clients/" + clientsSearchValue)
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ClientDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllClients", logger);
+            return null;
+        }
+    }
+    
+    public List<ClientDTO> getAllClientsOrderedByUsername(){
+        try {
+            return client.target(baseUri)
+                    .path("/clients/allOrderedByUsername")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ClientDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllClients", logger);
+            return null;
+        }
+    }
+    
     public String createClient() {
         try {
-            /*
-            clientBean.create(
-                    newClient.getUsername(),
-                    newClient.getPassword(),
-                    newClient.getAddress(),
-                    newClient.getContactPerson(),
-                    newClient.getName());
-            */
-            
             client.target(baseUri)
                     .path("clients/create")
                     .request(MediaType.APPLICATION_XML)
@@ -281,14 +322,6 @@ public class AdministratorManager implements Serializable {
     
     public String updateClient(){
         try {
-            /*
-            clientBean.update(
-                    currentClient.getUsername(),
-                    currentClient.getPassword(),
-                    currentClient.getAddress(),
-                    currentClient.getContactPerson(),
-                    currentClient.getName());
-                     */
             client.target(baseUri)
                     .path("clients/update")
                     .request(MediaType.APPLICATION_XML)
@@ -304,7 +337,6 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteClientId");
             String username = param.getValue().toString();
-            //clientBean.remove(username);
             System.out.println("username");
             client.target(baseUri)
                     .path("/clients/" + username)
@@ -316,5 +348,16 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return "index?faces-redirect=true";
+    }
+    
+    public void clientsByName(){
+        if (!clientsSearchValue.equals("")) {
+            setClientsVersion(1);
+        } else
+            setClientsVersion(0);
+    }
+    
+    public void orderClientsByUsername(){
+        setClientsVersion(2);
     }
 }

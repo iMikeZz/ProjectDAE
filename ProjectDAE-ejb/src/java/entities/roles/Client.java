@@ -16,6 +16,14 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(
             name = "getAllClients",
             query = "SELECT t FROM Client t ORDER BY t.name"
+    ),
+    @NamedQuery(
+            name = "getAllClientsByName",
+            query = "SELECT t FROM Client t WHERE UPPER(t.name) LIKE UPPER(:name) ORDER BY t.name"
+    ),
+    @NamedQuery(
+            name = "getAllClientsOrderedByUsername",
+            query = "SELECT t FROM Client t ORDER BY t.username"
     )
 })
 public class Client extends User implements Serializable {
