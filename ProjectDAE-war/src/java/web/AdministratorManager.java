@@ -217,36 +217,16 @@ public class AdministratorManager implements Serializable {
         try {
             switch (adminsVersion) {
                 case ALLADMINS:
-                    return client.target(baseUri)
-                            .path("/administrators/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<AdministratorDTO>>() {
-                            });
+                    return getAdminsListByUrl("/administrators/all");
                 case SEARCHBYNAME:
                     if (!searchValue.equals("")) {
-                        return client.target(baseUri)
-                                .path("/administrators/" + searchValue)
-                                .request(MediaType.APPLICATION_XML)
-                                .get(new GenericType<List<AdministratorDTO>>() {
-                                });
+                        return getAdminsListByUrl("/administrators/" + searchValue);
                     }
-                    return client.target(baseUri)
-                            .path("/administrators/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<AdministratorDTO>>() {
-                            });
+                    return getAdminsListByUrl("/administrators/all");
                 case SORTBYUSERNAME:
-                    return client.target(baseUri)
-                            .path("/administrators/allOrderedByUsername")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<AdministratorDTO>>() {
-                            });
+                    return getAdminsListByUrl("/administrators/allOrderedByUsername");
                 case SORTBYNAME:
-                    return client.target(baseUri)
-                            .path("/administrators/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<AdministratorDTO>>() {
-                            });
+                    return getAdminsListByUrl("/administrators/all");
                 default:
                     return null;
             }
@@ -305,37 +285,16 @@ public class AdministratorManager implements Serializable {
         try {
             switch (clientsVersion){
                 case ALLCLIENTS:
-                    return client.target(baseUri)
-                            .path("/clients/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<ClientDTO>>() {
-                            });
+                    return getClientsListByUrl("/clients/all");
                 case SEARCHCLIENTSBYNAME:
                     if (!clientsSearchValue.equals("")) {
-                        return client.target(baseUri)
-                                .path("/clients/" + clientsSearchValue)
-                                .request(MediaType.APPLICATION_XML)
-                                .get(new GenericType<List<ClientDTO>>() {
-                                });
+                        return getClientsListByUrl("/clients/" + clientsSearchValue);
                     }
-                    return client.target(baseUri)
-                            .path("/clients/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<ClientDTO>>() {
-                            });
-                    
+                    return getClientsListByUrl("/clients/all");
                 case SORTCLIENTSBYUSERNAME:
-                    return client.target(baseUri)
-                            .path("/clients/allOrderedByUsername")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<ClientDTO>>() {
-                            });
+                    return getClientsListByUrl("/clients/allOrderedByUsername");
                 case SORTCLIENTSBYNAME:
-                    return client.target(baseUri)
-                            .path("/clients/all")
-                            .request(MediaType.APPLICATION_XML)
-                            .get(new GenericType<List<ClientDTO>>() {
-                            });
+                    return getClientsListByUrl("/clients/all");
                     default:
                         return null;
             }
@@ -390,5 +349,22 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return "index?faces-redirect=true";
+    }
+    
+    //**************COSTUM METHODS
+    private List<ClientDTO> getClientsListByUrl(String url){
+        return client.target(baseUri)
+                .path(url)
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<ClientDTO>>() {
+                });
+    }
+    
+    private List<AdministratorDTO> getAdminsListByUrl(String url){
+        return client.target(baseUri)
+                .path(url)
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<AdministratorDTO>>() {
+                });
     }
 }
