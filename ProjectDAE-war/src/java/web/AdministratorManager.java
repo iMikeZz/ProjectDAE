@@ -1,10 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package web;
- 
+
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
 import ejbs.AdministratorBean;
@@ -32,13 +32,23 @@ public class AdministratorManager implements Serializable {
     
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
     
+    private static final String ALLADMINS = "ALLADMINS";
+    private static final String SEARCHBYNAME = "SEARCHBYNAME";
+    private static final String SORTBYNAME = "SORTBYNAME";
+    private static final String SORTBYUSERNAME = "SORTBYUSERNAME";
+    
+    private static final String ALLCLIENTS = "ALLCLIENTS";
+    private static final String SEARCHCLIENTSBYNAME = "SEARCHCLIENTSBYNAME";
+    private static final String SORTCLIENTSBYNAME = "SORTCLIENTSBYNAME";
+    private static final String SORTCLIENTSBYUSERNAME = "SORTCLIENTSBYUSERNAME";
+    
     @EJB
     private AdministratorBean administratorBean;
     
     //Administrator
     private AdministratorDTO currentAdministrator;
     private AdministratorDTO newAdministrator;
-    private int adminsVersion;
+    private String adminsVersion = ALLADMINS;
     private String searchValue;
     
     @EJB
@@ -47,7 +57,7 @@ public class AdministratorManager implements Serializable {
     //Administrator
     private ClientDTO currentClient;
     private ClientDTO newClient;
-    private int clientsVersion;
+    private String clientsVersion = ALLCLIENTS;
     private String clientsSearchValue;
     
     private Client client;
@@ -77,133 +87,169 @@ public class AdministratorManager implements Serializable {
     public AdministratorBean getAdministratorBean() {
         return administratorBean;
     }
-
+    
     public void setAdministratorBean(AdministratorBean administratorBean) {
         this.administratorBean = administratorBean;
     }
-
+    
     public AdministratorDTO getCurrentAdministrator() {
         return currentAdministrator;
     }
-
+    
     public void setCurrentAdministrator(AdministratorDTO currentAdministrator) {
         this.currentAdministrator = currentAdministrator;
     }
-
+    
     public AdministratorDTO getNewAdministrator() {
         return newAdministrator;
     }
-
+    
     public void setNewAdministrator(AdministratorDTO newAdministrator) {
         this.newAdministrator = newAdministrator;
     }
-
+    
     public ClientBean getClientBean() {
         return clientBean;
     }
-
+    
     public void setClientBean(ClientBean clientBean) {
         this.clientBean = clientBean;
     }
-
+    
     public ClientDTO getCurrentClient() {
         return currentClient;
     }
-
+    
     public void setCurrentClient(ClientDTO currentClient) {
         this.currentClient = currentClient;
     }
-
+    
     public ClientDTO getNewClient() {
         return newClient;
     }
-
+    
     public void setNewClient(ClientDTO newClient) {
         this.newClient = newClient;
     }
-
-    public int getAdminsVersion() {
+    
+    public String getAdminsVersion() {
         return adminsVersion;
     }
-
-    public void setAdminsVersion(int adminsVersion) {
+    
+    public void setAdminsVersion(String adminsVersion) {
         this.adminsVersion = adminsVersion;
     }
-
+    
     public String getSearchValue() {
         return searchValue;
     }
-
+    
     public void setSearchValue(String searchValue) {
         this.searchValue = searchValue;
     }
-
+    
     public Client getClient() {
         return client;
     }
-
+    
     public void setClient(Client client) {
         this.client = client;
     }
-
+    
     public UserManager getUserManager() {
         return userManager;
     }
-
+    
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
     }
-
-    public int getClientsVersion() {
+    
+    public String getClientsVersion() {
         return clientsVersion;
     }
-
-    public void setClientsVersion(int clientsVersion) {
+    
+    public void setClientsVersion(String clientsVersion) {
         this.clientsVersion = clientsVersion;
     }
-
+    
     public String getClientsSearchValue() {
         return clientsSearchValue;
     }
-
+    
     public void setClientsSearchValue(String clientsSearchValue) {
         this.clientsSearchValue = clientsSearchValue;
+    }
+    
+    public String getSEARCHBYNAME() {
+        return SEARCHBYNAME;
+    }
+    
+    public String getALLADMINS() {
+        return ALLADMINS;
+    }
+    
+    public String getSORTBYNAME() {
+        return SORTBYNAME;
+    }
+    
+    public String getSORTBYUSERNAME() {
+        return SORTBYUSERNAME;
+    }
+    
+    public String getALLCLIENTS() {
+        return ALLCLIENTS;
+    }
+    
+    public String getSEARCHCLIENTSBYNAME() {
+        return SEARCHCLIENTSBYNAME;
+    }
+    
+    public String getSORTCLIENTSBYNAME() {
+        return SORTCLIENTSBYNAME;
+    }
+    
+    public String getSORTCLIENTSBYUSERNAME() {
+        return SORTCLIENTSBYUSERNAME;
     }
     
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
         try {
-            return client.target(baseUri)
-                    .path("/administrators/all")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<AdministratorDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
-            return null;
-        }
-    }
-    
-    public List<AdministratorDTO> getAllAdministratorsByName(){
-        try {
-            return client.target(baseUri)
-                    .path("/administrators/" + searchValue)
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<AdministratorDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
-            return null;
-        }
-    }
-    
-    public List<AdministratorDTO> getAllAdministratorsOrderedByUsername(){
-        try {
-            return client.target(baseUri)
-                    .path("/administrators/allOrderedByUsername")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<AdministratorDTO>>() {
-                    });
+            switch (adminsVersion) {
+                case ALLADMINS:
+                    return client.target(baseUri)
+                            .path("/administrators/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<AdministratorDTO>>() {
+                            });
+                case SEARCHBYNAME:
+                    if (!searchValue.equals("")) {
+                        return client.target(baseUri)
+                                .path("/administrators/" + searchValue)
+                                .request(MediaType.APPLICATION_XML)
+                                .get(new GenericType<List<AdministratorDTO>>() {
+                                });
+                    }
+                    return client.target(baseUri)
+                            .path("/administrators/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<AdministratorDTO>>() {
+                            });
+                case SORTBYUSERNAME:
+                    return client.target(baseUri)
+                            .path("/administrators/allOrderedByUsername")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<AdministratorDTO>>() {
+                            });
+                case SORTBYNAME:
+                    return client.target(baseUri)
+                            .path("/administrators/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<AdministratorDTO>>() {
+                            });
+                default:
+                    return null;
+            }
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllAdministrators", logger);
             return null;
@@ -246,7 +292,7 @@ public class AdministratorManager implements Serializable {
                     .path("administrators/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
-        } 
+        }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing administrator in method removeAdministrator", logger);
             return null;
@@ -254,56 +300,52 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
     
-    public void adminsByName(){
-        if (!searchValue.equals("")) {
-            setAdminsVersion(1);
-        }else
-            setAdminsVersion(0);
-    }
-    
-    public void orderByUsername(){
-        setAdminsVersion(2);
-    }
-    
     //********************CLIENTS**************************************
     public List<ClientDTO> getAllClients(){
         try {
-            return client.target(baseUri)
-                    .path("/clients/all")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ClientDTO>>() {
-                    });
+            switch (clientsVersion){
+                case ALLCLIENTS:
+                    return client.target(baseUri)
+                            .path("/clients/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<ClientDTO>>() {
+                            });
+                case SEARCHCLIENTSBYNAME:
+                    if (!clientsSearchValue.equals("")) {
+                        return client.target(baseUri)
+                                .path("/clients/" + clientsSearchValue)
+                                .request(MediaType.APPLICATION_XML)
+                                .get(new GenericType<List<ClientDTO>>() {
+                                });
+                    }
+                    return client.target(baseUri)
+                            .path("/clients/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<ClientDTO>>() {
+                            });
+                    
+                case SORTCLIENTSBYUSERNAME:
+                    return client.target(baseUri)
+                            .path("/clients/allOrderedByUsername")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<ClientDTO>>() {
+                            });
+                case SORTCLIENTSBYNAME:
+                    return client.target(baseUri)
+                            .path("/clients/all")
+                            .request(MediaType.APPLICATION_XML)
+                            .get(new GenericType<List<ClientDTO>>() {
+                            });
+                    default:
+                        return null;
+            }
+            
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all clients in method getAllClients", logger);
             return null;
         }
     }
     
-    public List<ClientDTO> getAllClientsByName(){
-        try {
-            return client.target(baseUri)
-                    .path("/clients/" + clientsSearchValue)
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ClientDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllClients", logger);
-            return null;
-        }
-    }
-    
-    public List<ClientDTO> getAllClientsOrderedByUsername(){
-        try {
-            return client.target(baseUri)
-                    .path("/clients/allOrderedByUsername")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ClientDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all students in method getAllClients", logger);
-            return null;
-        }
-    }
     
     public String createClient() {
         try {
@@ -332,7 +374,7 @@ public class AdministratorManager implements Serializable {
         }
         return "admin_index?facelet-redirect=true";
     }
-
+    
     public String removeClient(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteClientId");
@@ -342,22 +384,11 @@ public class AdministratorManager implements Serializable {
                     .path("/clients/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
-        } 
+        }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing student in method removeClient", logger);
             return null;
         }
         return "index?faces-redirect=true";
-    }
-    
-    public void clientsByName(){
-        if (!clientsSearchValue.equals("")) {
-            setClientsVersion(1);
-        } else
-            setClientsVersion(0);
-    }
-    
-    public void orderClientsByUsername(){
-        setClientsVersion(2);
     }
 }

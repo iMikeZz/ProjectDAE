@@ -111,7 +111,7 @@ public class AdministratorBean {
     public List<AdministratorDTO> getAll(@PathParam("name") String name){
         try {
             List<Administrator> admins = em.createNamedQuery("getAllAdministratorsByName")
-                    .setParameter("name", name)
+                    .setParameter("name", "%" + name + "%")
                     .getResultList();
             return administratorsToDTO(admins);
         } catch (Exception e) {

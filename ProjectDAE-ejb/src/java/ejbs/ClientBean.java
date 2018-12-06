@@ -110,7 +110,7 @@ public class ClientBean {
     public List<ClientDTO> getAll(@PathParam("name") String name){
         try {
             List<Client> clients = em.createNamedQuery("getAllClientsByName")
-                    .setParameter("name", name)
+                    .setParameter("name", "%" + name + "%")
                     .getResultList();
             return clientsToDTO(clients);
         } catch (Exception e) {
