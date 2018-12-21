@@ -30,19 +30,8 @@ public class ConfigBase implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
           
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_CODE")
-    @NotNull(message = "A client is needed to this configuration")
-    private Client client;
-    
     @NotNull  
     private String description;
-    
-    @NotNull
-    private String contractData;
-    
-    @NotNull
-    private State state;
     
     @NotNull
     private Software software;
@@ -77,12 +66,9 @@ public class ConfigBase implements Serializable {
         materials = new LinkedList<>();
     }
 
-    public ConfigBase(int id, Client client, String description, String contractData, State state, Software software) {
+    public ConfigBase(int id, String description, Software software) {
         this.id = id;
-        this.client = client;
         this.description = description;
-        this.contractData = contractData;
-        this.state = state;
         this.software = software;
         
         licenses = new LinkedList<>();
@@ -102,36 +88,12 @@ public class ConfigBase implements Serializable {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getContractData() {
-        return contractData;
-    }
-
-    public void setContractData(String contractData) {
-        this.contractData = contractData;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
     }
 
     public Software getSoftware() {

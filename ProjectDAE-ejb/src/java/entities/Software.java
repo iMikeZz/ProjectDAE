@@ -21,15 +21,15 @@ public class Software implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String nome;
+    private String name;
     private String version;
     
     public Software() {
     }
 
-    public Software(int id, String nome, String version) {
+    public Software(int id, String name, String version) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.version = version;
     }
     
@@ -41,12 +41,12 @@ public class Software implements Serializable {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getVersion() {

@@ -8,6 +8,7 @@ package ejbs;
 
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
+import dtos.TemplateDTO;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -26,6 +27,14 @@ public class ConfigBean {
     @EJB
     private ClientBean clientBean;
     
+    @EJB
+    private TemplateBean templateBean;
+    
+    @EJB
+    private SoftwareBean softwareBean;
+    
+    
+    
     @PostConstruct
     public void populateDB() { 
         // Administrators
@@ -38,5 +47,12 @@ public class ConfigBean {
         clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC"));
         clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
         clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC"));
+        
+        
+        softwareBean.create(1, "Sim", "2.0");
+        
+        templateBean.create(new TemplateDTO(1, "windows 98 pro", 1));
+        
+        
     }
 }

@@ -6,6 +6,7 @@
 package entities.roles;
 
 import entities.ConfigBase;
+import entities.Configuration;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Client extends User implements Serializable {
     private String contactPerson;
     
     @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE)
-    private List<ConfigBase> configurations;
+    private List<Configuration> configurations;
 
     public Client() {
         configurations = new LinkedList<>();
@@ -68,5 +69,13 @@ public class Client extends User implements Serializable {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
+    }
+
+    public List<Configuration> getConfigurations() {
+        return configurations;
+    }
+
+    public void setConfigurations(List<Configuration> configurations) {
+        this.configurations = configurations;
     }
 }
