@@ -17,8 +17,6 @@ public class UserDTO implements Serializable {
     protected String password;   
     protected String name;
 
-    
-
     public UserDTO() {
     }    
     

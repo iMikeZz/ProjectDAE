@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Ruben Lauro
  */
-@XmlRootElement(name = "Administrator")
+@XmlRootElement(name = "Template")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TemplateDTO implements Serializable{
     
@@ -60,4 +60,5 @@ public class TemplateDTO implements Serializable{
     public void setSoftwareCode(int softwareCode) {
         this.softwareCode = softwareCode;
     }
+    
 }

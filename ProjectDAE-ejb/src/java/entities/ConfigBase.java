@@ -5,18 +5,13 @@
  */
 package entities;
 
-import entities.roles.Client;
-import entities.utils.State;
 import java.io.Serializable;
-import java.security.cert.Extension;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -27,7 +22,7 @@ import javax.validation.constraints.NotNull;
 public class ConfigBase implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
           
     @NotNull  

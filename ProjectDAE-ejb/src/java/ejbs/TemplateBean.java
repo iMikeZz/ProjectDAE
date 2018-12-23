@@ -5,22 +5,24 @@
  */
 package ejbs;
 
-import dtos.ClientDTO;
 import dtos.TemplateDTO;
 import entities.Software;
 import entities.Template;
-import entities.roles.Client;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -28,6 +30,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Ruben Lauro
  */
+@DeclareRoles({"Administrator"})
 @Stateless
 @Path("/templates")
 public class TemplateBean {
@@ -35,7 +38,7 @@ public class TemplateBean {
     EntityManager em;
     
     @GET
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
     public List<TemplateDTO> getAll(){
@@ -61,6 +64,43 @@ public class TemplateBean {
                 throw new EJBException("Software doesn't exists");
             }
             em.persist(new Template(templateDTO.getId(), templateDTO.getDescription(), software));   
+        }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    @RolesAllowed({"Administrator"})
+    @Path("update")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void update(TemplateDTO templateDTO){
+        try{
+            Template template = (Template) em.find(Template.class, templateDTO.getId());
+            if (template == null) {
+                return;
+            }
+            Software software = em.find(Software.class, templateDTO.getSoftwareCode());
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            template.setDescription(templateDTO.getDescription());
+            template.setSoftware(software);
+        }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @DELETE
+    @RolesAllowed({"Administrator"})
+    @Path("{username}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("username") int username){
+        try{
+            Template template = (Template) em.find(Template.class, username);
+            if (template == null) {
+                return;
+            }
+            em.remove(template); 
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }

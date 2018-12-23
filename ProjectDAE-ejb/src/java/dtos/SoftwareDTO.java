@@ -3,46 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities;
+package dtos;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author josea
+ * @author Ruben Lauro
  */
-@Entity
-@Table(name = "SOFTWARES")
-@NamedQueries({
-    @NamedQuery(
-            name = "getAllSoftwares",
-            query = "SELECT t FROM Software t ORDER BY t.id"
-    )
-})
-public class Software implements Serializable {
+
+@XmlRootElement(name = "Software")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class SoftwareDTO {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private String version;
-    
-    public Software() {
+
+    public SoftwareDTO() {
     }
 
-    public Software(int id, String name, String version) {
+    public SoftwareDTO(int id, String name, String version) {
         this.id = id;
         this.name = name;
         this.version = version;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -58,7 +46,7 @@ public class Software implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
+   
     public String getVersion() {
         return version;
     }

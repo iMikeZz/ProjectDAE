@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+ 
+        <h:form>
+ 
+            <h:panelGrid columns="3">
+ 
+                <h:outputLabel for="description" value="Description: " />
+                <h:inputText
+                    id="description"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: description cannot be empty"
+                    value="#{configurationManager.newTemplate.description}" />
+                <h:message for="description" errorStyle="color:red" />
+ 
+                <h:outputLabel for="software" value="Software: " />
+                <h:selectOneMenu id="software" value="#{configurationManager.newTemplate.softwareCode}">
+                    <f:selectItems value="#{configurationManager.allSoftwares}"
+                                   var="software"
+                                   itemValue="#{software.id}"
+                                   itemLabel="#{software.name}" />
+                </h:selectOneMenu>
+  
+                <br></br>
+ 
+                <h:commandButton
+                    id="submit"
+                    value="Create"
+                    action="#{configurationManager.createTemplate}" 
+                    />
+                <h:message for="submit" errorStyle="color:red" />
+ 
+                
+                 <h:link value="Cancel" outcome="/admin/admin_index" />
+            </h:panelGrid >        
+ 
+        </h:form>
+ 
+    </h:body> 
+</html>

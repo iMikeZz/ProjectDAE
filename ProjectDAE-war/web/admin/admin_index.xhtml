@@ -149,7 +149,7 @@
             <h:dataTable
             var="template"
             summary="List of all Templates"
-            value="#{administratorManager.allTemplates}"
+            value="#{configurationManager.allTemplates}"
             rules="all"
             cellpadding="5">
                 <h:column>
@@ -168,21 +168,21 @@
                     <f:facet name="header">
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
-                     <h:commandLink value="Details" action="admin_client_details?facelet-redirect=true">
-                         <f:setPropertyActionListener target="#{administratorManager.currentTemplate}" value="#{template}"/>
+                     <h:commandLink value="Details" action="templates/admin_template_details?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{configurationManager.currentTemplate}" value="#{template}"/>
                      </h:commandLink>
                      &nbsp;
-                     <h:commandLink value="Update" action="admin_client_update?facelet-redirect=true">
-                         <f:setPropertyActionListener target="#{administratorManager.currentTemplate}" value="#{template}"/>
+                     <h:commandLink value="Update" action="templates/admin_template_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{configurationManager.currentTemplate}" value="#{template}"/>
                      </h:commandLink>
                      &nbsp;
-                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeTemplate}">
-                         <f:param name="deleteClientId" id="deleteClientId" value="#{template.id}" />
+                     <h:commandLink value="Remove" actionListener="#{configurationManager.removeTemplate}">
+                         <f:param name="deleteClientId" id="deleteTemplateId" value="#{template.id}" />
                      </h:commandLink>
                 </h:column>
             </h:dataTable>
         </h:form>
-        <h:link value="New Template" outcome="admin_client_create"/>
+        <h:link value="New Template" outcome="templates/admin_template_create"/>
     </h:body>
 </html>
 

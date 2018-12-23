@@ -5,7 +5,6 @@
  */
 package entities.roles;
 
-import entities.ConfigBase;
 import entities.Configuration;
 import java.io.Serializable;
 import java.util.LinkedList;

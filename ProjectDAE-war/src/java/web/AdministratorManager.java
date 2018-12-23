@@ -7,30 +7,23 @@ package web;
 
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
-import dtos.TemplateDTO;
 import ejbs.AdministratorBean;
 import ejbs.ClientBean;
-import ejbs.TemplateBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 @ManagedBean(name = "administratorManager")
 @SessionScoped
-public class AdministratorManager implements Serializable {
+public class AdministratorManager extends Manager implements Serializable {
     
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
     
@@ -62,33 +55,11 @@ public class AdministratorManager implements Serializable {
     private String clientsVersion = ALLCLIENTS;
     private String clientsSearchValue;
     
-    @EJB
-    private TemplateBean templateBean;
-    private TemplateDTO currentTemplate;
-    private TemplateDTO newTemplate;
-    
-    private Client client;
-    private final String baseUri = "http://localhost:8080/ProjectDAE-war/webapi";
-    
-    @ManagedProperty("#{userManager}")
-    private UserManager userManager;
-    
     public AdministratorManager() {
         this.newAdministrator = new AdministratorDTO();
         
         this.newClient = new ClientDTO();
-        
-        this.newTemplate = new TemplateDTO();
-        
-        client = ClientBuilder.newClient();
     }
-    
-    @PostConstruct
-    public void init(){
-        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
-        client.register(feature);
-    }
-    
     
     //********************GETTERS&SETTERS
     
@@ -156,22 +127,6 @@ public class AdministratorManager implements Serializable {
         this.searchValue = searchValue;
     }
     
-    public Client getClient() {
-        return client;
-    }
-    
-    public void setClient(Client client) {
-        this.client = client;
-    }
-    
-    public UserManager getUserManager() {
-        return userManager;
-    }
-    
-    public void setUserManager(UserManager userManager) {
-        this.userManager = userManager;
-    }
-    
     public String getClientsVersion() {
         return clientsVersion;
     }
@@ -220,31 +175,6 @@ public class AdministratorManager implements Serializable {
         return SORTCLIENTSBYUSERNAME;
     }
 
-    public TemplateBean getTemplateBean() {
-        return templateBean;
-    }
-
-    public void setTemplateBean(TemplateBean templateBean) {
-        this.templateBean = templateBean;
-    }
-
-    public TemplateDTO getCurrentTemplate() {
-        return currentTemplate;
-    }
-
-    public void setCurrentTemplate(TemplateDTO currentTemplate) {
-        this.currentTemplate = currentTemplate;
-    }
-
-    public TemplateDTO getNewTemplate() {
-        return newTemplate;
-    }
-
-    public void setNewTemplate(TemplateDTO newTemplate) {
-        this.newTemplate = newTemplate;
-    }
-    
-    
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
         try {
@@ -383,21 +313,6 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
-    //*******************TEMPLATES********************************
-    public List<TemplateDTO> getAllTemplates(){
-        try {
-            return client.target(baseUri)
-                .path("/templates/all")
-                .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<TemplateDTO>>() {
-                });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllTemplates", logger);
-            return null;
-        }
-    }
-    
     
     //**************COSTUM METHODS
     private List<ClientDTO> getClientsListByUrl(String url){
