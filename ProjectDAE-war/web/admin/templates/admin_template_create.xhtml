@@ -22,7 +22,7 @@
                 <h:message for="description" errorStyle="color:red" />
  
                 <h:outputLabel for="software" value="Software: " />
-                <h:selectOneMenu id="software" value="#{configurationManager.newTemplate.softwareCode}">
+                <h:selectOneMenu id="software" value="#{configurationManager.newTemplate.softwareName}">
                     <f:selectItems value="#{configurationManager.allSoftwares}"
                                    var="software"
                                    itemValue="#{software.id}"

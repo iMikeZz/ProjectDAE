@@ -107,7 +107,7 @@ public class TemplateBean {
     }
     
     public TemplateDTO templateToDTO(Template template){
-        return new TemplateDTO(template.getId(), template.getDescription(), template.getSoftware().getId());
+        return new TemplateDTO(template.getId(), template.getDescription(), template.getSoftware().getId(), template.getSoftware().getName());
     }
     
     

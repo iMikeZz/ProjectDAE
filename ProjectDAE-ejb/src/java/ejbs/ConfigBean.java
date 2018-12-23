@@ -53,7 +53,7 @@ public class ConfigBean {
         softwareBean.create(2, "Sim", "2.0");
         softwareBean.create(3, "Sim", "2.0");
         
-        templateBean.create(new TemplateDTO(71, "windows 98 pro", 1));
+        templateBean.create(new TemplateDTO(71, "windows 98 pro", 1, "Sim"));
         
         
     }
