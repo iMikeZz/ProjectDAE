@@ -10,27 +10,52 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
  * @author josea
  */
 @Entity
+@Table(name = "MATERIALS")
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllMaterials",
+            query = "SELECT t FROM Material t ORDER BY t.id"
+    )
+})
 public class Material implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
     private String imgUrl;
     
+    @ManyToOne
+    @JoinColumn(name = "CONFIG_ID")
+    private ConfigBase config;
+    
     public Material() {
     }
-    
-    public Material(int id, String description, String imgUrl) {
+
+    public Material(int id, String description, String imgUrl, ConfigBase config) {
         this.id = id;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.config = config;
+    }
+
+    public ConfigBase getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConfigBase config) {
+        this.config = config;
     }
     
     public int getId() {

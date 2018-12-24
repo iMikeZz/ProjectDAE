@@ -8,10 +8,16 @@ package entities;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,27 +35,45 @@ public class ConfigBase implements Serializable {
     private String description;
     
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "SOFTWARE_ID")
     private Software software;
     
     @NotNull
+    @ManyToMany
+    @JoinTable(name = "CONFIGS_LICENSES",
+            joinColumns = @JoinColumn(name = "LICENSE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
     private List<License> licenses;
         
     @NotNull
+    @ManyToMany
+    @JoinTable(name = "CONFIGS_MODULES",
+            joinColumns = @JoinColumn(name = "MODULE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
     private List<Module> modules;
         
     @NotNull
+    @OneToMany(mappedBy = "config", cascade = CascadeType.REMOVE)
     private List<Parameter> parameters;
         
     @NotNull
+    @OneToMany(mappedBy = "config", cascade = CascadeType.REMOVE)
     private List<Service> services;
         
     @NotNull
+    @OneToMany(mappedBy = "config", cascade = CascadeType.REMOVE)
     private List<Repository> repositories;
     
     @NotNull
+    @OneToMany(mappedBy = "config", cascade = CascadeType.REMOVE)
     private List<Material> materials;
     
     @NotNull
+    @ManyToMany
+    @JoinTable(name = "CONFIGS_EXTENSIONS",
+            joinColumns = @JoinColumn(name = "EXTENSION_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
     private List<Extension> extensions;
     
     public ConfigBase() {

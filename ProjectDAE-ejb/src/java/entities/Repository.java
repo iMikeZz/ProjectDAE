@@ -10,25 +10,42 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
  * @author josea
  */
 @Entity
+@Table(name = "REPOSITORIES")
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllRepositories",
+            query = "SELECT t FROM Repository t ORDER BY t.id"
+    )
+})
 public class Repository implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String link;
     
+    @ManyToOne
+    @JoinColumn(name = "CONFIG_ID")
+    private ConfigBase config;
+    
     public Repository() {
     }
-    
-    public Repository(int id, String link) {
+
+    public Repository(int id, String link, ConfigBase config) {
         this.id = id;
         this.link = link;
+        this.config = config;
     }
     
     public int getId() {
@@ -46,4 +63,13 @@ public class Repository implements Serializable {
     public void setLink(String link) {
         this.link = link;
     }
+
+    public ConfigBase getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConfigBase config) {
+        this.config = config;
+    }
+    
 }

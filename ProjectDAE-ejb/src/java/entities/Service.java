@@ -10,23 +10,42 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
  * @author josea
  */
 @Entity
+@Table(name = "SERVICES")
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllServices",
+            query = "SELECT t FROM Service t ORDER BY t.id"
+    )
+})
 public class Service implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String service;
     
+    @ManyToOne
+    @JoinColumn(name = "CONFIG_ID")
+    private ConfigBase config;
+    
     public Service() {
     }
-    
-    public Service(int id, String service) {
+
+    public Service(int id, String service, ConfigBase config) {
+        this.id = id;
+        this.service = service;
+        this.config = config;
     }
     
     public int getId() {
@@ -44,4 +63,13 @@ public class Service implements Serializable {
     public void setService(String service) {
         this.service = service;
     }
+
+    public ConfigBase getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConfigBase config) {
+        this.config = config;
+    }
+    
 }

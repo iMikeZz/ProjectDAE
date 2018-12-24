@@ -10,29 +10,46 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  *
  * @author josea
  */
 @Entity
+@Table(name = "PARAMETERS")
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllParameters",
+            query = "SELECT t FROM Parameter t ORDER BY t.id"
+    )
+})
 public class Parameter implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String parameter;
     private String value;
+    
+    @ManyToOne
+    @JoinColumn(name = "CONFIG_ID")
+    private ConfigBase config;
 
     public Parameter() {
     }
-    
-    public Parameter(int id, String parameter, String value) {
+
+    public Parameter(int id, String parameter, String value, ConfigBase config) {
         this.id = id;
         this.parameter = parameter;
         this.value = value;
+        this.config = config;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -56,4 +73,13 @@ public class Parameter implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public ConfigBase getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConfigBase config) {
+        this.config = config;
+    }
+    
 }
