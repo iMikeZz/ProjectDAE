@@ -146,6 +146,18 @@
         <h:link value="New Client" outcome="admin_client_create"/>   
         
         <h:form>
+         <h:inputText
+                    id="searchValue"
+                    size="20"
+                    value="#{configurationManager.searchValue}" />
+         
+         <h:commandButton
+                    id="submit"
+                    value="Search"
+                    action="#{configurationManager.setTemplatesVersion(configurationManager.SEARCHBYDESCRIPTION)}" 
+                    />
+        </h:form>
+        <h:form>
             <h:dataTable
             var="template"
             summary="List of all Templates"

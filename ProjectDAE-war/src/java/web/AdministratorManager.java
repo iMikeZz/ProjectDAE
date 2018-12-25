@@ -174,7 +174,7 @@ public class AdministratorManager extends Manager implements Serializable {
     public String getSORTCLIENTSBYUSERNAME() {
         return SORTCLIENTSBYUSERNAME;
     }
-
+    
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
         try {
@@ -258,8 +258,8 @@ public class AdministratorManager extends Manager implements Serializable {
                     return getClientsListByUrl("/clients/allOrderedByUsername");
                 case SORTCLIENTSBYNAME:
                     return getClientsListByUrl("/clients/all");
-                    default:
-                        return null;
+                default:
+                    return null;
             }
             
         } catch (Exception e) {

@@ -18,7 +18,11 @@ import javax.persistence.NamedQuery;
     @NamedQuery(
             name = "getAllTemplates",
             query = "SELECT t FROM Template t ORDER BY t.id"
-    )
+    ),
+    @NamedQuery(
+            name = "getAllTemplatesByDescription",
+            query = "SELECT t FROM Template t WHERE UPPER(t.description) LIKE UPPER(:description) ORDER BY t.description"
+    ),
 })
 public class Template extends ConfigBase implements Serializable {
     
