@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Template")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TemplateDTO implements Serializable{
-    
     private int id;
     private String description;
     private int softwareCode;
@@ -71,5 +70,4 @@ public class TemplateDTO implements Serializable{
     public void setSoftwareName(String softwareName) {
         this.softwareName = softwareName;
     }
-    
 }

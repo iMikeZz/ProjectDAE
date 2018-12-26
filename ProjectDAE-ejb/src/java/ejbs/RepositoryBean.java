@@ -5,10 +5,10 @@
 */
 package ejbs;
 
+import dtos.ParameterDTO;
 import dtos.RepositoryDTO;
 import entities.ConfigBase;
 import entities.Repository;
-import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -16,8 +16,11 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -35,6 +38,10 @@ public class RepositoryBean {
     @PersistenceContext
             EntityManager em;
     
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create")
     public void create(int id, String link, int config_id){
         try{
             ConfigBase config = em.find(ConfigBase.class, config_id);
@@ -60,8 +67,24 @@ public class RepositoryBean {
         }
     }
     
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
+    public List<RepositoryDTO> getAllByTemplate(@PathParam("id") int id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            return repositoriesToDTO(configBase.getRepositories());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public RepositoryDTO repositoryToDTO(Repository repository){
-        return new RepositoryDTO(repository.getId(), repository.getLink());
+        return new RepositoryDTO(repository.getId(), repository.getLink(), repository.getConfig().getId());
     }
     
     

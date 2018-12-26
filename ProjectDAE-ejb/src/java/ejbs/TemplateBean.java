@@ -5,11 +5,9 @@
  */
 package ejbs;
 
-import dtos.ClientDTO;
 import dtos.TemplateDTO;
 import entities.Software;
 import entities.Template;
-import entities.roles.Client;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;

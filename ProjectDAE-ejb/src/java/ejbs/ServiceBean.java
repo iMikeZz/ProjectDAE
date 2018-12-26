@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.RepositoryDTO;
 import dtos.ServiceDTO;
 import entities.ConfigBase;
 import entities.Service;
@@ -16,8 +17,11 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -35,13 +39,17 @@ public class ServiceBean {
     @PersistenceContext
             EntityManager em;
     
-    public void create(int id, String service, int config_id){
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create")
+    public void create(ServiceDTO serviceDTO){
         try{
-            ConfigBase config = em.find(ConfigBase.class, config_id);
+            ConfigBase config = em.find(ConfigBase.class, serviceDTO.getConfig_id());
             if (config == null) {
                 throw new EJBException("Config doesn't exists");
             }
-            em.persist(new Service(id, service, config));
+            em.persist(new Service(serviceDTO.getId(), serviceDTO.getService(), config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -60,8 +68,24 @@ public class ServiceBean {
         }
     }
     
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
+    public List<ServiceDTO> getAllByTemplate(@PathParam("id") int id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            return servicesToDTO(configBase.getServices());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public ServiceDTO serviceToDTO(Service service){
-        return new ServiceDTO(service.getId(), service.getService());
+        return new ServiceDTO(service.getId(), service.getService(), service.getConfig().getId());
     }
     
     

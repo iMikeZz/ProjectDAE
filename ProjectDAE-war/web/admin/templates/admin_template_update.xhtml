@@ -41,6 +41,198 @@
                 
                  <h:link value="Cancel" outcome="/admin/admin_index" />
             </h:panelGrid >
+            
+            <h4> Template Licenses </h4>
+        <h:dataTable
+            var="license"
+            summary="List of all Licenses"
+            value="#{configurationManager.allLicenses}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{license.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="License"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{license.license}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addLicense}">
+                        <f:param name="addLicenseId" id="addLicenseId" value="#{license.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Template Materials </h4>
+        <h:dataTable
+            var="material"
+            summary="List of all materials"
+            value="#{configurationManager.allMaterials}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{material.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Description"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{material.description}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addMaterial}">
+                        <f:param name="addMaterialId" id="addMaterialId" value="#{license.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Template Modules </h4>
+        <h:dataTable
+            var="module"
+            summary="List of all modules"
+            value="#{configurationManager.allModules}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{module.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Description"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{module.description}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addModule}">
+                        <f:param name="addModuleId" id="addModuleId" value="#{module.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Template Parameters </h4>
+        <h:dataTable
+            var="parameter"
+            summary="List of all parameters"
+            value="#{configurationManager.allParameters}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Parameter"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.parameter}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Value"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.value}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addParameter}">
+                        <f:param name="addParameterId" id="addParameterId" value="#{parameter.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Template Repositories </h4>
+        <h:dataTable
+            var="repository"
+            summary="List of all subjects"
+            value="#{configurationManager.allRepositories}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{repository.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Link"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{repository.link}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addRepository}">
+                        <f:param name="addRepositoryId" id="addRepositoryId" value="#{repository.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Template Services </h4>
+        <h:dataTable
+            var="service"
+            summary="List of all subjects"
+            value="#{configurationManager.allServices}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{service.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Service"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{service.service}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions"></h:outputText>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Add" actionListener="#{configurationManager.addService}">
+                        <f:param name="addServiceId" id="addServiceId" value="#{service.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>
+        </h:dataTable>
         </h:form>
     </h:body>
 </html>

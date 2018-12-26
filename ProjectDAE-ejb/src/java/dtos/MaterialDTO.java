@@ -19,16 +19,18 @@ public class MaterialDTO {
     private int id;
     private String description;
     private String imgUrl;
+    private int config_id;
     
     public MaterialDTO() {
     }
-    
-    public MaterialDTO(int id, String description, String imgUrl) {
+
+    public MaterialDTO(int id, String description, String imgUrl, int config_id) {
         this.id = id;
         this.description = description;
         this.imgUrl = imgUrl;
+        this.config_id = config_id;
     }
-    
+   
     public int getId() {
         return id;
     }
@@ -52,4 +54,13 @@ public class MaterialDTO {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
+    }
+    
 }

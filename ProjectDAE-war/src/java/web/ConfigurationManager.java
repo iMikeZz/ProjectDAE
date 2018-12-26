@@ -136,6 +136,58 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
+    public List<ExtensionDTO> getAllTemplateExtensions(){
+        try {
+            return client.target(baseUri)
+                    .path("/extensions/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ExtensionDTO> getAllTemplateLicenses(){
+        try {
+            return client.target(baseUri)
+                    .path("/licenses/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ExtensionDTO> getAllTemplateMaterials(){
+        try {
+            return client.target(baseUri)
+                    .path("/materials/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ExtensionDTO> getAllTemplateModules(){
+        try {
+            return client.target(baseUri)
+                    .path("/modules/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
     public List<LicenseDTO> getAllLicenses(){
         try {
             return client.target(baseUri)

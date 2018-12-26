@@ -87,4 +87,12 @@ public class License implements Serializable {
     public void setSoftware(Software software) {
         this.software = software;
     }
+    
+    public void addConfig(ConfigBase configBase){
+        this.configs.add(configBase);
+    }
+    
+    public void removeConfig(ConfigBase configBase){
+        this.configs.remove(configBase);
+    }
 }

@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import entities.ConfigBase;
 import entities.License;
@@ -16,8 +17,11 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -35,13 +39,24 @@ public class LicenseBean {
     @PersistenceContext
             EntityManager em;
     
-    public void create(int id, String license, int software_id){
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create")
+    public void create(LicenseDTO licenseDTO){
         try{
-            Software software = em.find(Software.class, software_id);
+            Software software = em.find(Software.class, licenseDTO.getSoftware_id());
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
-            em.persist(new License(id, license, software));
+            ConfigBase config = em.find(ConfigBase.class, licenseDTO.getSoftware_id());
+            if (config == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            License license_obj = new License(licenseDTO.getId(), licenseDTO.getLicense(), software);
+            config.addLicense(license_obj);
+            license_obj.addConfig(config);
+            em.persist(license_obj);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -60,8 +75,24 @@ public class LicenseBean {
         }
     }
     
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
+    public List<LicenseDTO> getAllByTemplate(@PathParam("id") int id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            return licensesToDTO(configBase.getLicenses());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public LicenseDTO licenseToDTO(License license){
-        return new LicenseDTO(license.getId(), license.getLicense());
+        return new LicenseDTO(license.getId(), license.getLicense(), license.getSoftware().getId(),0);
     }
     
     

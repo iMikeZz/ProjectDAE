@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.LicenseDTO;
 import dtos.MaterialDTO;
 import dtos.SoftwareDTO;
 import entities.ConfigBase;
@@ -17,8 +18,11 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -36,13 +40,17 @@ public class MaterialBean {
     @PersistenceContext
             EntityManager em;
     
-    public void create(int id, String description, String imgUrl, int config_id){
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create")
+    public void create(MaterialDTO materialDTO){
         try{
-            ConfigBase config = em.find(ConfigBase.class, config_id);
+            ConfigBase config = em.find(ConfigBase.class, materialDTO.getConfig_id());
             if (config == null) {
                 throw new EJBException("Config doesn't exists");
             }
-            em.persist(new Material(id, description, imgUrl, config));
+            em.persist(new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription(), config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -61,8 +69,24 @@ public class MaterialBean {
         }
     }
     
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{id}")
+    public List<MaterialDTO> getAllByTemplate(@PathParam("id") int id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            return materialsToDTO(configBase.getMaterials());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public MaterialDTO materialToDTO(Material material){
-        return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl());
+        return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl(), material.getConfig().getId());
     }
     
     

@@ -18,15 +18,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ExtensionDTO {
     private int id;
     private String extension;
+    private int software_id;
+    private int config_id;
 
     public ExtensionDTO() {
     }
-    
-    public ExtensionDTO(int id, String extension) {
+
+    public ExtensionDTO(int id, String extension, int software_id, int config_id) {
         this.id = id;
         this.extension = extension;
+        this.software_id = software_id;
+        this.config_id = config_id;
+    }
+    
+    public int getSoftware_id() {
+        return software_id;
     }
 
+    public void setSoftware_id(int software_id) {
+        this.software_id = software_id;
+    }
+
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
+    }
+    
     public String getExtension() {
         return extension;
     }

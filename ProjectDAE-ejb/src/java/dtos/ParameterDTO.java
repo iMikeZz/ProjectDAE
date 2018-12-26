@@ -19,16 +19,26 @@ public class ParameterDTO {
     private int id;
     private String parameter;
     private String value;
+    private int config_id;
 
     public ParameterDTO() {
     }
-    
-    public ParameterDTO(int id, String parameter, String value) {
+
+    public ParameterDTO(int id, String parameter, String value, int config_id) {
         this.id = id;
         this.parameter = parameter;
         this.value = value;
+        this.config_id = config_id;
     }
 
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
+    }
+    
     public int getId() {
         return id;
     }

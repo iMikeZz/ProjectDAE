@@ -8,6 +8,7 @@ package ejbs;
 
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
+import dtos.ExtensionDTO;
 import dtos.TemplateDTO;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,7 +34,8 @@ public class ConfigBean {
     @EJB
     private SoftwareBean softwareBean;
     
-    
+    @EJB
+    private ExtensionBean extensionBean;
     
     @PostConstruct
     public void populateDB() { 
@@ -48,13 +50,12 @@ public class ConfigBean {
         clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
         clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC"));
         
-        
         softwareBean.create(1, "Sim", "2.0");
-        softwareBean.create(2, "Sim", "2.0");
-        softwareBean.create(3, "Sim", "2.0");
+        softwareBean.create(2, "Nao", "2.0");
+        softwareBean.create(3, "Batata", "2.0");
         
-        templateBean.create(new TemplateDTO(71, "windows 98 pro", 1, "Sim"));
+        templateBean.create(new TemplateDTO(71, "windows 98 pro", 1, "Sim")); //é necesserario passar o name pq estamos a usar o construtor do dto
         
-        
+        extensionBean.create(new ExtensionDTO(0, "gps", 1, 71));
     }
 }

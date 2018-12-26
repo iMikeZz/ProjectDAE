@@ -18,13 +18,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RepositoryDTO {
     private int id;
     private String link;
+    private int config_id;
     
     public RepositoryDTO() {
     }
-    
-    public RepositoryDTO(int id, String link) {
+
+    public RepositoryDTO(int id, String link, int config_id) {
         this.id = id;
         this.link = link;
+        this.config_id = config_id;
     }
     
     public int getId() {
@@ -41,5 +43,13 @@ public class RepositoryDTO {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
     }
 }

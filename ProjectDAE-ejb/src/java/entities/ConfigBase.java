@@ -179,5 +179,27 @@ public class ConfigBase implements Serializable {
         this.extensions = extensions;
     }
     
+    public void addExtension(Extension extension){
+        this.extensions.add(extension);
+    }
     
+    public void removeExtension(Extension extension){
+        this.extensions.remove(extension);
+    }
+    
+    public void addLicense(License license){
+        this.licenses.add(license);
+    }
+    
+    public void removeLicense(License license){
+        this.licenses.remove(license);
+    }
+    
+    public void addModule(Module module){
+        this.modules.add(module);
+    }
+    
+    public void removeModule(Module module){
+        this.modules.remove(module);
+    }
 }

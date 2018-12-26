@@ -18,16 +18,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class LicenseDTO {
     private int id;
     private String license;
+    private int software_id;
+    private int config_id;
 
     public LicenseDTO() {
         
     }
-    
-    public LicenseDTO(int id, String license) {
+
+    public LicenseDTO(int id, String license, int software_id, int config_id) {
         this.id = id;
         this.license = license;
+        this.software_id = software_id;
+        this.config_id = config_id;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -42,5 +46,21 @@ public class LicenseDTO {
 
     public void setLicense(String license) {
         this.license = license;
+    }
+
+    public int getSoftware_id() {
+        return software_id;
+    }
+
+    public void setSoftware_id(int software_id) {
+        this.software_id = software_id;
+    }
+
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
     }
 }

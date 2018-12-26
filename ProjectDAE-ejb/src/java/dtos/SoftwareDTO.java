@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Software")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SoftwareDTO {
-    
     private int id;
     private String name;
     private String version;

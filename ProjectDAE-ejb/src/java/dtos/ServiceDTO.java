@@ -18,11 +18,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ServiceDTO {
     private int id;
     private String service;
+    private int config_id;
     
     public ServiceDTO() {
     }
-    
-    public ServiceDTO(int id, String service) {
+
+    public ServiceDTO(int id, String service, int config_id) {
+        this.id = id;
+        this.service = service;
+        this.config_id = config_id;
     }
     
     public int getId() {
@@ -39,5 +43,13 @@ public class ServiceDTO {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public int getConfig_id() {
+        return config_id;
+    }
+
+    public void setConfig_id(int config_id) {
+        this.config_id = config_id;
     }
 }
