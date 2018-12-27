@@ -30,6 +30,19 @@ public class MaterialDTO {
         this.imgUrl = imgUrl;
         this.config_id = config_id;
     }
+
+    public MaterialDTO(int id, String description, String imgUrl) {
+        this.id = id;
+        this.description = description;
+        this.imgUrl = imgUrl;
+    }
+    
+    public void reset(){
+        setId(0);
+        setDescription(null);
+        setImgUrl(null);
+        setConfig_id(0);
+    }
    
     public int getId() {
         return id;

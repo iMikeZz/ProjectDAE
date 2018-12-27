@@ -6,6 +6,7 @@
 package ejbs;
 
 import dtos.TemplateDTO;
+import entities.ConfigBase;
 import entities.Software;
 import entities.Template;
 import java.util.ArrayList;
@@ -71,14 +72,13 @@ public class TemplateBean {
     @Path("create")
     public void create(TemplateDTO templateDTO){
         try{
-            if (em.find(Template.class, templateDTO.getId()) != null) {
-                throw new EJBException("Client already exists");
-            }
             Software software = em.find(Software.class, templateDTO.getSoftwareCode());
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
-            em.persist(new Template(templateDTO.getId(), templateDTO.getDescription(), software));   
+            ConfigBase template = new Template(templateDTO.getId(), templateDTO.getDescription(), software);
+            software.addConfig(template);
+            em.persist(template);   
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }

@@ -5,12 +5,9 @@
 */
 package ejbs;
 
-import dtos.LicenseDTO;
 import dtos.MaterialDTO;
-import dtos.SoftwareDTO;
 import entities.ConfigBase;
 import entities.Material;
-import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -48,9 +45,12 @@ public class MaterialBean {
         try{
             ConfigBase config = em.find(ConfigBase.class, materialDTO.getConfig_id());
             if (config == null) {
-                throw new EJBException("Config doesn't exists");
+                em.persist(new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription()));
+            } else{
+                Material material = new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription(), config);
+                config.addMaterial(material);
+                em.persist(material);
             }
-            em.persist(new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription(), config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -86,7 +86,10 @@ public class MaterialBean {
     }
     
     public MaterialDTO materialToDTO(Material material){
-        return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl(), material.getConfig().getId());
+        if (material.getConfig() != null) {
+            return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl(), material.getConfig().getId());
+        }
+        return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl());
     }
     
     

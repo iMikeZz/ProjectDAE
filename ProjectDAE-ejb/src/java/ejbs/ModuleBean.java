@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.LicenseDTO;
 import dtos.MaterialDTO;
 import dtos.ModuleDTO;
 import entities.ConfigBase;
@@ -49,13 +50,8 @@ public class ModuleBean {
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
-            ConfigBase config = em.find(ConfigBase.class, moduleDTO.getConfig_id());
-            if (config == null) {
-                throw new EJBException("Config doesn't exists");
-            }
             Module module = new Module(moduleDTO.getId(), moduleDTO.getDescription(), software);
-            module.addConfig(config);
-            config.addModule(module);
+            software.addModule(module);
             em.persist(module);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
@@ -65,11 +61,14 @@ public class ModuleBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
-    public List<ModuleDTO> getAll(){
+    @Path("all/{id}")
+    public List<ModuleDTO> getAll(@PathParam("id") int id){
         try {
-            List<Module> modules = em.createNamedQuery("getAllModules").getResultList();
-            return modulesToDTO(modules);
+            Software software = em.find(Software.class, id);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            return modulesToDTO(software.getModules());
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -92,7 +91,7 @@ public class ModuleBean {
     }
     
     public ModuleDTO moduleToDTO(Module module){
-        return new ModuleDTO(module.getId(), module.getDescription(), module.getSoftware().getId(), 0);
+        return new ModuleDTO(module.getId(), module.getDescription(), module.getSoftware().getId());
     }
     
     

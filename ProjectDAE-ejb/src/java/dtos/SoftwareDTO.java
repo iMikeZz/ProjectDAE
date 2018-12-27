@@ -29,6 +29,12 @@ public class SoftwareDTO {
         this.name = name;
         this.version = version;
     }
+    
+    public void reset(){
+        setId(0);
+        setName(null);
+        setVersion(null);
+    }
 
     public int getId() {
         return id;

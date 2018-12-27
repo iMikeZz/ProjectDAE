@@ -31,6 +31,19 @@ public class ParameterDTO {
         this.config_id = config_id;
     }
 
+    public ParameterDTO(int id, String parameter, String value) {
+        this.id = id;
+        this.parameter = parameter;
+        this.value = value;
+    }
+    
+    public void reset(){
+        setId(0);
+        setParameter(null);
+        setValue(null);
+        setConfig_id(0);
+    }
+
     public int getConfig_id() {
         return config_id;
     }

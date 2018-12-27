@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,19 +39,23 @@ public class Software implements Serializable {
     private String name;
     private String version;
     
-    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
     private List<ConfigBase> configs;
     
-    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
     private List<Extension> extensions;
     
-    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
     private List<License> licenses;
+    
+    @OneToMany(mappedBy = "software", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
+    private List<Module> modules;
     
     public Software() {
         this.configs = new ArrayList<>();
         this.licenses = new ArrayList<>();
         this.extensions = new ArrayList<>();
+        this.modules = new ArrayList<>();
     }
 
     public Software(int id, String name, String version) {
@@ -59,6 +64,8 @@ public class Software implements Serializable {
         this.version = version;
         
         this.configs = new ArrayList<>();
+        this.licenses = new ArrayList<>();
+        this.extensions = new ArrayList<>();
     }
 
     public int getId() {
@@ -107,5 +114,45 @@ public class Software implements Serializable {
 
     public void setLicenses(List<License> licenses) {
         this.licenses = licenses;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
+    }
+    
+    public void addExtension(Extension extension){
+        this.extensions.add(extension);
+    }
+    
+    public void removeExtension(Extension extension){
+        this.extensions.remove(extension);
+    }
+    
+    public void addLicense(License license){
+        this.licenses.add(license);
+    }
+    
+    public void removeLicense(License license){
+        this.licenses.remove(license);
+    }
+    
+    public void addConfig(ConfigBase configBase){
+        this.configs.add(configBase);
+    }
+    
+    public void removeConfig(ConfigBase configBase){
+        this.configs.remove(configBase);
+    }
+    
+    public void addModule(Module module){
+        this.modules.add(module);
+    }
+    
+    public void removeModule(Module module){
+        this.modules.remove(module);
     }
 }

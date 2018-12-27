@@ -28,6 +28,17 @@ public class RepositoryDTO {
         this.link = link;
         this.config_id = config_id;
     }
+
+    public RepositoryDTO(int id, String link) {
+        this.id = id;
+        this.link = link;
+    }
+    
+    public void reset(){
+        setId(0);
+        setLink(null);
+        setConfig_id(0);
+    }
     
     public int getId() {
         return id;

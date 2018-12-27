@@ -50,6 +50,12 @@ public class Material implements Serializable {
         this.config = config;
     }
 
+    public Material(int id, String description, String imgUrl) {
+        this.id = id;
+        this.description = description;
+        this.imgUrl = imgUrl;
+    }
+    
     public ConfigBase getConfig() {
         return config;
     }

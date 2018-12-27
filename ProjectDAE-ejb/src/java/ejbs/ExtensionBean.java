@@ -48,14 +48,9 @@ public class ExtensionBean {
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
-            ConfigBase config = em.find(ConfigBase.class, extensionDTO.getConfig_id());
-            if (config == null) {
-                throw new EJBException("Config doesn't exists");
-            }
-            Extension extension_obj = new Extension(extensionDTO.getId(), extensionDTO.getExtension(), software);
-            config.addExtension(extension_obj);
-            extension_obj.addConfig(config);
-            em.persist(extension_obj);
+            Extension extension = new Extension(extensionDTO.getId(), extensionDTO.getExtension(), software);
+            software.addExtension(extension);
+            em.persist(extension);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -64,11 +59,14 @@ public class ExtensionBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
-    public List<ExtensionDTO> getAll(){
+    @Path("all/{id}")
+    public List<ExtensionDTO> getAll(@PathParam("id") int id){
         try {
-            List<Extension> extensions = em.createNamedQuery("getAllExtensions").getResultList();
-            return extensionsToDTO(extensions);
+            Software software = em.find(Software.class, id);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            return extensionsToDTO(software.getExtensions());
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -91,7 +89,7 @@ public class ExtensionBean {
     }
     
     public ExtensionDTO extensionToDTO(Extension extension){
-        return new ExtensionDTO(extension.getId(), extension.getExtension(), extension.getSoftware().getId(), 0);
+        return new ExtensionDTO(extension.getId(), extension.getExtension(), extension.getSoftware().getId());
     }
     
     

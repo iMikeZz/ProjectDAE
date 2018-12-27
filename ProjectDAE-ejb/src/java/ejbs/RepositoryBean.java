@@ -42,13 +42,16 @@ public class RepositoryBean {
     //@RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
-    public void create(int id, String link, int config_id){
+    public void create(RepositoryDTO repositoryDTO){
         try{
-            ConfigBase config = em.find(ConfigBase.class, config_id);
+            ConfigBase config = em.find(ConfigBase.class, repositoryDTO.getConfig_id());
             if (config == null) {
-                throw new EJBException("Config doesn't exists");
+                em.persist(new Repository(repositoryDTO.getId(), repositoryDTO.getLink()));
+            }else{
+                Repository repository = new Repository(repositoryDTO.getId(), repositoryDTO.getLink(), config);
+                config.addRepository(repository);
+                em.persist(repository);
             }
-            em.persist(new Repository(id, link, config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -84,7 +87,10 @@ public class RepositoryBean {
     }
     
     public RepositoryDTO repositoryToDTO(Repository repository){
-        return new RepositoryDTO(repository.getId(), repository.getLink(), repository.getConfig().getId());
+        if (repository.getConfig() != null) {
+            return new RepositoryDTO(repository.getId(), repository.getLink(), repository.getConfig().getId());
+        }
+        return new RepositoryDTO(repository.getId(), repository.getLink());
     }
     
     

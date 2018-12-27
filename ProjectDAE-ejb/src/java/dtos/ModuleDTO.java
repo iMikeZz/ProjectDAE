@@ -19,17 +19,21 @@ public class ModuleDTO {
     private int id;
     private String description;
     private int software_id;
-    private int config_id;
 
     public ModuleDTO() {
         
     }
 
-    public ModuleDTO(int id, String description, int software_id, int config_id) {
+    public ModuleDTO(int id, String description, int software_id) {
         this.id = id;
         this.description = description;
         this.software_id = software_id;
-        this.config_id = config_id;
+    }
+    
+    public void reset(){
+        setId(0);
+        setDescription(null);
+        setSoftware_id(0);
     }
     
     public int getSoftware_id() {
@@ -40,14 +44,6 @@ public class ModuleDTO {
         this.software_id = software_id;
     }
 
-    public int getConfig_id() {
-        return config_id;
-    }
-
-    public void setConfig_id(int config_id) {
-        this.config_id = config_id;
-    }
-   
     public String getDescription() {
         return description;
     }

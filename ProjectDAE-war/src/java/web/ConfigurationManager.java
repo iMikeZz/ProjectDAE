@@ -5,7 +5,6 @@
 */
 package web;
 
-import dtos.ClientDTO;
 import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import dtos.MaterialDTO;
@@ -15,15 +14,14 @@ import dtos.RepositoryDTO;
 import dtos.ServiceDTO;
 import dtos.SoftwareDTO;
 import dtos.TemplateDTO;
-import ejbs.TemplateBean;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -42,26 +40,38 @@ public class ConfigurationManager extends Manager implements Serializable {
     private static final String SEARCHBYDESCRIPTION = "SEARCHCLIENTSBYNAME";
     private static final String ALLTEMPLATES = "ALLTEMPLATES";
     
-    @EJB
-    private TemplateBean templateBean;
     private TemplateDTO currentTemplate;
     private TemplateDTO newTemplate;
+    
+    private ExtensionDTO newExtension;
+    private LicenseDTO newLicense;
+    private MaterialDTO newMaterial;
+    private ModuleDTO newModule;
+    private ParameterDTO newParameter;
+    private RepositoryDTO newRepository;
+    private ServiceDTO newService;
+    
+    private int currentSoftwareId = 1;
     
     private String templatesVersion = ALLTEMPLATES;
     private String searchValue;
     
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
+        
+        this.newExtension = new ExtensionDTO();
+        
+        this.newMaterial = new MaterialDTO();
+        
+        this.newModule = new ModuleDTO();
+        
+        this.newParameter = new ParameterDTO();
+        
+        this.newRepository = new RepositoryDTO();
+        
+        this.newService = new ServiceDTO();
     }
-    
-    public TemplateBean getTemplateBean() {
-        return templateBean;
-    }
-    
-    public void setTemplateBean(TemplateBean templateBean) {
-        this.templateBean = templateBean;
-    }
-    
+
     public TemplateDTO getCurrentTemplate() {
         return currentTemplate;
     }
@@ -101,6 +111,70 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getALLTEMPLATES() {
         return ALLTEMPLATES;
     }
+
+    public ExtensionDTO getNewExtension() {
+        return newExtension;
+    }
+
+    public void setNewExtension(ExtensionDTO newExtension) {
+        this.newExtension = newExtension;
+    }
+
+    public int getCurrentSoftwareId() {
+        return currentSoftwareId;
+    }
+
+    public void setCurrentSoftwareId(int currentSoftwareId) {
+        this.currentSoftwareId = currentSoftwareId;
+    }
+
+    public LicenseDTO getNewLicense() {
+        return newLicense;
+    }
+
+    public void setNewLicense(LicenseDTO newLicense) {
+        this.newLicense = newLicense;
+    }
+
+    public MaterialDTO getNewMaterial() {
+        return newMaterial;
+    }
+
+    public void setNewMaterial(MaterialDTO newMaterial) {
+        this.newMaterial = newMaterial;
+    }
+
+    public ModuleDTO getNewModule() {
+        return newModule;
+    }
+
+    public void setNewModule(ModuleDTO newModule) {
+        this.newModule = newModule;
+    }
+
+    public ParameterDTO getNewParameter() {
+        return newParameter;
+    }
+
+    public void setNewParameter(ParameterDTO newParameter) {
+        this.newParameter = newParameter;
+    }
+
+    public RepositoryDTO getNewRepository() {
+        return newRepository;
+    }
+
+    public void setNewRepository(RepositoryDTO newRepository) {
+        this.newRepository = newRepository;
+    }
+
+    public ServiceDTO getNewService() {
+        return newService;
+    }
+
+    public void setNewService(ServiceDTO newService) {
+        this.newService = newService;
+    }
     
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
@@ -123,17 +197,8 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
-    public List<ExtensionDTO> getAllExtensions(){
-        try {
-            return client.target(baseUri)
-                    .path("/extensions/all")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ExtensionDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
-            return null;
-        }
+    public void softwareChangeListener(ValueChangeEvent e){
+        currentSoftwareId = Integer.parseInt(e.getNewValue().toString());
     }
     
     public List<ExtensionDTO> getAllTemplateExtensions(){
@@ -149,12 +214,12 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
-    public List<ExtensionDTO> getAllTemplateLicenses(){
+    public List<LicenseDTO> getAllTemplateLicenses(){
         try {
             return client.target(baseUri)
                     .path("/licenses/" + currentTemplate.getId())
                     .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ExtensionDTO>>() {
+                    .get(new GenericType<List<LicenseDTO>>() {
                     });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
@@ -162,12 +227,12 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
-    public List<ExtensionDTO> getAllTemplateMaterials(){
+    public List<MaterialDTO> getAllTemplateMaterials(){
         try {
             return client.target(baseUri)
                     .path("/materials/" + currentTemplate.getId())
                     .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ExtensionDTO>>() {
+                    .get(new GenericType<List<MaterialDTO>>() {
                     });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
@@ -175,10 +240,62 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
-    public List<ExtensionDTO> getAllTemplateModules(){
+    public List<ModuleDTO> getAllTemplateModules(){
         try {
             return client.target(baseUri)
                     .path("/modules/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ModuleDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ParameterDTO> getAllTemplateParameters(){
+        try {
+            return client.target(baseUri)
+                    .path("/parameters/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ParameterDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<RepositoryDTO> getAllTemplateRepositories(){
+        try {
+            return client.target(baseUri)
+                    .path("/repositories/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<RepositoryDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ServiceDTO> getAllTemplateServices(){
+        try {
+            return client.target(baseUri)
+                    .path("/services/" + currentTemplate.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ServiceDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+     public List<ExtensionDTO> getAllExtensions(){
+        try {
+            return client.target(baseUri)
+                    .path("/extensions/all/" + currentSoftwareId)
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
                     });
@@ -191,7 +308,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     public List<LicenseDTO> getAllLicenses(){
         try {
             return client.target(baseUri)
-                    .path("/licenses/all")
+                    .path("/licenses/all/" + currentSoftwareId)
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
                     });
@@ -217,7 +334,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     public List<ModuleDTO> getAllModules(){
         try {
             return client.target(baseUri)
-                    .path("/modules/all")
+                    .path("/modules/all/" + currentSoftwareId)
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
                     });
@@ -291,12 +408,119 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        return "/admin/admin_index?faces-redirect=true";
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createExtension() {
+        try {
+            newExtension.setSoftware_id(currentSoftwareId);
+            client.target(baseUri)
+                    .path("extensions/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+            newExtension.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createLicense() {
+        try {
+            newLicense.setSoftware_id(currentSoftwareId);
+            client.target(baseUri)
+                    .path("licenses/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newLicense));
+            newLicense.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createMaterial() {
+        try {
+            client.target(baseUri)
+                    .path("materials/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newMaterial));
+            newMaterial.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createModule() {
+        try {
+            newModule.setSoftware_id(currentSoftwareId);
+            client.target(baseUri)
+                    .path("materials/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newModule));
+            newModule.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createParameter() {
+        try {
+            client.target(baseUri)
+                    .path("parameters/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newParameter));
+            newParameter.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createRepository() {
+        try {
+            client.target(baseUri)
+                    .path("repositories/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newRepository));
+            newRepository.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
+    public String createService() {
+        try {
+            client.target(baseUri)
+                    .path("service/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newService));
+            newService.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
     public String updateTemplate(){
         try {
-            System.out.println("passei aqui");
             client.target(baseUri)
                     .path("templates/update")
                     .request(MediaType.APPLICATION_XML)

@@ -202,4 +202,36 @@ public class ConfigBase implements Serializable {
     public void removeModule(Module module){
         this.modules.remove(module);
     }
+    
+    public void addParameter(Parameter parameter){
+        this.parameters.add(parameter);
+    }
+    
+    public void removeParameter(Parameter parameter){
+        this.parameters.remove(parameter);
+    }
+    
+    public void addService(Service service){
+        this.services.add(service);
+    }
+    
+    public void removeService(Service service){
+        this.services.remove(service);
+    }
+    
+    public void addRepository(Repository repository){
+        this.repositories.add(repository);
+    }
+    
+    public void removeRepository(Repository repository){
+        this.repositories.remove(repository);
+    }
+    
+    public void addMaterial(Material material){
+        this.materials.add(material);
+    }
+    
+    public void removeRepository(Material material){
+        this.materials.remove(material);
+    }
 }

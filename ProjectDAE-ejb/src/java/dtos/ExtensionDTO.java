@@ -19,16 +19,20 @@ public class ExtensionDTO {
     private int id;
     private String extension;
     private int software_id;
-    private int config_id;
 
     public ExtensionDTO() {
     }
 
-    public ExtensionDTO(int id, String extension, int software_id, int config_id) {
+    public ExtensionDTO(int id, String extension, int software_id) {
         this.id = id;
         this.extension = extension;
         this.software_id = software_id;
-        this.config_id = config_id;
+    }
+    
+    public void reset(){
+        setId(0);
+        setExtension(null);
+        setSoftware_id(0);
     }
     
     public int getSoftware_id() {
@@ -39,14 +43,6 @@ public class ExtensionDTO {
         this.software_id = software_id;
     }
 
-    public int getConfig_id() {
-        return config_id;
-    }
-
-    public void setConfig_id(int config_id) {
-        this.config_id = config_id;
-    }
-    
     public String getExtension() {
         return extension;
     }

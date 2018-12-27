@@ -5,7 +5,6 @@
 */
 package ejbs;
 
-import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import entities.ConfigBase;
 import entities.License;
@@ -49,14 +48,9 @@ public class LicenseBean {
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
-            ConfigBase config = em.find(ConfigBase.class, licenseDTO.getSoftware_id());
-            if (config == null) {
-                throw new EJBException("Config doesn't exists");
-            }
-            License license_obj = new License(licenseDTO.getId(), licenseDTO.getLicense(), software);
-            config.addLicense(license_obj);
-            license_obj.addConfig(config);
-            em.persist(license_obj);
+            License license = new License(licenseDTO.getId(), licenseDTO.getLicense(), software);
+            software.addLicense(license);
+            em.persist(license);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -65,11 +59,14 @@ public class LicenseBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
-    public List<LicenseDTO> getAll(){
+    @Path("all/{id}")
+    public List<LicenseDTO> getAll(@PathParam("id") int id){
         try {
-            List<License> licenses = em.createNamedQuery("getAllLicenses").getResultList();
-            return licensesToDTO(licenses);
+            Software software = em.find(Software.class, id);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            return licensesToDTO(software.getLicenses());
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -92,7 +89,7 @@ public class LicenseBean {
     }
     
     public LicenseDTO licenseToDTO(License license){
-        return new LicenseDTO(license.getId(), license.getLicense(), license.getSoftware().getId(),0);
+        return new LicenseDTO(license.getId(), license.getLicense(), license.getSoftware().getId());
     }
     
     

@@ -47,6 +47,11 @@ public class Service implements Serializable {
         this.service = service;
         this.config = config;
     }
+
+    public Service(int id, String service) {
+        this.id = id;
+        this.service = service;
+    }
     
     public int getId() {
         return id;

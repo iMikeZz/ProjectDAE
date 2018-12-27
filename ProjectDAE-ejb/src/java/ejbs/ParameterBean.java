@@ -47,9 +47,12 @@ public class ParameterBean {
         try{
             ConfigBase config = em.find(ConfigBase.class, parameterDTO.getConfig_id());
             if (config == null) {
-                throw new EJBException("Config doesn't exists");
+                em.persist(new Parameter(parameterDTO.getId(), parameterDTO.getParameter(), parameterDTO.getValue()));
+            }else{
+                Parameter parameter = new Parameter(parameterDTO.getId(), parameterDTO.getParameter(), parameterDTO.getValue(), config);
+                config.addParameter(parameter);
+                em.persist(parameter);
             }
-            em.persist(new Parameter(parameterDTO.getId(), parameterDTO.getParameter(), parameterDTO.getValue(), config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -85,7 +88,11 @@ public class ParameterBean {
     }
     
     public ParameterDTO parameterToDTO(Parameter parameter){
-        return new ParameterDTO(parameter.getId(), parameter.getParameter(), parameter.getValue(), parameter.getConfig().getId());
+        if (parameter.getConfig() != null) {
+            return new ParameterDTO(parameter.getId(), parameter.getParameter(), parameter.getValue(), parameter.getConfig().getId());
+        }
+        
+        return new ParameterDTO(parameter.getId(), parameter.getParameter(), parameter.getValue());
     }
     
     

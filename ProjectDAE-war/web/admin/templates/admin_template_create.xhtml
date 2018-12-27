@@ -8,7 +8,8 @@
     </h:head>
     <h:body>
         
-        <h:form>
+        <h3>New Template</h3>
+        <h:form id="form" prependId="true">
             
             <h:panelGrid columns="3">
                 
@@ -16,13 +17,14 @@
                 <h:inputText
                     id="description"
                     size="20"
-                    required="true"
+                    required="#{param['form:submit']!=null}"
                     requiredMessage="Error: description cannot be empty"
                     value="#{configurationManager.newTemplate.description}" />
                 <h:message for="description" errorStyle="color:red" />
                 
                 <h:outputLabel for="software" value="Software: " />
-                <h:selectOneMenu id="software" value="#{configurationManager.newTemplate.softwareCode}">
+                <h:selectOneMenu id="software" value="#{configurationManager.newTemplate.softwareCode}" onchange="submit()" 
+                                 valueChangeListener="#{configurationManager.softwareChangeListener}">
                     <f:selectItems value="#{configurationManager.allSoftwares}"
                                    var="software"
                                    itemValue="#{software.id}"
@@ -47,7 +49,7 @@
         
         <br></br>
         
-        <h4> All Extensions </h4>
+        <h4> All Software Extensions </h4>
         <h:dataTable
             var="extension"
             summary="List of all Extensions"
@@ -77,8 +79,9 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create"/>
         
-        <h4> All Licenses </h4>
+        <h4> All Software Licenses </h4>
         <h:dataTable
             var="license"
             summary="List of all Licenses"
@@ -108,6 +111,7 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New License" outcome="/admin/templates/features/admin_license_create"/>
         
         <h4> All Materials </h4>
         <h:dataTable
@@ -139,8 +143,9 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Material" outcome="/admin/templates/features/admin_material_create"/>
         
-        <h4> All Modules </h4>
+        <h4> All Software Modules </h4>
         <h:dataTable
             var="module"
             summary="List of all modules"
@@ -170,6 +175,7 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Module" outcome="/admin/templates/features/admin_module_create"/>
         
         <h4> All Parameters </h4>
         <h:dataTable
@@ -207,6 +213,7 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create"/>
         
         <h4> All Repositories </h4>
         <h:dataTable
@@ -238,6 +245,7 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Repository" outcome="/admin/templates/features/admin_repository_create"/>
         
         <h4> All Services </h4>
         <h:dataTable
@@ -269,5 +277,6 @@
                 </h:form>
             </h:column>
         </h:dataTable>
+        <h:link value="New Service" outcome="/admin/templates/features/admin_service_create"/>
     </h:body> 
 </html>

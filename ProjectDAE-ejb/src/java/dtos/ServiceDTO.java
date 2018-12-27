@@ -28,6 +28,17 @@ public class ServiceDTO {
         this.service = service;
         this.config_id = config_id;
     }
+
+    public ServiceDTO(int id, String service) {
+        this.id = id;
+        this.service = service;
+    }
+    
+    public void reset(){
+        setId(0);
+        setService(null);
+        setConfig_id(0);
+    }
     
     public int getId() {
         return id;

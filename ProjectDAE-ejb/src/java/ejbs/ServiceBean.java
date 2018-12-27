@@ -5,11 +5,9 @@
 */
 package ejbs;
 
-import dtos.RepositoryDTO;
 import dtos.ServiceDTO;
 import entities.ConfigBase;
 import entities.Service;
-import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -47,9 +45,12 @@ public class ServiceBean {
         try{
             ConfigBase config = em.find(ConfigBase.class, serviceDTO.getConfig_id());
             if (config == null) {
-                throw new EJBException("Config doesn't exists");
+                em.persist(new Service(serviceDTO.getId(), serviceDTO.getService()));
+            } else{
+                Service service = new Service(serviceDTO.getId(), serviceDTO.getService(), config);
+                config.addService(service);
+                em.persist(service);
             }
-            em.persist(new Service(serviceDTO.getId(), serviceDTO.getService(), config));
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -85,7 +86,10 @@ public class ServiceBean {
     }
     
     public ServiceDTO serviceToDTO(Service service){
-        return new ServiceDTO(service.getId(), service.getService(), service.getConfig().getId());
+        if (service.getConfig() != null) {
+            return new ServiceDTO(service.getId(), service.getService(), service.getConfig().getId());
+        }
+        return new ServiceDTO(service.getId(), service.getService());
     }
     
     

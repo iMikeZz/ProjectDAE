@@ -47,6 +47,13 @@ public class Repository implements Serializable {
         this.link = link;
         this.config = config;
     }
+
+    public Repository(int id, String link) {
+        this.id = id;
+        this.link = link;
+    }
+    
+    
     
     public int getId() {
         return id;
@@ -71,5 +78,4 @@ public class Repository implements Serializable {
     public void setConfig(ConfigBase config) {
         this.config = config;
     }
-    
 }
