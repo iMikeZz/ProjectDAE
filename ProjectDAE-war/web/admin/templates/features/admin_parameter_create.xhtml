@@ -20,7 +20,7 @@
                     size="20"
                     required="true"
                     requiredMessage="Error: parameter cannot be empty"
-                    value="#{configurationManager.newParameter.parameter}" />
+                    value="#{parameterManager.newParameter.parameter}" />
                 <h:message for="description" errorStyle="color:red" />
                 
                 <h:outputLabel for="value" value="Value: " />
@@ -29,7 +29,7 @@
                     size="20"
                     required="true"
                     requiredMessage="Error: description cannot be empty"
-                    value="#{configurationManager.newParameter.value}" />
+                    value="#{parameterManager.newParameter.value}" />
                 <h:message for="description" errorStyle="color:red" />
                 
                 <br></br>
@@ -37,7 +37,7 @@
                 <h:commandButton
                     id="submit"
                     value="Create"
-                    action="#{configurationManager.createParameter}" 
+                    action="#{parameterManager.createParameter}" 
                     />
                 <h:message for="submit" errorStyle="color:red" />
                 

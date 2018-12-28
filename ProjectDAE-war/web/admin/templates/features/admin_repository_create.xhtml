@@ -19,7 +19,7 @@
                     size="20"
                     required="true"
                     requiredMessage="Error: link cannot be empty"
-                    value="#{configurationManager.newRepository.link}" />
+                    value="#{repositoryManager.newRepository.link}" />
                 <h:message for="description" errorStyle="color:red" />
                 
                 <br></br>
@@ -27,7 +27,7 @@
                 <h:commandButton
                     id="submit"
                     value="Create"
-                    action="#{configurationManager.createRepository}" 
+                    action="#{repositoryManager.createRepository}" 
                     />
                 <h:message for="submit" errorStyle="color:red" />
                 

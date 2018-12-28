@@ -21,7 +21,7 @@
                     size="20"
                     required="true"
                     requiredMessage="Error: description cannot be empty"
-                    value="#{configurationManager.newExtension.extension}" />
+                    value="#{extensionManager.newExtension.extension}" />
                 <h:message for="description" errorStyle="color:red" />
                 
                 <br></br>
@@ -29,7 +29,7 @@
                 <h:commandButton
                     id="submit"
                     value="Create"
-                    action="#{configurationManager.createExtension}" 
+                    action="#{extensionManager.createExtension}" 
                     />
                 <h:message for="submit" errorStyle="color:red" />
                 

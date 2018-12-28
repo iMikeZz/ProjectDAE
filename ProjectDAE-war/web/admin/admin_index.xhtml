@@ -181,11 +181,11 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                      <h:commandLink value="Details" action="templates/admin_template_details?facelet-redirect=true">
-                         <f:setPropertyActionListener target="#{configurationManager.currentTemplate}" value="#{template}"/>
+                         <f:setPropertyActionListener target="#{manager.currentTemplate}" value="#{template}"/>
                      </h:commandLink>
                      &nbsp;
                      <h:commandLink value="Update" action="templates/admin_template_update?facelet-redirect=true">
-                         <f:setPropertyActionListener target="#{configurationManager.currentTemplate}" value="#{template}"/>
+                         <f:setPropertyActionListener target="#{manager.currentTemplate}" value="#{template}"/>
                      </h:commandLink>
                      &nbsp;
                      <h:commandLink value="Remove" actionListener="#{configurationManager.removeTemplate}">

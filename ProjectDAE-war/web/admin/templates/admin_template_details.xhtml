@@ -11,13 +11,13 @@
             <h3>Template Details</h3>
             
             <h:outputLabel for="id" value="Id: "/>
-            <h:outputText id="id" value="#{configurationManager.currentTemplate.id}" />
+            <h:outputText id="id" value="#{manager.currentTemplate.id}" />
             
             <h:outputLabel for="description" value="Description: "/>
-            <h:outputText id="description" value="#{configurationManager.currentTemplate.description}" />
+            <h:outputText id="description" value="#{manager.currentTemplate.description}" />
             
             <h:outputLabel for="software" value="Software: "/>
-            <h:outputText id="software" value="#{configurationManager.currentTemplate.softwareName}" />
+            <h:outputText id="software" value="#{manager.currentTemplate.softwareName}" />
         </h:panelGrid>
         
         <h:link value="Return to the main page" outcome="/admin/admin_index" />
@@ -26,7 +26,7 @@
         <h:dataTable
             var="extension"
             summary="List of all Extensions"
-            value="#{configurationManager.allTemplateExtensions}"
+            value="#{extensionManager.allTemplateExtensions}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -47,7 +47,7 @@
         <h:dataTable
             var="license"
             summary="List of all Licenses"
-            value="#{configurationManager.allTemplateLicenses}"
+            value="#{licenseManager.allTemplateLicenses}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -68,7 +68,7 @@
         <h:dataTable
             var="material"
             summary="List of all materials"
-            value="#{configurationManager.allTemplateMaterials}"
+            value="#{materialManager.allTemplateMaterials}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -89,7 +89,7 @@
         <h:dataTable
             var="module"
             summary="List of all modules"
-            value="#{configurationManager.allTemplateModules}"
+            value="#{moduleManager.allTemplateModules}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -110,7 +110,7 @@
         <h:dataTable
             var="parameter"
             summary="List of all parameters"
-            value="#{configurationManager.allTemplateParameters}"
+            value="#{parameterManager.allTemplateParameters}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -137,7 +137,7 @@
         <h:dataTable
             var="repository"
             summary="List of all subjects"
-            value="#{configurationManager.allTemplateRepositories}"
+            value="#{repositoryManager.allTemplateRepositories}"
             rules="all"
             cellpadding="5">
             <h:column>
@@ -158,7 +158,7 @@
         <h:dataTable
             var="service"
             summary="List of all subjects"
-            value="#{configurationManager.allTemplateServices}"
+            value="#{serviceManager.allTemplateServices}"
             rules="all"
             cellpadding="5">
             <h:column>

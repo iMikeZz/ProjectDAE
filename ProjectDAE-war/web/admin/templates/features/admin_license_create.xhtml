@@ -21,15 +21,15 @@
                     size="20"
                     required="true"
                     requiredMessage="Error: license cannot be empty"
-                    value="#{configurationManager.newLicense.license}" />
-                <h:message for="description" errorStyle="color:red" />
+                    value="#{licenseManager.newLicense.license}" />
+                <h:message for="license" errorStyle="color:red" />
                 
                 <br></br>
                 
                 <h:commandButton
                     id="submit"
                     value="Create"
-                    action="#{configurationManager.createLicense}" 
+                    action="#{licenseManager.createLicense}" 
                     />
                 <h:message for="submit" errorStyle="color:red" />
                 

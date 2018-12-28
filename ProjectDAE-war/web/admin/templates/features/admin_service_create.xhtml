@@ -19,16 +19,16 @@
                     id="service"
                     size="20"
                     required="true"
-                    requiredMessage="Error: link cannot be empty"
-                    value="#{configurationManager.newService.service}" />
-                <h:message for="description" errorStyle="color:red" />
+                    requiredMessage="Error: service cannot be empty"
+                    value="#{serviceManager.newService.service}" />
+                <h:message for="service" errorStyle="color:red" />
                 
                 <br></br>
                 
                 <h:commandButton
                     id="submit"
                     value="Create"
-                    action="#{configurationManager.createService}" 
+                    action="#{serviceManager.createService}" 
                     />
                 <h:message for="submit" errorStyle="color:red" />
                 
