@@ -60,10 +60,15 @@ public class ConfigBean {
         
         templateBean.create(new TemplateDTO(71, "windows 98 pro", 1, "Sim")); //é necesserario passar o name pq estamos a usar o construtor do dto
         
-        extensionBean.create(new ExtensionDTO(0, "gps", 1));
-        extensionBean.create(new ExtensionDTO(0, "pokemon", 2));
-        extensionBean.create(new ExtensionDTO(0, "cenas", 3));
+        extensionBean.create(new ExtensionDTO(1, "gps", 1));
+        extensionBean.create(new ExtensionDTO(4, "gpstrack", 1));
+        extensionBean.create(new ExtensionDTO(2, "pokemon", 2));
+        extensionBean.create(new ExtensionDTO(3, "cenas", 3));
         
         materialBean.create(new MaterialDTO(0, "sadsadasdsd", "sadasdsd"));
+        
+        //extensionBean.addExtensionToTemplate(, 1); //testado pela web
+        //extensionBean.addExtensionToTemplate(71, 4);
+        //extensionBean.removeExtensionToTemplate(71, 1);
     }
 }

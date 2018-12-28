@@ -71,7 +71,7 @@ public class ConfigurationManager extends Manager implements Serializable {
         
         this.newService = new ServiceDTO();
     }
-
+    
     public TemplateDTO getCurrentTemplate() {
         return currentTemplate;
     }
@@ -103,7 +103,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     public void setSearchValue(String searchValue) {
         this.searchValue = searchValue;
     }
-
+    
     public String getSEARCHBYDESCRIPTION() {
         return SEARCHBYDESCRIPTION;
     }
@@ -111,70 +111,71 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getALLTEMPLATES() {
         return ALLTEMPLATES;
     }
-
+    
     public ExtensionDTO getNewExtension() {
         return newExtension;
     }
-
+    
     public void setNewExtension(ExtensionDTO newExtension) {
         this.newExtension = newExtension;
     }
-
+    
     public int getCurrentSoftwareId() {
         return currentSoftwareId;
     }
-
+    
     public void setCurrentSoftwareId(int currentSoftwareId) {
         this.currentSoftwareId = currentSoftwareId;
     }
-
+    
     public LicenseDTO getNewLicense() {
         return newLicense;
     }
-
+    
     public void setNewLicense(LicenseDTO newLicense) {
         this.newLicense = newLicense;
     }
-
+    
     public MaterialDTO getNewMaterial() {
         return newMaterial;
     }
-
+    
     public void setNewMaterial(MaterialDTO newMaterial) {
         this.newMaterial = newMaterial;
     }
-
+    
     public ModuleDTO getNewModule() {
         return newModule;
     }
-
+    
     public void setNewModule(ModuleDTO newModule) {
         this.newModule = newModule;
     }
-
+    
     public ParameterDTO getNewParameter() {
         return newParameter;
     }
-
+    
     public void setNewParameter(ParameterDTO newParameter) {
         this.newParameter = newParameter;
     }
-
+    
     public RepositoryDTO getNewRepository() {
         return newRepository;
     }
-
+    
     public void setNewRepository(RepositoryDTO newRepository) {
         this.newRepository = newRepository;
     }
-
+    
     public ServiceDTO getNewService() {
         return newService;
     }
-
+    
     public void setNewService(ServiceDTO newService) {
         this.newService = newService;
     }
+    
     
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
@@ -292,8 +293,11 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
-     public List<ExtensionDTO> getAllExtensions(){
+    public List<ExtensionDTO> getAllExtensions(){
         try {
+            if (currentTemplate != null) {
+                currentSoftwareId = currentTemplate.getSoftwareCode();
+            }
             return client.target(baseUri)
                     .path("/extensions/all/" + currentSoftwareId)
                     .request(MediaType.APPLICATION_XML)
@@ -424,6 +428,9 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
@@ -440,11 +447,17 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
     public String createMaterial() {
         try {
+            if (currentTemplate != null) {
+                newMaterial.setConfig_id(currentTemplate.getId());
+            }
             client.target(baseUri)
                     .path("materials/create")
                     .request(MediaType.APPLICATION_XML)
@@ -455,6 +468,9 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
@@ -471,11 +487,17 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
     public String createParameter() {
         try {
+            if (currentTemplate != null) {
+                newParameter.setConfig_id(currentTemplate.getId());
+            }
             client.target(baseUri)
                     .path("parameters/create")
                     .request(MediaType.APPLICATION_XML)
@@ -486,11 +508,17 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
     public String createRepository() {
         try {
+            if (currentTemplate != null) {
+                newRepository.setConfig_id(currentTemplate.getId());
+            }
             client.target(baseUri)
                     .path("repositories/create")
                     .request(MediaType.APPLICATION_XML)
@@ -501,11 +529,17 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
     public String createService() {
         try {
+            if (currentTemplate != null) {
+                newService.setConfig_id(currentTemplate.getId());
+            }
             client.target(baseUri)
                     .path("service/create")
                     .request(MediaType.APPLICATION_XML)
@@ -516,6 +550,10 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        
+        if (currentTemplate != null)
+            return "/admin/templates/admin_template_update?faces-redirect=true";
+        
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
@@ -545,7 +583,135 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Problem removing student in method removeTemplate ", logger);
             return null;
         }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String addExtension(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
+            int extension_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/extensions/add/"+ extension_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentTemplate));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding extension in method addExtension ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeExtension(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
+            int extension_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/extensions/remove/"+ extension_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentTemplate));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing extension in method removeExtension ", logger);
+            return null;
+        }
         return "/admin/admin_index?faces-redirect=true";
+    }
+    
+    public String addLicense(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addLicenseId");
+            int license_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/licenses/add/" + currentTemplate.getId() + "/" + license_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(Boolean.class));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding license in method addLicense ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeLicense(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeLicenseId");
+            int license_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/licenses/remove/" + currentTemplate.getId() + "/" + license_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(Boolean.class));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing license in method removeLicense", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String addMaterial(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String removeMaterial(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String addModule(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
+            int module_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/modules/add/" + currentTemplate.getId() + "/" + module_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(Boolean.class));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding module in method addModule ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeModule(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
+            int module_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/modules/remove/" + currentTemplate.getId() + "/" + module_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(Boolean.class));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding module in method addModule ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String addParameter(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String removeParameter(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String addRepository(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String removeRepository(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String addService(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
+    }
+    
+    public String removeService(ActionEvent event){
+        throw new RuntimeException("Not suported yet.");
     }
     
     //**************COSTUM METHODS

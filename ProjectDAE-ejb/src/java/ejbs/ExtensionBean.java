@@ -6,6 +6,7 @@
 package ejbs;
 
 import dtos.ExtensionDTO;
+import dtos.TemplateDTO;
 import entities.ConfigBase;
 import entities.Extension;
 import entities.Software;
@@ -19,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -83,6 +85,64 @@ public class ExtensionBean {
                 throw new EJBException("Config doesn't exists");
             }
             return extensionsToDTO(configBase.getExtensions());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("add/{id_extension}")
+    public void addExtensionToTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Extension extension = em.find(Extension.class, extension_id);
+            if (extension == null) {
+                throw new EJBException("Extension doesn't exists");
+            }
+            
+            if (configBase.getExtensions().contains(extension)) {
+                return;
+            }
+            
+            if (extension.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.addExtension(extension);
+            extension.addConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("remove/{id_extension}")
+    public void removeExtensionFromTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Extension extension = em.find(Extension.class, extension_id);
+            if (extension == null) {
+                throw new EJBException("Extension doesn't exists");
+            }
+            
+            if (!extension.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.removeExtension(extension);
+            extension.removeConfig(configBase);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
