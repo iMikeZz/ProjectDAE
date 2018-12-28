@@ -7,7 +7,9 @@ package ejbs;
 
 import dtos.ParameterDTO;
 import dtos.RepositoryDTO;
+import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Material;
 import entities.Repository;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -81,6 +84,60 @@ public class RepositoryBean {
                 throw new EJBException("Config doesn't exists");
             }
             return repositoriesToDTO(configBase.getRepositories());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToTemplate/{repository_id}")
+    public void addRepositoryToTemplate(TemplateDTO templateDTO, @PathParam("repository_id") int repository_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Repository repository = em.find(Repository.class, repository_id);
+            if (repository == null) {
+                throw new EJBException("Repository doesn't exists");
+            }
+            
+            if (configBase.getRepositories().contains(repository)) {
+                return;
+            }
+            
+            configBase.addRepository(repository);
+            repository.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromTemplate/{repository_id}")
+    public void removeRepositoryFromTemplate(TemplateDTO templateDTO,@PathParam("repository_id") int repository_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Repository repository = em.find(Repository.class, repository_id);
+            if (repository == null) {
+                throw new EJBException("Repository doesn't exists");
+            }
+            
+            if (!configBase.getRepositories().contains(repository)) {
+                return;
+            }
+            
+            configBase.removeRepository(repository);
+            repository.setConfig(null);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

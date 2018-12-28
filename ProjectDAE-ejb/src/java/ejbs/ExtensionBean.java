@@ -93,7 +93,7 @@ public class ExtensionBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("add/{id_extension}")
+    @Path("addToTemplate/{id_extension}")
     public void addExtensionToTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
@@ -124,7 +124,7 @@ public class ExtensionBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("remove/{id_extension}")
+    @Path("removeFromTemplate/{id_extension}")
     public void removeExtensionFromTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());

@@ -96,7 +96,7 @@ public class ModuleBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("add/{module_id}")
+    @Path("addToTemplate/{module_id}")
     public void addModuleToTemplate(TemplateDTO templateDTO, @PathParam("module_id") int module_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
@@ -127,7 +127,7 @@ public class ModuleBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("remove/{license_id}")
+    @Path("removeFromTemplate/{license_id}")
     public void removeModuleFromTemplate(TemplateDTO templateDTO,@PathParam("module_id") int module_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());

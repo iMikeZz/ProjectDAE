@@ -5,11 +5,11 @@
 */
 package ejbs;
 
-import dtos.ModuleDTO;
 import dtos.ParameterDTO;
+import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Material;
 import entities.Parameter;
-import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -20,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -82,6 +83,60 @@ public class ParameterBean {
                 throw new EJBException("Config doesn't exists");
             }
             return parametersToDTO(configBase.getParameters());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToTemplate/{parameter_id}")
+    public void addParameterToTemplate(TemplateDTO templateDTO, @PathParam("parameter_id") int parameter_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Parameter parameter = em.find(Parameter.class, parameter_id);
+            if (parameter == null) {
+                throw new EJBException("Parameter doesn't exists");
+            }
+            
+            if (configBase.getParameters().contains(parameter)) {
+                return;
+            }
+            
+            configBase.addParameter(parameter);
+            parameter.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromTemplate/{parameter_id}")
+    public void removeParameterFromTemplate(TemplateDTO templateDTO,@PathParam("parameter_id") int parameter_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Parameter parameter = em.find(Parameter.class, parameter_id);
+            if (parameter == null) {
+                throw new EJBException("Parameter doesn't exists");
+            }
+            
+            if (!configBase.getParameters().contains(parameter)) {
+                return;
+            }
+            
+            configBase.removeParameter(parameter);
+            parameter.setConfig(null);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

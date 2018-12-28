@@ -94,7 +94,7 @@ public class LicenseBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("add/{license_id}")
+    @Path("addToTemplate/{license_id}")
     public void addLicenseToTemplate(TemplateDTO templateDTO, @PathParam("license_id") int license_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
@@ -125,7 +125,7 @@ public class LicenseBean {
     @PUT
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("remove/{license_id}")
+    @Path("removeFromTemplate/{license_id}")
     public void removeLicenseFromTemplate(TemplateDTO templateDTO,@PathParam("license_id") int license_id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());

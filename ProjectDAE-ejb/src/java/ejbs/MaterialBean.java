@@ -6,7 +6,9 @@
 package ejbs;
 
 import dtos.MaterialDTO;
+import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.License;
 import entities.Material;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -80,6 +83,60 @@ public class MaterialBean {
                 throw new EJBException("Config doesn't exists");
             }
             return materialsToDTO(configBase.getMaterials());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToTemplate/{material_id}")
+    public void addMaterialToTemplate(TemplateDTO templateDTO, @PathParam("material_id") int material_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Material material = em.find(Material.class, material_id);
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            
+            if (configBase.getMaterials().contains(material)) {
+                return;
+            }
+            
+            configBase.addMaterial(material);
+            material.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromTemplate/{material_id}")
+    public void removeMaterialFromTemplate(TemplateDTO templateDTO,@PathParam("material_id") int material_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Material material = em.find(Material.class, material_id);
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            
+            if (!configBase.getMaterials().contains(material)) {
+                return;
+            }
+            
+            configBase.removeMaterial(material);
+            material.setConfig(null);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

@@ -6,7 +6,9 @@
 package ejbs;
 
 import dtos.ServiceDTO;
+import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Material;
 import entities.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -80,6 +83,60 @@ public class ServiceBean {
                 throw new EJBException("Config doesn't exists");
             }
             return servicesToDTO(configBase.getServices());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToTemplate/{service_id}")
+    public void addServiceToTemplate(TemplateDTO templateDTO, @PathParam("service_id") int service_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Service service = em.find(Service.class, service_id);
+            if (service == null) {
+                throw new EJBException("Service doesn't exists");
+            }
+            
+            if (configBase.getServices().contains(service)) {
+                return;
+            }
+            
+            configBase.addService(service);
+            service.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromTemplate/{service_id}")
+    public void removeServiceFromTemplate(TemplateDTO templateDTO,@PathParam("service_id") int service_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, templateDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Service service = em.find(Service.class, service_id);
+            if (service == null) {
+                throw new EJBException("Service doesn't exists");
+            }
+            
+            if (!configBase.getServices().contains(service)) {
+                return;
+            }
+            
+            configBase.removeService(service);
+            service.setConfig(null);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
