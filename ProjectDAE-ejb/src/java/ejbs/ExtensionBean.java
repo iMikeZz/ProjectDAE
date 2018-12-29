@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package ejbs;
 
 import dtos.ExtensionDTO;
@@ -34,25 +34,33 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("/extensions")
 public class ExtensionBean {
-
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @PersistenceContext
-    EntityManager em;
+            EntityManager em;
     
     @POST
     //@RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("create")
-    public void create(ExtensionDTO extensionDTO){
+    @Path("create/{id}")
+    public void create(ExtensionDTO extensionDTO, @PathParam("id") int config_id){
         try{
             Software software = em.find(Software.class, extensionDTO.getSoftware_id());
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
             Extension extension = new Extension(extensionDTO.getId(), extensionDTO.getExtension(), software);
-            software.addExtension(extension);
-            em.persist(extension);
+            ConfigBase configBase = em.find(ConfigBase.class, config_id);
+            if (configBase == null) {
+                software.addExtension(extension);
+                em.persist(extension);
+            } else{
+                software.addExtension(extension);
+                configBase.addExtension(extension);
+                extension.addConfig(configBase);
+                em.persist(extension);
+            }
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -143,6 +151,32 @@ public class ExtensionBean {
             
             configBase.removeExtension(extension);
             extension.removeConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("extensionsNotInTemplate/{id_config}/{id_software}")
+    public List<ExtensionDTO> getExtensionsNotInTemplate(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Software software = em.find(Software.class, id_software);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            
+            List<Extension> allExtensions = new ArrayList<>(software.getExtensions());
+            
+            allExtensions.removeAll(configBase.getExtensions());
+            
+            return extensionsToDTO(allExtensions);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

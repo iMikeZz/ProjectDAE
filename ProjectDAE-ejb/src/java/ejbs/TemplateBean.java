@@ -39,7 +39,7 @@ public class TemplateBean {
     EntityManager em;
     
     @GET
-    @RolesAllowed({"Administrator"})
+    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
     public List<TemplateDTO> getAll(){
@@ -52,7 +52,7 @@ public class TemplateBean {
     }
     
     @GET
-    @RolesAllowed({"Administrator"})
+    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{description}")
     public List<TemplateDTO> getAll(@PathParam("description") String description){
@@ -85,7 +85,7 @@ public class TemplateBean {
     }
     
     @PUT
-    @RolesAllowed({"Administrator"})
+    //@RolesAllowed({"Administrator"})
     @Path("update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(TemplateDTO templateDTO){
@@ -106,7 +106,7 @@ public class TemplateBean {
     }
     
     @DELETE
-    @RolesAllowed({"Administrator"})
+    //@RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") int username){

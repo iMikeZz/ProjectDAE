@@ -61,10 +61,10 @@ public class ConfigBean {
         TemplateDTO template1 = new TemplateDTO(71, "windows 98 pro", 1, "Sim");
         templateBean.create(template1); //é necesserario passar o name pq estamos a usar o construtor do dto
         
-        extensionBean.create(new ExtensionDTO(1, "gps", 1));
-        extensionBean.create(new ExtensionDTO(4, "gpstrack", 1));
-        extensionBean.create(new ExtensionDTO(2, "pokemon", 2));
-        extensionBean.create(new ExtensionDTO(3, "cenas", 3));
+        extensionBean.create(new ExtensionDTO(1, "gps", 1), 71); //passar 0 se nao quisermos associar
+        extensionBean.create(new ExtensionDTO(4, "gpstrack", 1), 0);
+        extensionBean.create(new ExtensionDTO(2, "pokemon", 2), 0);
+        extensionBean.create(new ExtensionDTO(3, "cenas", 3), 0);
         
         materialBean.create(new MaterialDTO(1, "sadsadasdsd", "sadasdsd"));
         

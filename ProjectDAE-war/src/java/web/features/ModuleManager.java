@@ -45,11 +45,11 @@ public class ModuleManager extends Manager implements Serializable {
     public void setNewModule(ModuleDTO newModule) {
         this.newModule = newModule;
     }
-
+    
     public Manager getManager() {
         return manager;
     }
-
+    
     public void setManager(Manager manager) {
         this.manager = manager;
     }
@@ -86,11 +86,19 @@ public class ModuleManager extends Manager implements Serializable {
     public String createModule() {
         try {
             newModule.setSoftware_id(manager.getCurrentSoftwareId());
-            client.target(baseUri)
-                    .path("modules/create")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newModule));
-            newModule.reset();
+            if (manager.getCurrentTemplate() != null){
+                client.target(baseUri)
+                        .path("modules/create/" + manager.getCurrentTemplate().getId())
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newModule));
+                newModule.reset();
+            } else{
+                client.target(baseUri)
+                        .path("modules/create/" + 0)
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newModule));
+                newModule.reset();
+            }
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);

@@ -5,8 +5,6 @@
 */
 package ejbs;
 
-import dtos.LicenseDTO;
-import dtos.MaterialDTO;
 import dtos.ModuleDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
@@ -46,16 +44,24 @@ public class ModuleBean {
     @POST
     //@RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("create")
-    public void create(ModuleDTO moduleDTO){
+    @Path("create/{id}")
+    public void create(ModuleDTO moduleDTO, @PathParam("id")int config_id){
         try{
             Software software = em.find(Software.class, moduleDTO.getSoftware_id());
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
             Module module = new Module(moduleDTO.getId(), moduleDTO.getDescription(), software);
-            software.addModule(module);
-            em.persist(module);
+            ConfigBase configBase = em.find(ConfigBase.class, config_id);
+            if (configBase == null) {
+                software.addModule(module);
+                em.persist(module);
+            } else {
+                software.addModule(module);
+                configBase.addModule(module);
+                module.addConfig(configBase);
+                em.persist(module);
+            }
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }

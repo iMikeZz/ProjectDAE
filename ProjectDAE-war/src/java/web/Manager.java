@@ -34,12 +34,9 @@ public class Manager implements Serializable {
     protected int currentSoftwareId = 1;
     
     protected TemplateDTO currentTemplate;
-    protected TemplateDTO newTemplate;
     
     public Manager() {
         client = ClientBuilder.newClient();
-        
-        this.newTemplate = new TemplateDTO();
     }
     
     @PostConstruct
@@ -84,13 +81,5 @@ public class Manager implements Serializable {
     
     public void setCurrentTemplate(TemplateDTO currentTemplate) {
         this.currentTemplate = currentTemplate;
-    }
-    
-    public TemplateDTO getNewTemplate() {
-        return newTemplate;
-    }
-    
-    public void setNewTemplate(TemplateDTO newTemplate) {
-        this.newTemplate = newTemplate;
     }
 }

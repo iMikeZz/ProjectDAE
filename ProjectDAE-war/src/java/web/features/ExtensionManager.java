@@ -70,11 +70,22 @@ public class ExtensionManager extends Manager implements Serializable {
     
     public List<ExtensionDTO> getAllExtensions(){
         try {
-            if (manager.getCurrentTemplate() != null) {
-                manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
-            }
             return client.target(baseUri)
                     .path("/extensions/all/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public List<ExtensionDTO> getExtensionsNotInTemplate(){
+        try {
+            manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
+            return client.target(baseUri)
+                    .path("/extensions/extensionsNotInTemplate/" + manager.getCurrentTemplate().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
                     });
@@ -87,11 +98,19 @@ public class ExtensionManager extends Manager implements Serializable {
     public String createExtension() {
         try {
             newExtension.setSoftware_id(manager.getCurrentSoftwareId());
-            client.target(baseUri)
-                    .path("extensions/create")
+            if (manager.getCurrentTemplate() != null){
+              client.target(baseUri)
+                    .path("extensions/create/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newExtension));
-            newExtension.reset();
+                newExtension.reset();  
+            } else{
+                client.target(baseUri)
+                    .path("extensions/create/" + 0)
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();
+            }
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);

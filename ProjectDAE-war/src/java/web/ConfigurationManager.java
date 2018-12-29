@@ -42,6 +42,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     private String templatesVersion = ALLTEMPLATES;
     private String searchValue;
     
+    private TemplateDTO newTemplate;
+    
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
     }

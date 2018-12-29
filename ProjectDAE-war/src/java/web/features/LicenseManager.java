@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 public class LicenseManager extends Manager implements Serializable {
     
     private static final Logger logger = Logger.getLogger(LicenseManager.class.getName());
-  
+    
     private LicenseDTO newLicense;
     
     @ManagedProperty("#{manager}")
@@ -45,11 +45,11 @@ public class LicenseManager extends Manager implements Serializable {
     public void setNewLicense(LicenseDTO newLicense) {
         this.newLicense = newLicense;
     }
-
+    
     public Manager getManager() {
         return manager;
     }
-
+    
     public void setManager(Manager manager) {
         this.manager = manager;
     }
@@ -87,11 +87,19 @@ public class LicenseManager extends Manager implements Serializable {
     public String createLicense() {
         try {
             newLicense.setSoftware_id(manager.getCurrentSoftwareId());
-            client.target(baseUri)
-                    .path("licenses/create")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newLicense));
-            newLicense.reset();
+            if (manager.getCurrentTemplate() != null){ //significa q estamos no update
+                client.target(baseUri)
+                        .path("licenses/create/" + manager.getCurrentTemplate().getId())
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newLicense));
+                newLicense.reset();
+            }else{
+                client.target(baseUri)
+                        .path("licenses/create/" + 0)
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newLicense));
+                newLicense.reset();
+            }
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);

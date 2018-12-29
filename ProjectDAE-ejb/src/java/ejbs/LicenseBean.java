@@ -44,16 +44,24 @@ public class LicenseBean {
     @POST
     //@RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("create")
-    public void create(LicenseDTO licenseDTO){
+    @Path("create/{id}")
+    public void create(LicenseDTO licenseDTO, @PathParam("id") int config_id){
         try{
             Software software = em.find(Software.class, licenseDTO.getSoftware_id());
             if (software == null) {
                 throw new EJBException("Software doesn't exists");
             }
             License license = new License(licenseDTO.getId(), licenseDTO.getLicense(), software);
-            software.addLicense(license);
-            em.persist(license);
+            ConfigBase configBase = em.find(ConfigBase.class, config_id);
+            if (configBase == null) {
+                software.addLicense(license);
+                em.persist(license);
+            } else{
+                software.addLicense(license);
+                license.addConfig(configBase);
+                configBase.addLicense(license);
+                em.persist(license);
+            }
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
