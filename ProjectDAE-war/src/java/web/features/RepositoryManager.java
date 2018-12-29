@@ -6,15 +6,7 @@
 package web.features;
 
 import web.*;
-import dtos.ExtensionDTO;
-import dtos.LicenseDTO;
-import dtos.MaterialDTO;
-import dtos.ModuleDTO;
-import dtos.ParameterDTO;
 import dtos.RepositoryDTO;
-import dtos.ServiceDTO;
-import dtos.SoftwareDTO;
-import dtos.TemplateDTO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -23,7 +15,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -141,5 +132,18 @@ public class RepositoryManager extends Manager implements Serializable {
             return null;
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<RepositoryDTO> getRepositoriesNotInTemplate(){
+        try {
+            return client.target(baseUri)
+                    .path("/repositories/repositoriesNotInTemplate/" + manager.getCurrentTemplate().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<RepositoryDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getRepositoriesNotInTemplate", logger);
+            return null;
+        }
     }
 }

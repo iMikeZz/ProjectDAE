@@ -5,11 +5,14 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
 import dtos.ServiceDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Extension;
 import entities.Material;
 import entities.Service;
+import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -137,6 +140,27 @@ public class ServiceBean {
             
             configBase.removeService(service);
             service.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("servicesNotInTemplate/{id_config}")
+    public List<ServiceDTO> getRepositoriesNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Service> allServices = em.createNamedQuery("getAllServices").getResultList();
+            
+            allServices.removeAll(configBase.getServices());
+            
+            return servicesToDTO(allServices);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

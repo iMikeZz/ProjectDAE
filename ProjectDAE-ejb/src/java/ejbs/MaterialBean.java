@@ -5,11 +5,14 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Extension;
 import entities.License;
 import entities.Material;
+import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -137,6 +140,27 @@ public class MaterialBean {
             
             configBase.removeMaterial(material);
             material.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("materialsNotInTemplate/{id_config}")
+    public List<MaterialDTO> getMaterialsNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Material> allMaterials = em.createNamedQuery("getAllMaterials").getResultList();
+            
+            allMaterials.removeAll(configBase.getMaterials());
+            
+            return materialsToDTO(allMaterials);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

@@ -5,9 +5,11 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
 import dtos.ModuleDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Extension;
 import entities.License;
 import entities.Module;
 import entities.Software;
@@ -39,7 +41,7 @@ public class ModuleBean {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @PersistenceContext
-    EntityManager em;
+            EntityManager em;
     
     @POST
     //@RolesAllowed({"Administrator"})
@@ -152,6 +154,32 @@ public class ModuleBean {
             
             configBase.removeLicense(license);
             license.removeConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("modulesNotInTemplate/{id_config}/{id_software}")
+    public List<ModuleDTO> getModulesNotInTemplate(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Software software = em.find(Software.class, id_software);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            
+            List<Module> allModules = new ArrayList<>(software.getModules());
+            
+            allModules.removeAll(configBase.getModules());
+            
+            return modulesToDTO(allModules);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

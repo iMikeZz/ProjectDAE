@@ -5,6 +5,7 @@
 */
 package web.features;
 
+import dtos.LicenseDTO;
 import web.*;
 import dtos.MaterialDTO;
 import java.io.Serializable;
@@ -132,5 +133,18 @@ public class MaterialManager extends Manager implements Serializable {
             return null;
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<MaterialDTO> getMaterialsNotInTemplate(){
+        try {
+            return client.target(baseUri)
+                    .path("/materials/materialsNotInTemplate/" + manager.getCurrentTemplate().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<MaterialDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getMaterialsNotInTemplate", logger);
+            return null;
+        }
     }
 }

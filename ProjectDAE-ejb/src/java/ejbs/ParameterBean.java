@@ -5,11 +5,15 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
+import dtos.MaterialDTO;
 import dtos.ParameterDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Extension;
 import entities.Material;
 import entities.Parameter;
+import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -137,6 +141,27 @@ public class ParameterBean {
             
             configBase.removeParameter(parameter);
             parameter.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("parametersNotInTemplate/{id_config}")
+    public List<ParameterDTO> getParametersNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Parameter> allParameters = em.createNamedQuery("getAllParameters").getResultList();
+            
+            allParameters.removeAll(configBase.getParameters());
+            
+            return parametersToDTO(allParameters);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

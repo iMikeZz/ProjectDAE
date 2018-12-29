@@ -9,7 +9,7 @@ import dtos.ParameterDTO;
 import dtos.RepositoryDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
-import entities.Material;
+import entities.Parameter;
 import entities.Repository;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +138,27 @@ public class RepositoryBean {
             
             configBase.removeRepository(repository);
             repository.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("repositoriesNotInTemplate/{id_config}")
+    public List<RepositoryDTO> getRepositoriesNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Repository> allRepositories = em.createNamedQuery("getAllRepositories").getResultList();
+            
+            allRepositories.removeAll(configBase.getRepositories());
+            
+            return repositoriesToDTO(allRepositories);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

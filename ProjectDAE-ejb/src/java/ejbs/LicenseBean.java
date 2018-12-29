@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
@@ -152,6 +153,32 @@ public class LicenseBean {
             
             configBase.removeLicense(license);
             license.removeConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("licensesNotInTemplate/{id_config}/{id_software}")
+    public List<LicenseDTO> getLicensesNotInTemplate(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Software software = em.find(Software.class, id_software);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            
+            List<License> allLicenses = new ArrayList<>(software.getLicenses());
+            
+            allLicenses.removeAll(configBase.getLicenses());
+            
+            return licensesToDTO(allLicenses);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }

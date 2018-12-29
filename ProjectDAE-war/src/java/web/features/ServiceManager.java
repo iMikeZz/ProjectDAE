@@ -142,4 +142,17 @@ public class ServiceManager extends Manager implements Serializable {
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
     }
+    
+    public List<ServiceDTO> getServicesNotInTemplate(){
+        try {
+            return client.target(baseUri)
+                    .path("/services/servicesNotInTemplate/" + manager.getCurrentTemplate().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ServiceDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getServicesNotInTemplate", logger);
+            return null;
+        }
+    }
 }

@@ -5,6 +5,7 @@
 */
 package web.features;
 
+import dtos.ExtensionDTO;
 import web.*;
 import dtos.ModuleDTO;
 import java.io.Serializable;
@@ -140,5 +141,19 @@ public class ModuleManager extends Manager implements Serializable {
             return null;
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<ModuleDTO> getModulesNotInTemplate(){
+        try {
+            manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
+            return client.target(baseUri)
+                    .path("/modules/modulesNotInTemplate/" + manager.getCurrentTemplate().getId() + "/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ModuleDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getModulesNotInTemplate", logger);
+            return null;
+        }
     }
 }

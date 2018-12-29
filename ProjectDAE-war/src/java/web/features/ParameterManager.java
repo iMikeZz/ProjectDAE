@@ -140,4 +140,17 @@ public class ParameterManager extends Manager implements Serializable {
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
     }
+    
+    public List<ParameterDTO> getParametersNotInTemplate(){
+        try {
+            return client.target(baseUri)
+                    .path("/parameters/parametersNotInTemplate/" + manager.getCurrentTemplate().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ParameterDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getParametersNotInTemplate", logger);
+            return null;
+        }
+    }
 }

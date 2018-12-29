@@ -142,4 +142,18 @@ public class LicenseManager extends Manager implements Serializable {
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
     }
+    
+    public List<LicenseDTO> getLicensesNotInTemplate(){
+        try {
+            manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
+            return client.target(baseUri)
+                    .path("/licenses/licensesNotInTemplate/" + manager.getCurrentTemplate().getId()+ "/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<LicenseDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getLicensesNotInTemplate", logger);
+            return null;
+        }
+    }
 }

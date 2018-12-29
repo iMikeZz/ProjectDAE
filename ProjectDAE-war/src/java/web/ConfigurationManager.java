@@ -36,7 +36,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     private static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
     
-    private static final String SEARCHBYDESCRIPTION = "SEARCHCLIENTSBYNAME";
+    private static final String SEARCHBYDESCRIPTION = "SEARCHBYDESCRIPTION";
     private static final String ALLTEMPLATES = "ALLTEMPLATES";
    
     private String templatesVersion = ALLTEMPLATES;
@@ -71,7 +71,15 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getALLTEMPLATES() {
         return ALLTEMPLATES;
     }
-  
+
+    public TemplateDTO getNewTemplate() {
+        return newTemplate;
+    }
+
+    public void setNewTemplate(TemplateDTO newTemplate) {
+        this.newTemplate = newTemplate;
+    }
+    
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
