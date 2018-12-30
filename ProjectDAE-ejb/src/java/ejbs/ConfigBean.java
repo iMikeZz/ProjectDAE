@@ -8,6 +8,7 @@ package ejbs;
 
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
 import dtos.TemplateDTO;
@@ -15,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import utils.State;
 
 /**
  *
@@ -40,6 +42,9 @@ public class ConfigBean {
     
     @EJB
     private MaterialBean materialBean;
+    
+    @EJB
+    private ConfigurationBean configurationBean;
             
     @PostConstruct
     public void populateDB() { 
@@ -48,6 +53,7 @@ public class ConfigBean {
         administratorBean.create(new AdministratorDTO("a1", "a1", "Alexandre", "dae.ei.ipleiria@gmail.com", "Gestor"));
         administratorBean.create(new AdministratorDTO("r3", "a1", "Joao", "dae.ei.ipleiria@gmail.com", "Gestor"));
         administratorBean.create(new AdministratorDTO("d1", "a1", "Pedro", "dae.ei.ipleiria@gmail.com", "Gestor"));
+        administratorBean.create(new AdministratorDTO("admin", "admin", "Pedro", "dae.ei.ipleiria@gmail.com", "Gestor"));
         
         // Clients
         clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC"));
@@ -67,6 +73,9 @@ public class ConfigBean {
         extensionBean.create(new ExtensionDTO(3, "cenas", 3), 0);
         
         materialBean.create(new MaterialDTO(1, "sadsadasdsd", "sadasdsd"));
+        
+        ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
+        configurationBean.create(config1);
         
         //materialBean.addMaterialToTemplate(template1, 1);
         //materialBean.removeMaterialFromTemplate(template1, 1);

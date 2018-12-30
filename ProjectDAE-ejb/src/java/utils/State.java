@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities.utils;
+package utils;
 
 /**
  *
  * @author migue
  */
 public enum State {
+    ATIVA, INATIVA, SUSPENSA
+    /*
     ATIVA("Ativa"), INATIVA("Inativa"), SUSPENSA("Suspensa");
 
-    private String state;
+    
+    private final String state;
 
     private State(String state) {
         this.state = state;
@@ -33,4 +36,5 @@ public enum State {
         }
         return null;
     }  
+    */
 }

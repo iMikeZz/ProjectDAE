@@ -5,6 +5,7 @@
 */
 package web;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import dtos.MaterialDTO;
@@ -39,13 +40,43 @@ public class ConfigurationManager extends Manager implements Serializable {
     private static final String SEARCHBYDESCRIPTION = "SEARCHBYDESCRIPTION";
     private static final String ALLTEMPLATES = "ALLTEMPLATES";
    
+    private static final String ALLCONFIGURATIONS = "ALLCONFIGURATIONS";
+    
     private String templatesVersion = ALLTEMPLATES;
     private String searchValue;
     
     private TemplateDTO newTemplate;
+    private ConfigurationDTO newConfiguration;
+    
+    private String configurationsVersion = ALLCONFIGURATIONS;
+
+    public ConfigurationDTO getNewConfiguration() {
+        return newConfiguration;
+    }
+
+    public void setnewConfiguration(ConfigurationDTO newConfiguration) {
+        this.newConfiguration = newConfiguration;
+    }
+
+    public String getConfigurationsVersion() {
+        return configurationsVersion;
+    }
+
+    public void setConfigurationsVersion(String configurationsVersion) {
+        this.configurationsVersion = configurationsVersion;
+    }
+    
+    public TemplateDTO getNewTemplate() {
+        return newTemplate;
+    }
+
+    public void setNewTemplate(TemplateDTO newTemplate) {
+        this.newTemplate = newTemplate;
+    }
     
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
+        this.newConfiguration = new ConfigurationDTO();
     }
    
     public String getTemplatesVersion() {
@@ -71,15 +102,11 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getALLTEMPLATES() {
         return ALLTEMPLATES;
     }
-
-    public TemplateDTO getNewTemplate() {
-        return newTemplate;
-    }
-
-    public void setNewTemplate(TemplateDTO newTemplate) {
-        this.newTemplate = newTemplate;
-    }
     
+    public String getALLCONFIGURATIONS() {
+        return ALLCONFIGURATIONS;
+    }
+  
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -165,5 +192,35 @@ public class ConfigurationManager extends Manager implements Serializable {
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<TemplateDTO>>() {
                 });
+    } 
+    
+    private List<ConfigurationDTO> getConfigurationsListByUrl(String url){
+        return client.target(baseUri)
+                .path(url)
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<ConfigurationDTO>>() {
+                });
     }
+    
+    //*************CONFIGURATIONS*********************
+        public List<ConfigurationDTO> getAllConfigurations(){
+        try {
+            System.out.println("ESTOU AQUI");
+            switch (configurationsVersion) {
+                case ALLCONFIGURATIONS:
+                    return getConfigurationsListByUrl("/configurations/all");
+                case SEARCHBYDESCRIPTION:
+                    if (!searchValue.equals("")) {
+                        return getConfigurationsListByUrl("/configurations/" + searchValue);
+                    }
+                    return getConfigurationsListByUrl("/configurations/all");
+                default:
+                    return null;
+            }
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllConfigurations", logger);
+            return null;
+        }
+    }    
 }

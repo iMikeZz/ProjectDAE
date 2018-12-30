@@ -6,11 +6,15 @@
 package entities;
 
 import entities.roles.Client;
-import entities.utils.State;
+import utils.State;
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,6 +22,16 @@ import javax.validation.constraints.NotNull;
  * @author josea
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(
+            name = "getAllConfigurations",
+            query = "SELECT t FROM Configuration t ORDER BY t.id"
+    ),
+    @NamedQuery(
+            name = "getAllConfigurationsByDescription",
+            query = "SELECT t FROM Configuration t WHERE UPPER(t.description) LIKE UPPER(:description) ORDER BY t.description"
+    ),
+})
 public class Configuration extends ConfigBase implements Serializable {
     
     @ManyToOne
@@ -25,8 +39,8 @@ public class Configuration extends ConfigBase implements Serializable {
     @NotNull(message = "A client is needed to this configuration")
     private Client client;
     
-    @NotNull
-    private State state;
+    @NotNull(message = "Configuration needs a state")
+    private String state;
     
     @NotNull
     private String contractData;
@@ -34,7 +48,7 @@ public class Configuration extends ConfigBase implements Serializable {
     public Configuration() {
     }
 
-    public Configuration(int id, Client client, String description, String contractData, State state, Software software) {
+    public Configuration(int id, Client client, String description, String contractData, String state, Software software) {
         super(id, description, software);
         this.client = client;
         this.state = state;
@@ -49,11 +63,11 @@ public class Configuration extends ConfigBase implements Serializable {
         this.client = client;
     }
 
-    public State getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(String state) {
         this.state = state;
     }
 

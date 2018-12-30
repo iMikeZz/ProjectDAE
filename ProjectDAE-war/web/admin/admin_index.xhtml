@@ -195,6 +195,45 @@
             </h:dataTable>
         </h:form>
         <h:link value="New Template" outcome="templates/admin_template_create"/>
+        
+        <h:form>
+            <h:dataTable
+            var="configuration"
+            summary="List of all Configurations"
+            value="#{configurationManager.allConfigurations}"
+            rules="all"
+            cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.description}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="State"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.state}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Client"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.clientUsername}"></h:outputText>
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                </h:column>
+            </h:dataTable>
+        </h:form>
     </h:body>
 </html>
 
