@@ -15,6 +15,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @NamedQueries({
@@ -31,6 +34,8 @@ import javax.validation.constraints.NotNull;
             query = "SELECT t FROM Client t ORDER BY t.username"
     )
 })
+@XmlRootElement(name = "Client")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Client extends User implements Serializable {
     
     @NotNull(message = "Address can not be empty")

@@ -5,6 +5,7 @@
 */
 package web;
 
+import dtos.ConfigurationDTO;
 import dtos.TemplateDTO;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -35,6 +36,12 @@ public class Manager implements Serializable {
     
     protected TemplateDTO currentTemplate;
     
+    protected ConfigurationDTO currentConfiguration;
+
+    protected String currentClientUsername = null;
+    
+    protected String currentState = null;
+    
     public Manager() {
         client = ClientBuilder.newClient();
     }
@@ -49,6 +56,18 @@ public class Manager implements Serializable {
         currentSoftwareId = Integer.parseInt(e.getNewValue().toString());
         
         System.out.println(currentSoftwareId);
+    }
+    
+    public void clientChangeListener(ValueChangeEvent e){
+        currentClientUsername = e.getNewValue().toString();
+        
+        System.out.println(currentClientUsername);
+    }
+    
+    public void stateChangeListener(ValueChangeEvent e){
+        currentState = e.getNewValue().toString();
+        
+        System.out.println(currentState);
     }
     
     public Client getClient() {
@@ -82,4 +101,13 @@ public class Manager implements Serializable {
     public void setCurrentTemplate(TemplateDTO currentTemplate) {
         this.currentTemplate = currentTemplate;
     }
+    
+    public ConfigurationDTO getCurrentConfiguration() {
+        return currentConfiguration;
+    }
+
+    public void setCurrentConfiguration(ConfigurationDTO currentConfiguration) {
+        this.currentConfiguration = currentConfiguration;
+    }
+    
 }

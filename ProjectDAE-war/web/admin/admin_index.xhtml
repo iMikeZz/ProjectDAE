@@ -197,6 +197,18 @@
         <h:link value="New Template" outcome="templates/admin_template_create"/>
         
         <h:form>
+         <h:inputText
+                    id="searchValue"
+                    size="20"
+                    value="#{configurationManager.searchValue}" />
+         
+         <h:commandButton
+                    id="submit"
+                    value="Search"
+                    action="#{configurationManager.setConfigurationsVersion(configurationManager.SEARCHBYDESCRIPTION)}" 
+                    />
+        </h:form>
+        <h:form>
             <h:dataTable
             var="configuration"
             summary="List of all Configurations"
@@ -227,13 +239,28 @@
                     </f:facet>
                     <h:outputText value="#{configuration.clientUsername}"></h:outputText>
                 </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Contract Data"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.contractData}"></h:outputText>
+                </h:column>
                  <h:column>
                     <f:facet name="header">
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
+                     &nbsp;
+                     <h:commandLink value="Update" action="configurations/admin_configuraiton_update?facelet-redirect=true">
+                         <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                     </h:commandLink>
+                     &nbsp;
+                     <h:commandLink value="Remove" actionListener="#{configurationManager.removeConfiguration}">
+                         <f:param name="deleteClientId" id="deleteConfigurationId" value="#{configuration.id}" />
+                     </h:commandLink>
                 </h:column>
             </h:dataTable>
         </h:form>
+        <h:link value="New Configuration" outcome="configurations/admin_configuration_create"/>
     </h:body>
 </html>
 

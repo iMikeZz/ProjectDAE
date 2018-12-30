@@ -5,6 +5,7 @@
 */
 package web;
 
+import dtos.ClientDTO;
 import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
@@ -141,6 +142,19 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
+    public List<ClientDTO> getAllClients(){
+        try {
+            return client.target(baseUri)
+                    .path("/clients/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ClientDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllClients", logger);
+            return null;
+        }
+    }
+    
     public String createTemplate() {
         try {
             client.target(baseUri)
@@ -156,6 +170,21 @@ public class ConfigurationManager extends Manager implements Serializable {
         return "/admin/admin_index?faces-redirect=true";
     }
     
+    public String createConfiguration() {
+        try {
+            client.target(baseUri)
+                    .path("configurations/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newConfiguration));
+            newTemplate.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true";
+    }
+     
     public String updateTemplate(){
         try {
             client.target(baseUri)
@@ -164,6 +193,19 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .put(Entity.xml(userManager.getClass()));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateTemplate", logger);
+            return null;
+        }
+        return "/admin/admin_index?facelet-redirect=true";
+    }
+    
+     public String updateConfiguration(){
+        try {
+            client.target(baseUri)
+                    .path("configurations/update")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(userManager.getClass()));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem updating template in method updateConfiguration", logger);
             return null;
         }
         return "/admin/admin_index?facelet-redirect=true";
@@ -180,6 +222,22 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing template in method removeTemplate ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeConfiguration(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("deleteConfigurationId");
+            int username = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/configurations/" + username)
+                    .request(MediaType.APPLICATION_XML)
+                    .delete(Boolean.class);
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing template in method removeConfiguration ", logger);
             return null;
         }
         return "/admin/admin_index?faces-redirect=true"; //todo mudar
