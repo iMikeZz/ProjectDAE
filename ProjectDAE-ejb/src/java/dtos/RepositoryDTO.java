@@ -63,4 +63,22 @@ public class RepositoryDTO {
     public void setConfig_id(int config_id) {
         this.config_id = config_id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RepositoryDTO other = (RepositoryDTO) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
 }

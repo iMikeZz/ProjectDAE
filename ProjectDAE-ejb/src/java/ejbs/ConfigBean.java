@@ -8,7 +8,6 @@ package ejbs;
 
 import dtos.AdministratorDTO;
 import dtos.ClientDTO;
-import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
 import dtos.TemplateDTO;
@@ -16,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import utils.State;
 
 /**
  *
@@ -74,8 +72,8 @@ public class ConfigBean {
         
         materialBean.create(new MaterialDTO(1, "sadsadasdsd", "sadasdsd"));
         
-        ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
-        configurationBean.create(config1);
+        //ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
+        //configurationBean.create(config1);
         
         //materialBean.addMaterialToTemplate(template1, 1);
         //materialBean.removeMaterialFromTemplate(template1, 1);

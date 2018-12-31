@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllServices",
-            query = "SELECT t FROM Service t ORDER BY t.id"
+            query = "SELECT t FROM Service t WHERE t.config IS NULL ORDER BY t.id"
     )
 })
 public class Service implements Serializable {

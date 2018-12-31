@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllMaterials",
-            query = "SELECT t FROM Material t ORDER BY t.id"
+            query = "SELECT t FROM Material t WHERE t.config IS NULL ORDER BY t.id"
     )
 })
 public class Material implements Serializable {
