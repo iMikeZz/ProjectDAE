@@ -83,6 +83,7 @@ public class ConfigBase implements Serializable {
         services = new LinkedList<>();
         repositories = new LinkedList<>();
         materials = new LinkedList<>();
+        extensions = new LinkedList<>();
     }
 
     public ConfigBase(int id, String description, Software software) {

@@ -89,7 +89,7 @@ public class ExtensionManager extends Manager implements Serializable {
                     .get(new GenericType<List<ExtensionDTO>>() {
                     });
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            FacesExceptionHandler.handleException(e, "Problem getting all extensions in method getAllExtensions", logger);
             return null;
         }
     }

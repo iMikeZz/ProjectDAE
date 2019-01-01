@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllParameters",
-            query = "SELECT t FROM Parameter t ORDER BY t.id"
+            query = "SELECT t FROM Parameter t WHERE t.config IS NULL ORDER BY t.id"
     )
 })
 public class Parameter implements Serializable {

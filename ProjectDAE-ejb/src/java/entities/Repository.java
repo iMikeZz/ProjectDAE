@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getAllRepositories",
-            query = "SELECT t FROM Repository t ORDER BY t.id"
+            query = "SELECT t FROM Repository t WHERE t.config IS NULL ORDER BY t.id"
     )
 })
 public class Repository implements Serializable {

@@ -69,6 +69,7 @@ public class MaterialBean {
     public List<MaterialDTO> getAll(){
         try {
             List<Material> materials = em.createNamedQuery("getAllMaterials").getResultList();
+            
             return materialsToDTO(materials);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());

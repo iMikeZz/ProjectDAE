@@ -5,14 +5,27 @@
  */
 package ejbs;
 
+import dtos.ExtensionDTO;
+import dtos.LicenseDTO;
+import dtos.MaterialDTO;
+import dtos.ModuleDTO;
+import dtos.ParameterDTO;
+import dtos.RepositoryDTO;
+import dtos.ServiceDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
+import entities.Extension;
+import entities.License;
+import entities.Material;
+import entities.Module;
+import entities.Parameter;
+import entities.Repository;
+import entities.Service;
 import entities.Software;
 import entities.Template;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -54,6 +67,19 @@ public class TemplateBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allOrderedByDescription")
+    public List<TemplateDTO> getAllOrderedByDescription(){
+        try {
+            List<Template> templates = em.createNamedQuery("getAllTemplatesOrderedByDescription").getResultList();
+            return templatesToDTO(templates);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{description}")
     public List<TemplateDTO> getAll(@PathParam("description") String description){
         try {
@@ -78,6 +104,56 @@ public class TemplateBean {
             }
             ConfigBase template = new Template(templateDTO.getId(), templateDTO.getDescription(), software);
             software.addConfig(template);
+            
+            if (!templateDTO.getExtensions().isEmpty()) {
+                for (ExtensionDTO extensionDTO : templateDTO.getExtensions()) {
+                    Extension extension = em.find(Extension.class, extensionDTO.getId());
+                    template.addExtension(extension);
+                    extension.addConfig(template);
+                }
+            }
+            if (!templateDTO.getLicenses().isEmpty()) {
+                for (LicenseDTO licenseDTO : templateDTO.getLicenses()) {
+                    License license = em.find(License.class, licenseDTO.getId());
+                    template.addLicense(license);
+                    license.addConfig(template);
+                }
+            }
+            if (!templateDTO.getMaterials().isEmpty()) {
+                for (MaterialDTO materialDTO : templateDTO.getMaterials()) {
+                    Material material = em.find(Material.class, materialDTO.getId());
+                    template.addMaterial(material);
+                    material.setConfig(template);
+                }
+            }
+            if (!templateDTO.getModules().isEmpty()) {
+                for (ModuleDTO moduleDTO : templateDTO.getModules()) {
+                    Module module = em.find(Module.class, moduleDTO.getId());
+                    template.addModule(module);
+                    module.addConfig(template);
+                }
+            }
+            if (!templateDTO.getParameters().isEmpty()) {
+                for (ParameterDTO parameterDTO : templateDTO.getParameters()) {
+                    Parameter parameter = em.find(Parameter.class, parameterDTO.getId());
+                    template.addParameter(parameter);
+                    parameter.setConfig(template);
+                }
+            }
+            if (!templateDTO.getRepositories().isEmpty()) {
+                for (RepositoryDTO repositoryDTO : templateDTO.getRepositories()) {
+                    Repository repository = em.find(Repository.class, repositoryDTO.getId());
+                    template.addRepository(repository);
+                    repository.setConfig(template);
+                }
+            }
+            if (!templateDTO.getServices().isEmpty()) {
+                for (ServiceDTO serviceDTO : templateDTO.getServices()) {
+                    Service service = em.find(Service.class, serviceDTO.getId());
+                    template.addService(service);
+                    service.setConfig(template);
+                }
+            }
             em.persist(template);   
         }catch(Exception e){
             throw new EJBException(e.getMessage());

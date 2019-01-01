@@ -75,4 +75,22 @@ public class ParameterDTO {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ParameterDTO other = (ParameterDTO) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
 }

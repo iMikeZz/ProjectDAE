@@ -40,6 +40,9 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     private static final String SEARCHBYDESCRIPTION = "SEARCHBYDESCRIPTION";
     private static final String ALLTEMPLATES = "ALLTEMPLATES";
+    private static final String SORTTEMPLATESBYID = "SORTTEMPLATESBYID";
+    private static final String SORTTEMPLATESBYDESCRIPTION = "SORTTEMPLATESBYDESCRIPTION";
+    
    
     private static final String ALLCONFIGURATIONS = "ALLCONFIGURATIONS";
     
@@ -50,31 +53,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     private ConfigurationDTO newConfiguration;
     
     private String configurationsVersion = ALLCONFIGURATIONS;
-
-    public ConfigurationDTO getNewConfiguration() {
-        return newConfiguration;
-    }
-
-    public void setnewConfiguration(ConfigurationDTO newConfiguration) {
-        this.newConfiguration = newConfiguration;
-    }
-
-    public String getConfigurationsVersion() {
-        return configurationsVersion;
-    }
-
-    public void setConfigurationsVersion(String configurationsVersion) {
-        this.configurationsVersion = configurationsVersion;
-    }
     
-    public TemplateDTO getNewTemplate() {
-        return newTemplate;
-    }
 
-    public void setNewTemplate(TemplateDTO newTemplate) {
-        this.newTemplate = newTemplate;
-    }
-    
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
         this.newConfiguration = new ConfigurationDTO();
@@ -107,7 +87,38 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getALLCONFIGURATIONS() {
         return ALLCONFIGURATIONS;
     }
-  
+    
+    public ConfigurationDTO getNewConfiguration() {
+        return newConfiguration;
+    }
+
+    public void setnewConfiguration(ConfigurationDTO newConfiguration) {
+        this.newConfiguration = newConfiguration;
+    }
+
+    public String getConfigurationsVersion() {
+        return configurationsVersion;
+    }
+
+    public void setConfigurationsVersion(String configurationsVersion) {
+        this.configurationsVersion = configurationsVersion;
+    }
+    
+    public TemplateDTO getNewTemplate() {
+        return newTemplate;
+    }
+
+    public void setNewTemplate(TemplateDTO newTemplate) {
+        this.newTemplate = newTemplate;
+    }
+
+    public String getSORTTEMPLATESBYID() {
+        return SORTTEMPLATESBYID;
+    }
+
+    public String getSORTTEMPLATESBYDESCRIPTION() {
+        return SORTTEMPLATESBYDESCRIPTION;
+    }
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -118,6 +129,10 @@ public class ConfigurationManager extends Manager implements Serializable {
                     if (!searchValue.equals("")) {
                         return getTemplatesListByUrl("/templates/" + searchValue);
                     }
+                    return getTemplatesListByUrl("/templates/all");
+                case SORTTEMPLATESBYDESCRIPTION:
+                    return getTemplatesListByUrl("/templates/allOrderedByDescription");
+                case SORTTEMPLATESBYID:
                     return getTemplatesListByUrl("/templates/all");
                 default:
                     return null;
@@ -167,6 +182,11 @@ public class ConfigurationManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
+    public String cancelCreateTemplate() {
+        newTemplate.reset();
         return "/admin/admin_index?faces-redirect=true";
     }
     
@@ -260,10 +280,120 @@ public class ConfigurationManager extends Manager implements Serializable {
                 });
     }
     
+    public void removeExtension(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtension");
+        ExtensionDTO extensionDTO = (ExtensionDTO)param.getValue();
+        if (newTemplate.getExtensions().contains(extensionDTO)) {
+            newTemplate.removeExtension(extensionDTO);
+        }
+    }
+    
+    public void addExtension(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addExtension");
+        ExtensionDTO extensionDTO = (ExtensionDTO)param.getValue();
+        if (!newTemplate.getExtensions().contains(extensionDTO)) {
+            newTemplate.addExtension(extensionDTO);
+        }
+    }
+    
+    public void removeLicense(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeLicense");
+        LicenseDTO licenseDTO = (LicenseDTO)param.getValue();
+        if (newTemplate.getLicenses().contains(licenseDTO)) {
+            newTemplate.removeLicense(licenseDTO);
+        }
+    }
+    
+    public void addLicense(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addLicense");
+        LicenseDTO licenseDTO = (LicenseDTO)param.getValue();
+        if (!newTemplate.getLicenses().contains(licenseDTO)) {
+            newTemplate.addLicense(licenseDTO);
+        }
+    }
+    
+    public void removeMaterial(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterial");
+        MaterialDTO materialDTO = (MaterialDTO)param.getValue();
+        if (newTemplate.getMaterials().contains(materialDTO)) {
+            newTemplate.removeMaterial(materialDTO);
+        }
+    }
+    
+    public void addMaterial(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterial");
+        MaterialDTO materialDTO = (MaterialDTO)param.getValue();
+        if (!newTemplate.getMaterials().contains(materialDTO)) {
+            newTemplate.addMaterial(materialDTO);
+        }
+    }
+    
+    public void removeModule(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeModule");
+        ModuleDTO moduleDTO = (ModuleDTO)param.getValue();
+        if (newTemplate.getModules().contains(moduleDTO)) {
+            newTemplate.removeModule(moduleDTO);
+        }
+    }
+    
+    public void addModule(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addModule");
+        ModuleDTO moduleDTO = (ModuleDTO)param.getValue();
+        if (!newTemplate.getModules().contains(moduleDTO)) {
+            newTemplate.addModule(moduleDTO);
+        }
+    }
+    
+    public void removeParamater(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeParamater");
+        ParameterDTO parameterDTO = (ParameterDTO)param.getValue();
+        if (newTemplate.getParameters().contains(parameterDTO)) {
+            newTemplate.removeParameter(parameterDTO);
+        }
+    }
+    
+    public void addParamater(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addParamater");
+        ParameterDTO parameterDTO = (ParameterDTO)param.getValue();
+        if (!newTemplate.getParameters().contains(parameterDTO)) {
+            newTemplate.addParameter(parameterDTO);
+        }
+    }
+    
+    public void removeRepository(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeRepository");
+        RepositoryDTO repositoryDTO = (RepositoryDTO)param.getValue();
+        if (newTemplate.getRepositories().contains(repositoryDTO)) {
+            newTemplate.removeRepository(repositoryDTO);
+        }
+    }
+    
+    public void addRepository(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addRepository");
+         RepositoryDTO repositoryDTO = (RepositoryDTO)param.getValue();
+        if (!newTemplate.getRepositories().contains(repositoryDTO)) {
+            newTemplate.addRepository(repositoryDTO);
+        }
+    }
+    
+    public void removeService(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeService");
+        ServiceDTO serviceDTO = (ServiceDTO)param.getValue();
+        if (newTemplate.getServices().contains(serviceDTO)) {
+            newTemplate.removeService(serviceDTO);
+        }
+    }
+    
+    public void addService(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addService");
+        ServiceDTO serviceDTO = (ServiceDTO)param.getValue();
+        if (!newTemplate.getServices().contains(serviceDTO)) {
+            newTemplate.addService(serviceDTO);
+        }
+    }
     //*************CONFIGURATIONS*********************
         public List<ConfigurationDTO> getAllConfigurations(){
         try {
-            System.out.println("ESTOU AQUI");
             switch (configurationsVersion) {
                 case ALLCONFIGURATIONS:
                     return getConfigurationsListByUrl("/configurations/all");
