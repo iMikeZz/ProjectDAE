@@ -68,6 +68,19 @@ public class LicenseManager extends Manager implements Serializable {
         }
     }
     
+    public List<LicenseDTO> getAllConfigurationLicenses(){
+        try {
+            return client.target(baseUri)
+                    .path("/licenses/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<LicenseDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration licenses in method allConfigurationLicenses", logger);
+            return null;
+        }
+    }
+    
     public List<LicenseDTO> getAllLicenses(){
         try {
             if (manager.getCurrentTemplate() != null) {

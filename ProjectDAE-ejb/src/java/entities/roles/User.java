@@ -36,6 +36,9 @@ public class User implements Serializable {
     @NotNull(message = "Name can not be empty")
     protected String name;
     
+    //@NotNull(message = "Email can not be empty")
+    protected String email;
+    
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     protected UserGroup group;
 
@@ -71,6 +74,14 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     private String hashPassword(String password) {

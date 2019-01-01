@@ -71,7 +71,20 @@ public class ServiceManager extends Manager implements Serializable {
                     .get(new GenericType<List<ServiceDTO>>() {
                     });
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllTemplateServices", logger);
+            return null;
+        }
+    }
+    
+    public List<ServiceDTO> getAllConfigurationServices(){
+        try {
+            return client.target(baseUri)
+                    .path("/services/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ServiceDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration services in method getAllConfigurationServices", logger);
             return null;
         }
     }

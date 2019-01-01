@@ -86,7 +86,7 @@ public class ExtensionBean {
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{id}")
-    public List<ExtensionDTO> getAllByTemplate(@PathParam("id") int id){
+    public List<ExtensionDTO> getAllByConfigBase(@PathParam("id") int id){
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id);
             if (configBase == null) {

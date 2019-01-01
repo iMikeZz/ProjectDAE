@@ -68,6 +68,19 @@ public class ModuleManager extends Manager implements Serializable {
         }
     }
     
+    public List<ModuleDTO> getAllConfigurationModules(){
+        try {
+            return client.target(baseUri)
+                    .path("/modules/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ModuleDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration modules in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
     public List<ModuleDTO> getAllModules(){
         try {
             if (manager.getCurrentTemplate() != null) {

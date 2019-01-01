@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Configurations List</title>
+    </h:head>
+    <h:body>
+        <h:form>
+         <!-- ########################################## -->
+         <h:inputText
+                    size="20"
+                    value="#{clientManager.searchSoftware}" />
+
+         <h:commandButton
+                    value="Search by software"
+                    action="#{clientManager.search(clientManager.SOFTWARE)}" 
+                    />
+         <br/>
+         <!-- ########################################## -->
+         <h:inputText
+                    size="20"
+                    value="#{clientManager.searchDescription}" />
+
+         <h:commandButton
+                    value="Search by description"
+                    action="#{clientManager.search(clientManager.DESCRIPTION)}" 
+                    />
+         <br/>
+         <!-- ########################################## -->
+         <h:selectOneMenu
+                value="#{clientManager.searchState}" >
+                <f:selectItems
+                    value="#{clientManager.allStates}"
+                    var="state"
+                    itemValue="#{state}"
+                    itemLabel="#{state.toLowerCase()}" />
+            </h:selectOneMenu>
+
+         <h:commandButton
+                    value="Search by state"
+                    action="#{clientManager.search(clientManager.STATE)}" 
+                    />
+         <br/>
+         <h:commandButton
+                    value="Search all"
+                    action="#{clientManager.search(clientManager.ALL)}" 
+                    />
+        </h:form>
+        <br/>
+        <h:form>
+            <h:outputText value="No configurations found!" rendered="#{clientManager.isMyConfigListEmpty()}" />
+
+            <h:dataTable
+                rendered="#{!clientManager.isMyConfigListEmpty()}"
+                var="configuration"
+                summary="List of my configurations"
+                value="#{clientManager.myConfigList}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Software"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.softwareName}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.description}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="State"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{configuration.state.toLowerCase() }"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                    <h:commandLink value="details" action="client_config_details?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="questions" action="forum/client_config_questions?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                    </h:commandLink>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

@@ -6,6 +6,7 @@
 package web;
 
 import dtos.ConfigurationDTO;
+import dtos.QuestionDTO;
 import dtos.TemplateDTO;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -37,6 +38,8 @@ public class Manager implements Serializable {
     protected TemplateDTO currentTemplate;
     
     protected ConfigurationDTO currentConfiguration;
+    
+    protected QuestionDTO currentQuestion;
 
     protected String currentClientUsername = null;
     
@@ -109,5 +112,13 @@ public class Manager implements Serializable {
     public void setCurrentConfiguration(ConfigurationDTO currentConfiguration) {
         this.currentConfiguration = currentConfiguration;
     }
+
+    public QuestionDTO getCurrentQuestion() {
+        return currentQuestion;
+    }
+
+    public void setCurrentQuestion(QuestionDTO currentQuestion) {
+        this.currentQuestion = currentQuestion;
+    }    
     
 }

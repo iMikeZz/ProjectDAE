@@ -9,9 +9,7 @@ import dtos.ConfigurationDTO;
 import entities.ConfigBase;
 import entities.Configuration;
 import entities.Software;
-import entities.Template;
 import entities.roles.Client;
-import utils.State;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -47,6 +45,69 @@ public class ConfigurationBean {
     public List<ConfigurationDTO> getAll(){
         try {
             List<Configuration> configurations = em.createNamedQuery("getAllConfigurations").getResultList();
+            return configurationsToDTO(configurations);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("client/{username}")
+    public List<ConfigurationDTO> getAllByClient(@PathParam("username") String username){
+        try {
+            List<Configuration> configurations = em.createNamedQuery("getAllConfigurationsByClient")
+                    .setParameter("username", username)
+                    .getResultList();
+            return configurationsToDTO(configurations);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("client/{username}/software/{search}")
+    public List<ConfigurationDTO> getBySoftwareByClient(@PathParam("username") String username, @PathParam("search") String search){
+        try {
+            List<Configuration> configurations = em.createNamedQuery("getConfigurationsBySoftwareByClient")
+                    .setParameter("username", username)
+                    .setParameter("search", "%" + search + "%")
+                    .getResultList();
+            return configurationsToDTO(configurations);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("client/{username}/description/{search}")
+    public List<ConfigurationDTO> getByDescriptionByClient(@PathParam("username") String username, @PathParam("search") String search){
+        try {
+            List<Configuration> configurations = em.createNamedQuery("getConfigurationsByDescriptionByClient")
+                    .setParameter("username", username)
+                    .setParameter("search", "%" + search + "%")
+                    .getResultList();
+            return configurationsToDTO(configurations);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("client/{username}/state/{search}")
+    public List<ConfigurationDTO> getAllByClient(@PathParam("username") String username, @PathParam("search") String search){
+        try {
+            List<Configuration> configurations = em.createNamedQuery("getConfigurationsByStateByClient")
+                    .setParameter("username", username)
+                    .setParameter("search", search)
+                    .getResultList();
             return configurationsToDTO(configurations);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());

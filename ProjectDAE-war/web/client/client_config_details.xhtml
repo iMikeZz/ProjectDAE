@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Configuration details</title>
+    </h:head>
+    <h:body>
+        <h3>Configuration Details</h3>
+        <h:panelGrid columns="2">
+            <h:outputLabel for="id" value="Id: "/>
+            <h:outputText id="id" value="#{manager.currentConfiguration.id}" />
+            
+            <h:outputLabel for="description" value="Description: "/>
+            <h:outputText id="description" value="#{manager.currentConfiguration.description}" />
+            
+            <h:outputLabel for="software" value="Software: "/>
+            <h:outputText id="software" value="#{manager.currentConfiguration.softwareName}" />
+        </h:panelGrid>
+        
+        <h4> Materials </h4>
+        <h:dataTable
+            var="material"
+            summary="List of all materials"
+            value="#{materialManager.allConfigurationMaterials}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{material.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Description"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{material.description}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Extensions </h4>
+        <h:dataTable
+            var="extension"
+            summary="List of all Extensions"
+            value="#{extensionManager.allConfigurationExtensions}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{extension.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Extension"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{extension.extension}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Licenses </h4>
+        <h:dataTable
+            var="license"
+            summary="List of all Licenses"
+            value="#{licenseManager.allConfigurationLicenses}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{license.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="License"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{license.license}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Modules </h4>
+        <h:dataTable
+            var="module"
+            summary="List of all modules"
+            value="#{moduleManager.allConfigurationModules}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{module.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Description"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{module.description}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Parameters </h4>
+        <h:dataTable
+            var="parameter"
+            summary="List of all parameters"
+            value="#{parameterManager.allConfigurationParameters}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Parameter"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.parameter}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Value"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{parameter.value}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Repositories </h4>
+        <h:dataTable
+            var="repository"
+            summary="List of all subjects"
+            value="#{repositoryManager.allConfigurationRepositories}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{repository.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Link"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{repository.link}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+        
+        <h4> Services </h4>
+        <h:dataTable
+            var="service"
+            summary="List of all subjects"
+            value="#{serviceManager.allConfigurationServices}"
+            rules="all"
+            cellpadding="5">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{service.id}"></h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Service"></h:outputText>
+                </f:facet>
+                <h:outputText value="#{service.service}"></h:outputText>
+            </h:column>
+        </h:dataTable>
+    </h:body>
+</html>
+

@@ -67,6 +67,19 @@ public class RepositoryManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    public List<RepositoryDTO> getAllConfigurationRepositories(){
+        try {
+            return client.target(baseUri)
+                    .path("/repositories/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<RepositoryDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration repositories in method getAllConfigurationRepositories", logger);
+            return null;
+        }
+    }
    
     public List<RepositoryDTO> getAllRepositories(){
         try {

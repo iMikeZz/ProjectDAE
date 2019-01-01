@@ -68,6 +68,19 @@ public class ExtensionManager extends Manager implements Serializable {
         }
     }
     
+    public List<ExtensionDTO> getAllConfigurationExtensions(){
+        try {
+            return client.target(baseUri)
+                    .path("/extensions/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration extensions in method allConfigurationExtensions", logger);
+            return null;
+        }
+    }
+    
     public List<ExtensionDTO> getAllExtensions(){
         try {
             return client.target(baseUri)

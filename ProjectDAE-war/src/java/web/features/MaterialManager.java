@@ -69,6 +69,19 @@ public class MaterialManager extends Manager implements Serializable {
         }
     }
     
+    public List<MaterialDTO> getAllConfigurationMaterials(){
+        try {
+            return client.target(baseUri)
+                    .path("/materials/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<MaterialDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration materials in method getAllConfigurationMaterials", logger);
+            return null;
+        }
+    }
+    
     public List<MaterialDTO> getAllMaterials(){
         try {
             return client.target(baseUri)

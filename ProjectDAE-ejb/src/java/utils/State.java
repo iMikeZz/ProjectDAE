@@ -10,7 +10,7 @@ package utils;
  * @author migue
  */
 public enum State {
-    ATIVA, INATIVA, SUSPENSA
+    ACTIVE, INACTIVE, SUSPENDED
     /*
     ATIVA("Ativa"), INATIVA("Inativa"), SUSPENSA("Suspensa");
 

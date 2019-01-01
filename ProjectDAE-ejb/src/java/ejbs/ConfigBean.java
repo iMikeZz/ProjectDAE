@@ -7,10 +7,12 @@ package ejbs;
 
 
 import dtos.AdministratorDTO;
+import dtos.AnswerDTO;
 import dtos.ClientDTO;
 import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
+import dtos.QuestionDTO;
 import dtos.TemplateDTO;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -45,7 +47,13 @@ public class ConfigBean {
     
     @EJB
     private ConfigurationBean configurationBean;
-            
+     
+    @EJB
+    private QuestionBean questionBean;
+    
+    @EJB
+    private AnswerBean answerBean;
+    
     @PostConstruct
     public void populateDB() { 
         // Administrators
@@ -77,6 +85,8 @@ public class ConfigBean {
         ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
         configurationBean.create(config1);
         
+        questionBean.create(new QuestionDTO(1, "First question ever on the new epic forum", config1.getId(), "1234567"));
+        answerBean.create(new AnswerDTO(1, "I answered this question", 1, "1234567"));
         //materialBean.addMaterialToTemplate(template1, 1);
         //materialBean.removeMaterialFromTemplate(template1, 1);
         //extensionBean.addExtensionToTemplate(, 1); //testado pela web

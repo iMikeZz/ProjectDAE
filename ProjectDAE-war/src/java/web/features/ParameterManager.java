@@ -75,6 +75,19 @@ public class ParameterManager extends Manager implements Serializable {
         }
     }
     
+    public List<ParameterDTO> getAllConfigurationParameters(){
+        try {
+            return client.target(baseUri)
+                    .path("/parameters/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ParameterDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting configuration parameters in method getAllConfigurationParameters", logger);
+            return null;
+        }
+    }
+    
     public List<ParameterDTO> getAllParameters(){
         try {
             return client.target(baseUri)
