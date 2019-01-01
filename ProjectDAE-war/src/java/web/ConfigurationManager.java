@@ -40,6 +40,9 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     private static final String SEARCHBYDESCRIPTION = "SEARCHBYDESCRIPTION";
     private static final String ALLTEMPLATES = "ALLTEMPLATES";
+    private static final String SORTTEMPLATESBYID = "SORTTEMPLATESBYID";
+    private static final String SORTTEMPLATESBYDESCRIPTION = "SORTTEMPLATESBYDESCRIPTION";
+    
    
     private static final String ALLCONFIGURATIONS = "ALLCONFIGURATIONS";
     
@@ -109,6 +112,13 @@ public class ConfigurationManager extends Manager implements Serializable {
         this.newTemplate = newTemplate;
     }
 
+    public String getSORTTEMPLATESBYID() {
+        return SORTTEMPLATESBYID;
+    }
+
+    public String getSORTTEMPLATESBYDESCRIPTION() {
+        return SORTTEMPLATESBYDESCRIPTION;
+    }
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -119,6 +129,10 @@ public class ConfigurationManager extends Manager implements Serializable {
                     if (!searchValue.equals("")) {
                         return getTemplatesListByUrl("/templates/" + searchValue);
                     }
+                    return getTemplatesListByUrl("/templates/all");
+                case SORTTEMPLATESBYDESCRIPTION:
+                    return getTemplatesListByUrl("/templates/allOrderedByDescription");
+                case SORTTEMPLATESBYID:
                     return getTemplatesListByUrl("/templates/all");
                 default:
                     return null;

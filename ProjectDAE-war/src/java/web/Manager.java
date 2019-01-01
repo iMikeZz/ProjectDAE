@@ -48,14 +48,14 @@ public class Manager implements Serializable {
     
     @PostConstruct
     public void init(){
-        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
-        client.register(feature);
+        if (userManager.getUsername() != null && userManager.getPassword() != null) {
+            HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
+            client.register(feature);
+        }  
     }
     
     public void softwareChangeListener(ValueChangeEvent e){
         currentSoftwareId = Integer.parseInt(e.getNewValue().toString());
-        
-        System.out.println(currentSoftwareId);
     }
     
     public void clientChangeListener(ValueChangeEvent e){

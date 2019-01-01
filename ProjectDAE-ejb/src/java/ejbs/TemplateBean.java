@@ -67,6 +67,19 @@ public class TemplateBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allOrderedByDescription")
+    public List<TemplateDTO> getAllOrderedByDescription(){
+        try {
+            List<Template> templates = em.createNamedQuery("getAllTemplatesOrderedByDescription").getResultList();
+            return templatesToDTO(templates);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{description}")
     public List<TemplateDTO> getAll(@PathParam("description") String description){
         try {

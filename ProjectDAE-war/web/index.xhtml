@@ -9,14 +9,40 @@
     </h:head>
     <h:body>
         Pagina principal
+        <h:form>
+         <h:inputText
+                    id="searchValue"
+                    size="20"
+                    value="#{configurationManager.searchValue}" />
+         
+         <h:commandButton
+                    id="submit"
+                    value="Search"
+                    action="#{configurationManager.setTemplatesVersion(configurationManager.SEARCHBYDESCRIPTION)}" 
+                    />
+        </h:form>
+        <h:form>
+        <h:commandButton
+                    id="orderById"
+                    value="Sort by Username"
+                    action="#{configurationManager.setTemplatesVersion(configurationManager.SORTTEMPLATESBYID)}" 
+                    />
+        </h:form>
         
         <h:form>
+        <h:commandButton
+                    id="orderByDescription"
+                    value="Sort by Name"
+                    action="#{configurationManager.setTemplatesVersion(configurationManager.SORTTEMPLATESBYDESCRIPTION)}" 
+                    />
+        </h:form>
+        <h:form>
             <h:dataTable
-            var="template"
-            summary="List of all Templates"
-            value="#{anonymousManager.allTemplates}"
-            rules="all"
-            cellpadding="5">
+                var="template"
+                summary="List of all Templates"
+                value="#{configurationManager.allTemplates}"
+                rules="all"
+                cellpadding="5">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="Id"></h:outputText>
@@ -29,10 +55,13 @@
                     </f:facet>
                     <h:outputText value="#{template.description}"></h:outputText>
                 </h:column>
-                 <h:column>
+                <h:column>
                     <f:facet name="header">
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
+                    <h:commandLink value="Details" action="admin/templates/admin_template_details?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentTemplate}" value="#{template}"/>
+                    </h:commandLink>
                 </h:column>
             </h:dataTable>
         </h:form>

@@ -20,7 +20,12 @@
             <h:outputText id="software" value="#{manager.currentTemplate.softwareName}" />
         </h:panelGrid>
         
-        <h:link value="Return to the main page" outcome="/admin/admin_index" />
+        <h:form>
+            <h:commandButton
+                        id="cancel"
+                        value="Return to the main page"
+                        onclick="history.back(); return false;" />
+        </h:form>
         
         <h4> Template Extensions </h4>
         <h:dataTable
