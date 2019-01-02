@@ -79,7 +79,7 @@ public class ForumManager extends Manager implements Serializable {
         return "client_config_questions?faces-redirect=true";
     }
     
-    public String createAnswer() {
+    public String createAnswer(String filename) {
         try {
             newAnswer.setQuestion(manager.currentQuestion.getId());
             newAnswer.setUserID(userManager.getUsername());
@@ -93,7 +93,7 @@ public class ForumManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        return "client_config_questions?faces-redirect=true";
+        return filename + "?faces-redirect=true";
     }
     
     public Manager getManager() {
@@ -110,5 +110,13 @@ public class ForumManager extends Manager implements Serializable {
 
     public void setNewQuestion(QuestionDTO newQuestion) {
         this.newQuestion = newQuestion;
+    }
+    
+    public AnswerDTO getNewAnswer() {
+        return newAnswer;
+    }
+
+    public void setNewAnswer(AnswerDTO newAnswer) {
+        this.newAnswer = newAnswer;
     }
 }

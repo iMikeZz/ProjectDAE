@@ -249,14 +249,17 @@
                     <f:facet name="header">
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
-                     &nbsp;
-                     <h:commandLink value="Update" action="configurations/admin_configuraiton_update?facelet-redirect=true">
-                         <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
-                     </h:commandLink>
-                     &nbsp;
-                     <h:commandLink value="Remove" actionListener="#{configurationManager.removeConfiguration}">
-                         <f:param name="deleteClientId" id="deleteConfigurationId" value="#{configuration.id}" />
-                     </h:commandLink>
+                    <h:commandLink value="Questions" action="forum/admin_config_questions?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="configurations/admin_configuraiton_update?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{configurationManager.removeConfiguration}">
+                        <f:param name="deleteClientId" id="deleteConfigurationId" value="#{configuration.id}" />
+                    </h:commandLink>
                 </h:column>
             </h:dataTable>
         </h:form>
