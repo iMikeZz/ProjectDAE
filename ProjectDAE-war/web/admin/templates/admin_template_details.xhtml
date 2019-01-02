@@ -89,7 +89,7 @@
                 </f:facet>
                 <h:outputText value="#{material.description}"></h:outputText>
             </h:column>
-            <h:column>
+            <h:column rendered="#{material.imgUrl != null}">
                 <f:facet name="header">
                     <h:outputText value="Actions"></h:outputText>
                 </f:facet>
