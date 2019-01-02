@@ -168,4 +168,73 @@ public class MaterialManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    //**************CONFIGURATION***********************
+    
+    public String createMaterialConfiguration() {
+        try {
+            if (manager.getCurrentConfiguration() != null) {
+                newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
+            client.target(baseUri)
+                    .path("materials/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newMaterial));
+            newMaterial.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentTemplate() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addMaterialConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");
+            int material_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/materials/addToConfiguration/" + material_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding material in method addMaterialConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeMaterialConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterialId");
+            int material_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/materials/removeFromConfiguration/" + material_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing material in method removeMaterial ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<MaterialDTO> getMaterialsNotInConfiguration(){
+        try {
+            return client.target(baseUri)
+                    .path("/materials/materialsNotInConfiguration/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<MaterialDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getMaterialsNotInConfiguration", logger);
+            return null;
+        }
+    }
+    
 }

@@ -253,7 +253,11 @@
                         <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="configurations/admin_configuraiton_update?facelet-redirect=true">
+                    <h:commandLink value="Details" action="configurations/admin_configuration_details?facelet-redirect=true">
+                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="configurations/admin_configuration_update?facelet-redirect=true">
                         <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
                     </h:commandLink>
                     &nbsp;

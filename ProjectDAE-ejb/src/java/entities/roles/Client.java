@@ -5,6 +5,7 @@
  */
 package entities.roles;
 
+import entities.ConfigBase;
 import entities.Configuration;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -34,8 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT t FROM Client t ORDER BY t.username"
     )
 })
-@XmlRootElement(name = "Client")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Client extends User implements Serializable {
     
     @NotNull(message = "Address can not be empty")
@@ -81,5 +80,13 @@ public class Client extends User implements Serializable {
 
     public void setConfigurations(List<Configuration> configurations) {
         this.configurations = configurations;
+    }
+    
+    public void addConfig(Configuration configBase){
+        this.configurations.add(configBase);
+    }
+    
+    public void removeConfig(Configuration configBase){
+        this.configurations.remove(configBase);
     }
 }

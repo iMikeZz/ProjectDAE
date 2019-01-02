@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.TemplateDTO;
 import entities.ConfigBase;
@@ -161,6 +162,90 @@ public class ExtensionBean {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("extensionsNotInTemplate/{id_config}/{id_software}")
     public List<ExtensionDTO> getExtensionsNotInTemplate(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Software software = em.find(Software.class, id_software);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            
+            List<Extension> allExtensions = new ArrayList<>(software.getExtensions());
+            
+            allExtensions.removeAll(configBase.getExtensions());
+            
+            return extensionsToDTO(allExtensions);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{id_extension}")
+    public void addExtensionToConfiguration(ConfigurationDTO configurationDTO, @PathParam("id_extension") int extension_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Extension extension = em.find(Extension.class, extension_id);
+            if (extension == null) {
+                throw new EJBException("Extension doesn't exists");
+            }
+            
+            if (configBase.getExtensions().contains(extension)) {
+                return;
+            }
+            
+            if (extension.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.addExtension(extension);
+            extension.addConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{id_extension}")
+    public void removeExtensionFromConfiguration(ConfigurationDTO configurationDTO, @PathParam("id_extension") int extension_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Extension extension = em.find(Extension.class, extension_id);
+            if (extension == null) {
+                throw new EJBException("Extension doesn't exists");
+            }
+            
+            if (!extension.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.removeExtension(extension);
+            extension.removeConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("extensionsNotInConfiguration/{id_config}/{id_software}")
+    public List<ExtensionDTO> getExtensionsNotInConfiguration(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id_config);
             if (configBase == null) {

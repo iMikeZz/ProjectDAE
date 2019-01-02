@@ -6,6 +6,8 @@
 package dtos;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,8 +26,22 @@ public class ConfigurationDTO implements Serializable{
     private String state;
     private String clientUsername;
     private String contractData;
+    private List<ExtensionDTO> extensions;
+    private List<LicenseDTO> licenses;
+    private List<ModuleDTO> modules;
+    private List<ServiceDTO> services;
+    private List<ParameterDTO> parameters;
+    private List<RepositoryDTO> repositories;
+    private List<MaterialDTO> materials;
 
     public ConfigurationDTO() {
+        licenses = new LinkedList<>();
+        modules = new LinkedList<>();
+        parameters = new LinkedList<>();
+        services = new LinkedList<>();
+        repositories = new LinkedList<>();
+        materials = new LinkedList<>();
+        extensions = new LinkedList<>();
     }
 
     public ConfigurationDTO(int id, String description, int softwareCode, String softwareName, String state, String clientUsername, String contractData) {
@@ -36,6 +52,14 @@ public class ConfigurationDTO implements Serializable{
         this.state = state;
         this.clientUsername = clientUsername;
         this.contractData = contractData;
+        
+        licenses = new LinkedList<>();
+        modules = new LinkedList<>();
+        parameters = new LinkedList<>();
+        services = new LinkedList<>();
+        repositories = new LinkedList<>();
+        materials = new LinkedList<>();
+        extensions = new LinkedList<>();
     }
 
     public String getClientUsername() {
@@ -68,6 +92,14 @@ public class ConfigurationDTO implements Serializable{
         setSoftwareCode(0);
         setSoftwareName(null);
         setState(null);
+        
+        licenses = new LinkedList<>();
+        modules = new LinkedList<>();
+        parameters = new LinkedList<>();
+        services = new LinkedList<>();
+        repositories = new LinkedList<>();
+        materials = new LinkedList<>();
+        extensions = new LinkedList<>();
     }
 
     public int getId() {
@@ -100,5 +132,117 @@ public class ConfigurationDTO implements Serializable{
 
     public void setSoftwareName(String softwareName) {
         this.softwareName = softwareName;
+    }
+
+    public List<ExtensionDTO> getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(List<ExtensionDTO> extensions) {
+        this.extensions = extensions;
+    }
+
+    public List<LicenseDTO> getLicenses() {
+        return licenses;
+    }
+
+    public void setLicenses(List<LicenseDTO> licenses) {
+        this.licenses = licenses;
+    }
+
+    public List<ModuleDTO> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<ModuleDTO> modules) {
+        this.modules = modules;
+    }
+
+    public List<ServiceDTO> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceDTO> services) {
+        this.services = services;
+    }
+
+    public List<ParameterDTO> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<ParameterDTO> parameters) {
+        this.parameters = parameters;
+    }
+
+    public List<RepositoryDTO> getRepositories() {
+        return repositories;
+    }
+
+    public void setRepositories(List<RepositoryDTO> repositories) {
+        this.repositories = repositories;
+    }
+
+    public List<MaterialDTO> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<MaterialDTO> materials) {
+        this.materials = materials;
+    }
+    
+        public void addExtension(ExtensionDTO extension){
+        this.extensions.add(extension);
+    }
+    
+    public void removeExtension(ExtensionDTO extension){
+        this.extensions.remove(extension);
+    }
+    
+    public void addLicense(LicenseDTO license){
+        this.licenses.add(license);
+    }
+    
+    public void removeLicense(LicenseDTO license){
+        this.licenses.remove(license);
+    }
+    
+    public void addModule(ModuleDTO module){
+        this.modules.add(module);
+    }
+    
+    public void removeModule(ModuleDTO module){
+        this.modules.remove(module);
+    }
+    
+    public void addParameter(ParameterDTO parameter){
+        this.parameters.add(parameter);
+    }
+    
+    public void removeParameter(ParameterDTO parameter){
+        this.parameters.remove(parameter);
+    }
+    
+    public void addService(ServiceDTO service){
+        this.services.add(service);
+    }
+    
+    public void removeService(ServiceDTO service){
+        this.services.remove(service);
+    }
+    
+    public void addRepository(RepositoryDTO repository){
+        this.repositories.add(repository);
+    }
+    
+    public void removeRepository(RepositoryDTO repository){
+        this.repositories.remove(repository);
+    }
+    
+    public void addMaterial(MaterialDTO material){
+        this.materials.add(material);
+    }
+    
+    public void removeMaterial(MaterialDTO material){
+        this.materials.remove(material);
     }
 }

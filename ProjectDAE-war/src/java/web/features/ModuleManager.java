@@ -169,4 +169,95 @@ public class ModuleManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    
+    //*******************CONFIGURATIONS***********************
+    public List<ModuleDTO> getAllModulesConfiguration(){
+        try {
+            if (manager.getCurrentConfiguration() != null) {
+                manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
+            }
+            return client.target(baseUri)
+                    .path("/modules/all/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ModuleDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllModulesConfiguration", logger);
+            return null;
+        }
+    }
+    
+    public String createModuleConfiguration() {
+        try {
+            newModule.setSoftware_id(manager.getCurrentSoftwareId());
+            if (manager.getCurrentTemplate() != null){
+                client.target(baseUri)
+                        .path("modules/create/" + manager.getCurrentConfiguration().getId())
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newModule));
+                newModule.reset();
+            } else{
+                client.target(baseUri)
+                        .path("modules/create/" + 0)
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newModule));
+                newModule.reset();
+            }
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentTemplate() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addModuleConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
+            int module_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/modules/addToConfiguration/" + module_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding module in method addModuleConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeModuleConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
+            int module_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/modules/removeFromConfiguration/" + module_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentTemplate()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing module in method removeModuleConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<ModuleDTO> getModulesNotInConfiguration(){
+        try {
+            manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
+            return client.target(baseUri)
+                    .path("/modules/modulesNotInConfiguration/" + manager.getCurrentConfiguration().getId() + "/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ModuleDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getModulesNotInConfiguration", logger);
+            return null;
+        }
+    }
 }

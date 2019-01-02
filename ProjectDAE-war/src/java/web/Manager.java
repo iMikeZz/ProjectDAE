@@ -36,7 +36,7 @@ public class Manager implements Serializable {
     protected int currentSoftwareId = 1;
     
     protected TemplateDTO currentTemplate;
-    
+        
     protected ConfigurationDTO currentConfiguration;
     
     protected QuestionDTO currentQuestion;

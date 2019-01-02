@@ -5,6 +5,7 @@
 */
 package web.features;
 
+import dtos.ConfigurationDTO;
 import web.*;
 import dtos.ExtensionDTO;
 import java.io.Serializable;
@@ -129,6 +130,9 @@ public class ExtensionManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
         if (manager.getCurrentTemplate() != null)
             return "/admin/templates/admin_template_update?faces-redirect=true";
         
@@ -159,6 +163,80 @@ public class ExtensionManager extends Manager implements Serializable {
                     .path("/extensions/removeFromTemplate/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing extension in method removeExtension ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
+    //************CONFIGURATIONS******************
+    public List<ExtensionDTO> getExtensionsNotInConfiguration(){
+        try {
+            manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
+            return client.target(baseUri)
+                    .path("/extensions/extensionsNotInConfiguration/" + manager.getCurrentConfiguration().getId() + "/" + manager.getCurrentSoftwareId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ExtensionDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
+            return null;
+        }
+    }
+    
+    public String createExtensionConfiguration() {
+        try {
+            newExtension.setSoftware_id(manager.getCurrentSoftwareId());
+            if (manager.getCurrentConfiguration() != null){
+              client.target(baseUri)
+                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();  
+            } else {
+                client.target(baseUri)
+                    .path("extensions/create/" + 0)
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();
+            }
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentConfiguration() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addExtensionConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
+            int extension_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/extensions/addToConfiguration/"+ extension_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding extension in method addExtension ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeExtensionConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
+            int extension_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/extensions/removeFromConfiguration/"+ extension_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing extension in method removeExtension ", logger);
