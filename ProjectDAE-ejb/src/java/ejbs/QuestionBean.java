@@ -32,7 +32,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author josea
  */
-@DeclareRoles({"Client"})
+@DeclareRoles({"Client", "Administrator"})
 @Stateless
 @Path("/questions")
 public class QuestionBean {
@@ -41,7 +41,7 @@ public class QuestionBean {
     EntityManager em;
     
     @GET
-    //@RolesAllowed({"Administrator"})
+    //@RolesAllowed({"Client","Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{configuration}")
     public List<QuestionDTO> getConfigurationQuestions(@PathParam("configuration") int config_id){

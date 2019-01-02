@@ -4,25 +4,47 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Question answers</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:outputText value="Question: #{manager.currentQuestion.content}" />
-            <br/>
-            <c:forEach var="answer" items="#{forumManager.allQuestionAnswers}">
-                <h:outputText value="#{answer.user_name}: " />
-                <h:outputText value="#{answer.content}" />
-                <br/>
-            </c:forEach>
-            <br/>
-            <h:link value="Reply" outcome="client_answer_create"/>
-            <br/>
-            <br/>
-            <h:outputLink value="client_config_questions.xhtml" >
-                Back
-            </h:outputLink>
-        </h:form>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        
+        <br/>
+        <div class="container">
+            <h:form>
+                <div class="jumbotron">
+                    <h1 class="display-4">
+                        #{manager.currentQuestion.content}
+                    </h1>
+                    <p class="lead">
+                        By: #{manager.currentQuestion.user_name} at #{manager.currentQuestion.date.replace("T", " ")}
+                    </p>
+                    <br/>
+                    Answers:
+                    <hr class="my-4"/>
+                    <c:forEach var="answer" items="#{forumManager.allQuestionAnswers}">
+                        <h:outputText value="#{answer.content}" />
+                        <br/>
+                        By: #{answer.user_name} at #{answer.date.replace("T", " ")}
+                        <hr class="my-3"/>
+                    </c:forEach>
+                    <h:link value="Reply" outcome="client_answer_create" styleClass="btn btn-primary"/>
+                </div>
+                <h:outputLink value="client_config_questions.xhtml" >
+                    Back
+                </h:outputLink>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

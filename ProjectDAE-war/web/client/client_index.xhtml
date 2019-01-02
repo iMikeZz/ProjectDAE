@@ -4,99 +4,130 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Configurations List</title>
     </h:head>
     <h:body>
-        <h:form>
-         <!-- ########################################## -->
-         <h:inputText
-                    size="20"
-                    value="#{clientManager.searchSoftware}" />
-
-         <h:commandButton
-                    value="Search by software"
-                    action="#{clientManager.search(clientManager.SOFTWARE)}" 
-                    />
-         <br/>
-         <!-- ########################################## -->
-         <h:inputText
-                    size="20"
-                    value="#{clientManager.searchDescription}" />
-
-         <h:commandButton
-                    value="Search by description"
-                    action="#{clientManager.search(clientManager.DESCRIPTION)}" 
-                    />
-         <br/>
-         <!-- ########################################## -->
-         <h:selectOneMenu
-                value="#{clientManager.searchState}" >
-                <f:selectItems
-                    value="#{clientManager.allStates}"
-                    var="state"
-                    itemValue="#{state}"
-                    itemLabel="#{state.toLowerCase()}" />
-            </h:selectOneMenu>
-
-         <h:commandButton
-                    value="Search by state"
-                    action="#{clientManager.search(clientManager.STATE)}" 
-                    />
-         <br/>
-         <h:commandButton
-                    value="Search all"
-                    action="#{clientManager.search(clientManager.ALL)}" 
-                    />
-        </h:form>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
         <br/>
-        <h:form>
-            <h:outputText value="No configurations found!" rendered="#{clientManager.isMyConfigListEmpty()}" />
+        <div class="container">
+            <h:form styleClass="form-inline">
+            <!-- ########################################## -->
+            <div class="form-group mx-sm-3 mb-2">
+                <h:inputText
+                            styleClass="form-control"
+                            size="20"
+                            value="#{clientManager.searchSoftware}" />
 
-            <h:dataTable
-                rendered="#{!clientManager.isMyConfigListEmpty()}"
-                var="configuration"
-                summary="List of my configurations"
-                value="#{clientManager.myConfigList}"
-                rules="all"
-                cellpadding="5">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Id"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{configuration.id}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Software"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{configuration.softwareName}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Description"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{configuration.description}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="State"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{configuration.state.toLowerCase() }"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Actions"></h:outputText>
-                    </f:facet>
-                    <h:commandLink value="details" action="client_config_details?facelet-redirect=true">
-                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="questions" action="forum/client_config_questions?facelet-redirect=true">
-                        <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
-                    </h:commandLink>
-                </h:column>
-            </h:dataTable>
-        </h:form>
+                <h:commandButton
+                            styleClass="btn btn-secondary btn-sm"
+                            value="Search Software"
+                            action="#{clientManager.search(clientManager.SOFTWARE)}" 
+                            />
+            </div>
+            <br/>
+            <!-- ########################################## -->
+            <div class="form-group mx-sm-3 mb-2">
+                <h:inputText
+                            styleClass="form-control"
+                            size="20"
+                            value="#{clientManager.searchDescription}" />
+
+                <h:commandButton
+                            styleClass="btn btn-secondary btn-sm"
+                            value="Search Description"
+                            action="#{clientManager.search(clientManager.DESCRIPTION)}" 
+                            />
+            </div>
+            <br/>
+            <!-- ########################################## -->
+            <div class="form-group mx-sm-3 mb-2">
+            <h:selectOneMenu
+                    style="min-width: 200px;"
+                    styleClass="form-control"
+                    value="#{clientManager.searchState}" >
+                    <f:selectItems
+                        value="#{clientManager.allStates}"
+                        var="state"
+                        itemValue="#{state}"
+                        itemLabel="#{state.toLowerCase()}" />
+                </h:selectOneMenu>
+
+            <h:commandButton
+                        styleClass="btn btn-secondary btn-sm"
+                        value="Search State"
+                        action="#{clientManager.search(clientManager.STATE)}" 
+                        />
+            </div>
+            <br/>
+            <div class="form-group mx-sm-3 mb-2" style="min-width: 200px;">
+                <h:commandButton
+                            styleClass="btn btn-primary btn-sm"
+                            value="Search all"
+                            action="#{clientManager.search(clientManager.ALL)}" 
+                            />
+            </div>
+            </h:form>
+            <br/>
+            <h:form styleClass="table-responsive">
+                <h:outputText value="No configurations found!" rendered="#{clientManager.isMyConfigListEmpty()}" />
+
+                <h:dataTable
+                    styleClass="table table-bordered table-hover w-100"
+                    rendered="#{!clientManager.isMyConfigListEmpty()}"
+                    var="configuration"
+                    summary="List of my configurations"
+                    value="#{clientManager.myConfigList}"
+                    rules="all"
+                    cellpadding="5">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{configuration.id}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Software"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{configuration.softwareName}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Description"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{configuration.description}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="State"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{configuration.state.toLowerCase() }"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Actions"></h:outputText>
+                        </f:facet>
+                        <h:commandLink value="Details" action="client_config_details?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                            <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Questions" action="forum/client_config_questions?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                            <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                        </h:commandLink>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

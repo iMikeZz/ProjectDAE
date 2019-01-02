@@ -3,18 +3,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+        <title>Login</title>
     </h:head>
     <h:body>
-        <h:form rendered="#{userManager.loginFlag}">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="usernameInput">Username: </h:outputLabel>
-                <h:inputText id="usernameInput" value="#{userManager.username}" required="true" />
-                <h:outputLabel for="passwordInput">Password: </h:outputLabel>
-                <h:inputSecret id="passwordInput" value="#{userManager.password}" required="true" />
-                <h:commandButton value="Login" action="#{userManager.login}" />
-            </h:panelGrid>
-        </h:form>
+        <br/>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Login</h3>
+            <h:form rendered="#{userManager.loginFlag}" class="mx-auto" style="max-width: 275px; text-align:center;">
+                <h:panelGrid columns="2" style="margin:auto;">
+                    <h:outputLabel for="usernameInput">Username: </h:outputLabel>
+                    <h:inputText id="usernameInput" value="#{userManager.username}" required="true" styleClass="form-control"/>
+                    <h:outputLabel for="passwordInput">Password: </h:outputLabel>
+                    <h:inputSecret id="passwordInput" value="#{userManager.password}" required="true" styleClass="form-control"/>
+                </h:panelGrid>
+                <br/>
+                <h:commandButton value="Login" action="#{userManager.login}" styleClass="btn btn-primary w-100"/>
+                <br/>
+                <br/>
+                <h:outputLink value="index.xhtml" >
+                    Go to main page
+                </h:outputLink>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

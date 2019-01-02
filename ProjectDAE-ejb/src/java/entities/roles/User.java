@@ -5,6 +5,7 @@
  */
 package entities.roles;
 
+import entities.Comment;
 import entities.roles.UserGroup.GROUP;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -13,12 +14,14 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -35,6 +38,9 @@ public class User implements Serializable {
     
     @NotNull(message = "Name can not be empty")
     protected String name;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private LinkedList<Comment> comments;
     
     //@NotNull(message = "Email can not be empty")
     protected String email;
@@ -82,6 +88,14 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public LinkedList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(LinkedList<Comment> comments) {
+        this.comments = comments;
     }
     
     private String hashPassword(String password) {

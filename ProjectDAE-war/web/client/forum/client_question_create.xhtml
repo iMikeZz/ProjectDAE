@@ -9,24 +9,36 @@
         <title>Add question</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:outputLabel for="question" value="Question " />
-            <br/>
-            <h:inputTextarea id="question" value="#{forumManager.newQuestion.content}" />
-            <h:message for="question" errorStyle="color:red" />
-            <br/>
-            <h:commandButton
-                id="submit"
-                value="Add"
-                action="#{forumManager.createQuestion}" 
-                />
-            <h:message for="submit" errorStyle="color:red" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h:form>
+                <h:outputLabel for="question" value="Question " />
+                <br/>
+                <h:inputTextarea id="question" value="#{forumManager.newQuestion.content}" styleClass="form-control"/>
+                <h:message for="question" errorStyle="color:red" />
+                <br/>
+                <h:commandButton
+                    id="submit"
+                    value="Add"
+                    action="#{forumManager.createQuestion}" 
+                    styleClass="btn btn-success"
+                    />
+                <h:message for="submit" errorStyle="color:red" />
 
-            <br/><br/>
-            <h:outputLink value="client_index.xhtml" >
-                Back
-            </h:outputLink>
-        </h:form>
+                <br/><br/>
+                <h:outputLink value="client_index.xhtml" >
+                    Back
+                </h:outputLink>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

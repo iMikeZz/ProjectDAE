@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,7 +32,7 @@ import javax.ws.rs.core.MediaType;
  *
  * @author josea
  */
-@DeclareRoles({"Client"})
+@DeclareRoles({"Client", "Administrator"})
 @Stateless
 @Path("/answers")
 public class AnswerBean {
@@ -39,7 +40,7 @@ public class AnswerBean {
     EntityManager em;
     
     @GET
-    //@RolesAllowed({"Administrator"})
+   // @RolesAllowed({"Client", "Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{question}")
     public List<AnswerDTO> getQuestionAnswers(@PathParam("question") int question){
@@ -54,7 +55,7 @@ public class AnswerBean {
     }
     
     @POST
-    //@RolesAllowed({"Client"})
+    //@RolesAllowed({"Client", "Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(AnswerDTO answerDTO){

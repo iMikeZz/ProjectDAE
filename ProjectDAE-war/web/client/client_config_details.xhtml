@@ -4,173 +4,304 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Configuration details</title>
     </h:head>
     <h:body>
-        <h3>Configuration Details</h3>
-        <h:panelGrid columns="2">
-            <h:outputLabel for="id" value="Id: "/>
-            <h:outputText id="id" value="#{manager.currentConfiguration.id}" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Configuration Details</h3>
+            <br/>
+            <h:outputText value="Id: " styleClass="font-weight-bold"/>
+            <h:outputText value="#{manager.currentConfiguration.id}"/>
+            <br/>
+            <h:outputText value="Software: " styleClass="font-weight-bold"/>
+            <h:outputText value="#{manager.currentConfiguration.softwareName}"/>
+            <br/>
+            <h:outputText value="Description: " styleClass="font-weight-bold"/>
+            <h:outputText value="#{manager.currentConfiguration.description}"/>
+            <br/>
+            <br/>
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-header" id="headingMaterials">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseMaterials" aria-expanded="true" aria-controls="collapseMaterials">
+                        Materials
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseMaterials" class="collapse show" aria-labelledby="headingMaterials" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="material"
+                                summary="List of all materials"
+                                value="#{materialManager.allConfigurationMaterials}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{material.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{material.description}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingExtensions">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseExtensions" aria-expanded="false" aria-controls="collapseExtensions">
+                        Extensions
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseExtensions" class="collapse" aria-labelledby="headingExtensions" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="extension"
+                                summary="List of all Extensions"
+                                value="#{extensionManager.allConfigurationExtensions}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{extension.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Extension"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{extension.extension}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingLicenses">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseLicenses" aria-expanded="false" aria-controls="collapseLicenses">
+                        Licenses
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseLicenses" class="collapse" aria-labelledby="headingLicenses" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="license"
+                                summary="List of all Licenses"
+                                value="#{licenseManager.allConfigurationLicenses}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{license.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="License"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{license.license}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingModules">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
+                        Modules
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseModules" class="collapse" aria-labelledby="headingModules" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="module"
+                                summary="List of all modules"
+                                value="#{moduleManager.allConfigurationModules}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{module.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Description"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{module.description}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingParameters">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseParameters" aria-expanded="false" aria-controls="collapseParameters">
+                        Parameters
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseParameters" class="collapse" aria-labelledby="headingParameters" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="parameter"
+                                summary="List of all parameters"
+                                value="#{parameterManager.allConfigurationParameters}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{parameter.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Parameter"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{parameter.parameter}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Value"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{parameter.value}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingRepositories">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseRepositories" aria-expanded="false" aria-controls="collapseRepositories">
+                        Repositories
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseRepositories" class="collapse" aria-labelledby="headingRepositories" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="repository"
+                                summary="List of all subjects"
+                                value="#{repositoryManager.allConfigurationRepositories}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{repository.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Link"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{repository.link}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card">
+                  <div class="card-header" id="headingServices">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseServices" aria-expanded="false" aria-controls="collapseServices">
+                        Services
+                      </button>
+                    </h2>
+                  </div>
+                  <div id="collapseServices" class="collapse" aria-labelledby="headingServices" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <h:dataTable
+                                styleClass="table table-bordered table-hover w-100"
+                                var="service"
+                                summary="List of all subjects"
+                                value="#{serviceManager.allConfigurationServices}"
+                                rules="all"
+                                cellpadding="5">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{service.id}"></h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Service"></h:outputText>
+                                    </f:facet>
+                                    <h:outputText value="#{service.service}"></h:outputText>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
             
-            <h:outputLabel for="description" value="Description: "/>
-            <h:outputText id="description" value="#{manager.currentConfiguration.description}" />
-            
-            <h:outputLabel for="software" value="Software: "/>
-            <h:outputText id="software" value="#{manager.currentConfiguration.softwareName}" />
-        </h:panelGrid>
+            <br/>
+            <h:outputLink value="client_index.xhtml" >
+                Back
+            </h:outputLink>
+        </div>
         
-        <h4> Materials </h4>
-        <h:dataTable
-            var="material"
-            summary="List of all materials"
-            value="#{materialManager.allConfigurationMaterials}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.description}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Extensions </h4>
-        <h:dataTable
-            var="extension"
-            summary="List of all Extensions"
-            value="#{extensionManager.allConfigurationExtensions}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Extension"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.extension}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Licenses </h4>
-        <h:dataTable
-            var="license"
-            summary="List of all Licenses"
-            value="#{licenseManager.allConfigurationLicenses}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="License"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.license}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Modules </h4>
-        <h:dataTable
-            var="module"
-            summary="List of all modules"
-            value="#{moduleManager.allConfigurationModules}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.description}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Parameters </h4>
-        <h:dataTable
-            var="parameter"
-            summary="List of all parameters"
-            value="#{parameterManager.allConfigurationParameters}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Parameter"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.parameter}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Value"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.value}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Repositories </h4>
-        <h:dataTable
-            var="repository"
-            summary="List of all subjects"
-            value="#{repositoryManager.allConfigurationRepositories}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Link"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.link}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Services </h4>
-        <h:dataTable
-            var="service"
-            summary="List of all subjects"
-            value="#{serviceManager.allConfigurationServices}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Service"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.service}"></h:outputText>
-            </h:column>
-        </h:dataTable>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     </h:body>
 </html>
 

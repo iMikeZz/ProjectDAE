@@ -10,14 +10,30 @@
         <title>Configuration Questions</title>
     </h:head>
     <h:body>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        
+        <br/>
         <div class="container">
-            <h:form>
-                <h3>Questions about the configuration <h:outputText value="##{manager.currentConfiguration.id}" /></h3>
-                <h:outputText value="Software: #{manager.currentConfiguration.softwareName}" />
+            <h:form styleClass="table-responsive">
+                <h3 class="text-center">Questions about the configuration <h:outputText value="##{manager.currentConfiguration.id}" /></h3>
                 <br/>
-                <h:outputText value="Description: #{manager.currentConfiguration.description}" />
+                <h:outputText value="Software: " styleClass="font-weight-bold"/>
+                <h:outputText value="#{manager.currentConfiguration.softwareName}"/>
+                <br/>
+                <h:outputText value="Description: " styleClass="font-weight-bold" />
+                <h:outputText value="#{manager.currentConfiguration.description}" />
+                <br/>
                 <br/>
                 <h:dataTable
+                    styleClass="table table-bordered table-hover w-100"
                     var="question"
                     summary="List of questions"
                     value="#{forumManager.allConfigurationQuestions}"
@@ -39,12 +55,12 @@
                         <f:facet name="header">
                             <h:outputText value="Actions"></h:outputText>
                         </f:facet>
-                        <h:commandLink value="open" action="client_question_answers?facelet-redirect=true">
+                        <h:commandLink value="Open" action="client_question_answers?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
                             <f:setPropertyActionListener target="#{manager.currentQuestion}" value="#{question}"/>
                         </h:commandLink>
                     </h:column>
                 </h:dataTable>
-                <h:link value="Add question" outcome="client_question_create"/>
+                <h:link value="Add Question" outcome="client_question_create" styleClass="btn btn-success"/>
                 <br/><br/>
                 <h:outputLink value="client_index.xhtml" >
                     Back
