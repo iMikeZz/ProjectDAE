@@ -56,6 +56,7 @@ public class ParameterBean {
             }else{
                 Parameter parameter = new Parameter(parameterDTO.getId(), parameterDTO.getParameter(), parameterDTO.getValue(), config);
                 config.addParameter(parameter);
+                parameter.setConfig(config);
                 em.persist(parameter);
             }
         }catch(Exception e){

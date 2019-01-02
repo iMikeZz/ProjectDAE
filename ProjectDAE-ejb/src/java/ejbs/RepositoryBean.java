@@ -53,6 +53,7 @@ public class RepositoryBean {
             }else{
                 Repository repository = new Repository(repositoryDTO.getId(), repositoryDTO.getLink(), config);
                 config.addRepository(repository);
+                repository.setConfig(config);
                 em.persist(repository);
             }
         }catch(Exception e){

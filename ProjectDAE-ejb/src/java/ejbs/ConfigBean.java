@@ -81,7 +81,7 @@ public class ConfigBean {
         extensionBean.create(new ExtensionDTO(2, "pokemon", 2), 0);
         extensionBean.create(new ExtensionDTO(3, "cenas", 3), 0);
         
-        materialBean.create(new MaterialDTO(1, "sadsadasdsd", "sadasdsd"));
+        materialBean.create(new MaterialDTO(1, "sadsadasdsd", null));
         
         ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
         configurationBean.create(config1);

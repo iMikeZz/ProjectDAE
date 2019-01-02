@@ -301,7 +301,6 @@ public class AdministratorManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteClientId");
             String username = param.getValue().toString();
-            System.out.println("username");
             client.target(baseUri)
                     .path("/clients/" + username)
                     .request(MediaType.APPLICATION_XML)
