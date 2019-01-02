@@ -176,6 +176,7 @@ public class TemplateBean {
             }
             template.setDescription(templateDTO.getDescription());
             template.setSoftware(software);
+            software.addConfig(template);
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
