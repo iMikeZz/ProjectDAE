@@ -3,24 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+        <title>Client Details</title>
     </h:head>
     <h:body>
-        <h:panelGrid columns="2">
-            <h:outputLabel for="username" value="Username: "/>
-            <h:outputText id="username" value="#{administratorManager.currentClient.username}" />
-            
-            <h:outputLabel for="name" value="Name: "/>
-            <h:outputText id="name" value="#{administratorManager.currentClient.name}" />
-            
-            <h:outputLabel for="address" value="Address: "/>
-            <h:outputText id="address" value="#{administratorManager.currentClient.address}" />
-            
-            <h:outputLabel for="contactPerson" value="Contact Person: "/>
-            <h:outputText id="contactPerson" value="#{administratorManager.currentClient.contactPerson}" />
-        </h:panelGrid>
-        
-        <h:link value="Return to the main page" outcome="admin_index" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Client Details</h3>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="username" value="Username: "/>
+                <h:outputText id="username" value="#{administratorManager.currentClient.username}" styleClass="form-control"/>
+
+                <h:outputLabel for="name" value="Name: "/>
+                <h:outputText id="name" value="#{administratorManager.currentClient.name}" styleClass="form-control"/>
+
+                <h:outputLabel for="address" value="Address: "/>
+                <h:outputText id="address" value="#{administratorManager.currentClient.address}" styleClass="form-control"/>
+
+                <h:outputLabel for="contactPerson" value="Contact Person: "/>
+                <h:outputText id="contactPerson" value="#{administratorManager.currentClient.contactPerson}" styleClass="form-control"/>
+            </h:panelGrid>
+
+            <h:link value="Return to the main page" outcome="admin_index" />
+        </div>
     </h:body>
 </html>
 

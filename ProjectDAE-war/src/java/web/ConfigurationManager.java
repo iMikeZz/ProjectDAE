@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
@@ -54,7 +55,9 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     private String configurationsVersion = ALLCONFIGURATIONS;
     
-
+    @ManagedProperty("#{manager}")
+    protected Manager manager;
+    
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
         this.newConfiguration = new ConfigurationDTO();
@@ -119,6 +122,14 @@ public class ConfigurationManager extends Manager implements Serializable {
     public String getSORTTEMPLATESBYDESCRIPTION() {
         return SORTTEMPLATESBYDESCRIPTION;
     }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -153,19 +164,6 @@ public class ConfigurationManager extends Manager implements Serializable {
                     });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllSoftwares", logger);
-            return null;
-        }
-    }
-    
-    public List<ClientDTO> getAllClients(){
-        try {
-            return client.target(baseUri)
-                    .path("/clients/all")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<ClientDTO>>() {
-                    });
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllClients", logger);
             return null;
         }
     }
@@ -210,7 +208,7 @@ public class ConfigurationManager extends Manager implements Serializable {
             client.target(baseUri)
                     .path("templates/update")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(userManager.getClass()));
+                    .put(Entity.xml(manager.getCurrentTemplate()));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateTemplate", logger);
             return null;
@@ -223,7 +221,7 @@ public class ConfigurationManager extends Manager implements Serializable {
             client.target(baseUri)
                     .path("configurations/update")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(userManager.getClass()));
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateConfiguration", logger);
             return null;

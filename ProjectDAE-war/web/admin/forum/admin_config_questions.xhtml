@@ -4,47 +4,65 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Configuration questions</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h3>Questions about the configuration <h:outputText value="##{manager.currentConfiguration.id}" /></h3>
-            <h:outputText value="Software: #{manager.currentConfiguration.softwareName}" />
-            <br/>
-            <h:outputText value="Description: #{manager.currentConfiguration.description}" />
-            <br/>
-            <h:dataTable
-                var="question"
-                summary="List of questions"
-                value="#{forumManager.allConfigurationQuestions}"
-                rules="all"
-                cellpadding="5">
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Question"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{question.content}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Answers"></h:outputText>
-                    </f:facet>
-                    <h:outputText value="#{question.answers}"></h:outputText>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Actions"></h:outputText>
-                    </f:facet>
-                    <h:commandLink value="open" action="admin_question_answers?facelet-redirect=true">
-                        <f:setPropertyActionListener target="#{manager.currentQuestion}" value="#{question}"/>
-                    </h:commandLink>
-                </h:column>
-            </h:dataTable>
-            <br/><br/>
-            <h:outputLink value="admin_index.xhtml" >
-                Back
-            </h:outputLink>
-        </h:form>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        
+        <br/>
+        <div class="container">
+            <h:form styleClass="table-responsive">
+                <h3 class="text-center">Questions about the configuration <h:outputText value="##{manager.currentConfiguration.id}" /></h3>
+                <h:outputText value="Software: " styleClass="font-weight-bold"/>
+                <h:outputText value="#{manager.currentConfiguration.softwareName}"/>
+                <br/>
+                <h:outputText value="Description: " styleClass="font-weight-bold" />
+                <h:outputText value="#{manager.currentConfiguration.description}" />
+                <br/>
+                <h:dataTable
+                    styleClass="table table-bordered table-hover w-100"
+                    var="question"
+                    summary="List of questions"
+                    value="#{forumManager.allConfigurationQuestions}"
+                    rules="all"
+                    cellpadding="5">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Question"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{question.content}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Answers"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{question.answers}"></h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Actions"></h:outputText>
+                        </f:facet>
+                        <h:commandLink value="open" action="admin_question_answers?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                            <f:setPropertyActionListener target="#{manager.currentQuestion}" value="#{question}"/>
+                        </h:commandLink>
+                    </h:column>
+                </h:dataTable>
+                <br/><br/>
+                <h:outputLink value="admin_index.xhtml" >
+                    Back
+                </h:outputLink>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

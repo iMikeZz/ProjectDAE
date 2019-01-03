@@ -55,6 +55,7 @@ public class ServiceBean {
             } else{
                 Service service = new Service(serviceDTO.getId(), serviceDTO.getService(), config);
                 config.addService(service);
+                service.setConfig(config);
                 em.persist(service);
             }
         }catch(Exception e){

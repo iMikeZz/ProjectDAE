@@ -51,10 +51,11 @@ public class MaterialBean {
         try{
             ConfigBase config = em.find(ConfigBase.class, materialDTO.getConfig_id());
             if (config == null) {
-                em.persist(new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription()));
+                em.persist(new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getImgUrl()));
             } else{
-                Material material = new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getDescription(), config);
+                Material material = new Material(materialDTO.getId(), materialDTO.getDescription(), materialDTO.getImgUrl(), config);
                 config.addMaterial(material);
+                material.setConfig(config);
                 em.persist(material);
             }
         }catch(Exception e){
@@ -87,6 +88,22 @@ public class MaterialBean {
                 throw new EJBException("Config doesn't exists");
             }
             return materialsToDTO(configBase.getMaterials());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("material/{id}")
+    public MaterialDTO getMaterial(@PathParam("id") int id){
+        try {
+            Material material = em.find(Material.class, id);
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            return materialToDTO(material);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -163,6 +180,22 @@ public class MaterialBean {
             
             return materialsToDTO(allMaterials);
         } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Path("update")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void update(MaterialDTO materialDTO){
+        try{
+            Material material = em.find(Material.class, materialDTO.getId());
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            material.setImgUrl(materialDTO.getImgUrl());
+        }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
     }

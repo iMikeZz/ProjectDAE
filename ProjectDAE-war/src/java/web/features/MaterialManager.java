@@ -116,6 +116,14 @@ public class MaterialManager extends Manager implements Serializable {
         return "/admin/templates/admin_template_create?faces-redirect=true";
     }
     
+    public String cancelCreateMaterial(){
+        newMaterial.reset();
+        if (manager.getCurrentTemplate() != null)
+           return "/admin/templates/admin_template_update?faces-redirect=true";
+        
+        return "/admin/templates/admin_template_create?faces-redirect=true";
+    }
+    
     public String addMaterial(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");

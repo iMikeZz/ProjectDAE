@@ -4,76 +4,93 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+        <title>Create Administrator</title>
     </h:head>
     <h:body>
- 
-        <h:form>
- 
-            <h:panelGrid columns="3">
- 
-                <h:outputLabel for="username" value="Username: " />
-                <h:inputText
-                    id="username"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Username cannot be empty"
-                    value="#{administratorManager.newAdministrator.username}" />
-                <h:message for="username" errorStyle="color:red" />
- 
-                <h:outputLabel for="password" value="Password: " />
-                <h:inputSecret
-                    id="password"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: password cannot be empty"
-                    value="#{administratorManager.newAdministrator.password}" />
-                <h:message for="password" errorStyle="color:red" />
- 
-                <h:outputLabel for="name" value="Name: " />
-                <h:inputText
-                    id="name"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Name cannot be empty"
-                    value="#{administratorManager.newAdministrator.name}" />
-                <h:message for="name" errorStyle="color:red" />
-                
-                <h:outputLabel for="email" value="Email: " />
-                <h:inputText
-                   id="email"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Email cannot be empty"
-                    value="#{administratorManager.newAdministrator.email}" >
-                   <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-                </h:inputText>    
-                <h:message for="email" errorStyle="color:red" />
-                
- 
-                <h:outputLabel for="role" value="Role: " />
-                <h:inputText
-                    id="role"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Role cannot be empty"
-                    value="#{administratorManager.newAdministrator.role}" >
-                </h:inputText>    
-                <h:message for="email" errorStyle="color:red" />
-                
-                <br></br>
- 
-                <h:commandButton
-                    id="submit"
-                    value="Create"
-                    action="#{administratorManager.createAdministrator}" 
-                    />
-                <h:message for="submit" errorStyle="color:red" />
-               
-            </h:panelGrid >        
- 
-        </h:form>
-        <h:link value="Return to the main page" outcome="admin_index" />
- 
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Create Administrator</h3>
+            <h:form>
+                <h:panelGrid columns="3">
+                    <h:outputLabel for="username" value="Username: " />
+                    <h:inputText
+                        styleClass="form-control"
+                        id="username"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: Username cannot be empty"
+                        value="#{administratorManager.newAdministrator.username}" />
+                    <h:message for="username" errorStyle="color:red" />
+
+                    <h:outputLabel for="password" value="Password: " />
+                    <h:inputSecret
+                        styleClass="form-control"
+                        id="password"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: password cannot be empty"
+                        value="#{administratorManager.newAdministrator.password}" />
+                    <h:message for="password" errorStyle="color:red" />
+
+                    <h:outputLabel for="name" value="Name: " />
+                    <h:inputText
+                        styleClass="form-control"
+                        id="name"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: Name cannot be empty"
+                        value="#{administratorManager.newAdministrator.name}" />
+                    <h:message for="name" errorStyle="color:red" />
+
+                    <h:outputLabel for="email" value="Email: " />
+                    <h:inputText
+                        styleClass="form-control"
+                        id="email"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: Email cannot be empty"
+                        value="#{administratorManager.newAdministrator.email}" >
+                       <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>    
+                    <h:message for="email" errorStyle="color:red" />
+
+
+                    <h:outputLabel for="role" value="Role: " />
+                    <h:inputText
+                        styleClass="form-control"
+                        id="role"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: Role cannot be empty"
+                        value="#{administratorManager.newAdministrator.role}" >
+                    </h:inputText>    
+                    <h:message for="email" errorStyle="color:red" />
+
+                    <br></br>
+
+                    <h:commandButton
+                        styleClass="btn btn-success btn-sm"
+                        id="submit"
+                        value="Create"
+                        action="#{administratorManager.createAdministrator}" 
+                        />
+                    <h:message for="submit" errorStyle="color:red" />
+
+                </h:panelGrid >        
+
+            </h:form>
+            <h:link value="Return to the main page" outcome="admin_index" />
+        </div>
     </h:body> 
 </html>
