@@ -242,7 +242,7 @@ public class RepositoryBean {
         }
     }
     
-    public RepositoryDTO repositoryToDTO(Repository repository){
+    public static RepositoryDTO repositoryToDTO(Repository repository){
         if (repository.getConfig() != null) {
             return new RepositoryDTO(repository.getId(), repository.getLink(), repository.getConfig().getId());
         }
@@ -250,7 +250,7 @@ public class RepositoryBean {
     }
     
     
-    public List<RepositoryDTO> repositoriesToDTO(List<Repository> repositories){
+    public static List<RepositoryDTO> repositoriesToDTO(List<Repository> repositories){
         List<RepositoryDTO> dtos = new ArrayList<>();
         for (Repository repository : repositories) {
             dtos.add(repositoryToDTO(repository));

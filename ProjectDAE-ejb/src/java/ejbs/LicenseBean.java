@@ -271,12 +271,12 @@ public class LicenseBean {
     }
     
     
-    public LicenseDTO licenseToDTO(License license){
+    public static LicenseDTO licenseToDTO(License license){
         return new LicenseDTO(license.getId(), license.getLicense(), license.getSoftware().getId());
     }
     
     
-    public List<LicenseDTO> licensesToDTO(List<License> licenses){
+    public static List<LicenseDTO> licensesToDTO(List<License> licenses){
         List<LicenseDTO> dtos = new ArrayList<>();
         for (License license : licenses) {
             dtos.add(licenseToDTO(license));

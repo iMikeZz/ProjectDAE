@@ -31,7 +31,7 @@ and open the template in the editor.
                 
                 <h:outputLabel for="software" value="Software: " />
                 <h:selectOneMenu id="software" value="#{configurationManager.newConfiguration.softwareCode}" onchange="submit()" 
-                                 valueChangeListener="#{manager.softwareChangeListener}">
+                                 valueChangeListener="#{manager.softwareChangeListener}" disabled="#{manager.currentTemplate!=null}">
                     <f:selectItems value="#{configurationManager.allSoftwares}"
                                    var="software"
                                    itemValue="#{software.id}"

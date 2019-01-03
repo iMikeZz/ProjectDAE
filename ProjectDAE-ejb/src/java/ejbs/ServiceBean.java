@@ -244,7 +244,7 @@ public class ServiceBean {
         }
     }
     
-    public ServiceDTO serviceToDTO(Service service){
+    public static ServiceDTO serviceToDTO(Service service){
         if (service.getConfig() != null) {
             return new ServiceDTO(service.getId(), service.getService(), service.getConfig().getId());
         }
@@ -252,7 +252,7 @@ public class ServiceBean {
     }
     
     
-    public List<ServiceDTO> servicesToDTO(List<Service> services){
+    public static List<ServiceDTO> servicesToDTO(List<Service> services){
         List<ServiceDTO> dtos = new ArrayList<>();
         for (Service service : services) {
             dtos.add(serviceToDTO(service));

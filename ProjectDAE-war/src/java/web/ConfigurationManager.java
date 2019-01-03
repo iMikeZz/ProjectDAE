@@ -27,6 +27,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 import static web.Manager.baseUri;
 
 /**
@@ -214,6 +215,35 @@ public class ConfigurationManager extends Manager implements Serializable {
             return null;
         }
         return "/admin/admin_index?faces-redirect=true";
+    }
+    
+    public void createConfigurationWithTemplate(ActionEvent event) {
+        TemplateDTO templateDTOFromDatabase = null;
+        newConfiguration.reset();
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("createConfigurationTemplate");
+            TemplateDTO template = (TemplateDTO)param.getValue();
+            templateDTOFromDatabase = manager.getClient().target(URILookup.getBaseAPI())
+                    .path("/templates/template/" + template.getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(TemplateDTO.class);
+            newConfiguration.setSoftwareCode(templateDTOFromDatabase.getSoftwareCode());
+            newConfiguration.setExtensions(templateDTOFromDatabase.getExtensions());
+            newConfiguration.setLicenses(templateDTOFromDatabase.getLicenses());
+            newConfiguration.setMaterials(templateDTOFromDatabase.getMaterials());
+            newConfiguration.setModules(templateDTOFromDatabase.getModules());
+            newConfiguration.setParameters(templateDTOFromDatabase.getParameters());
+            newConfiguration.setRepositories(templateDTOFromDatabase.getRepositories());
+            newConfiguration.setServices(templateDTOFromDatabase.getServices());
+                        
+            //newConfiguration.setSoftwareCode(template.getSoftwareCode());
+            manager.setCurrentSoftwareId(template.getSoftwareCode());
+            
+            manager.setCurrentTemplate(template);
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String copyConfiguration() {

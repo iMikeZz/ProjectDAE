@@ -271,12 +271,12 @@ public class ModuleBean {
         }
     }
     
-    public ModuleDTO moduleToDTO(Module module){
+    public static ModuleDTO moduleToDTO(Module module){
         return new ModuleDTO(module.getId(), module.getDescription(), module.getSoftware().getId());
     }
     
     
-    public List<ModuleDTO> modulesToDTO(List<Module> modules){
+    public static List<ModuleDTO> modulesToDTO(List<Module> modules){
         List<ModuleDTO> dtos = new ArrayList<>();
         for (Module module : modules) {
             dtos.add(moduleToDTO(module));

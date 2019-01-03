@@ -267,12 +267,12 @@ public class ExtensionBean {
         }
     }
     
-    public ExtensionDTO extensionToDTO(Extension extension){
+    public static ExtensionDTO extensionToDTO(Extension extension){
         return new ExtensionDTO(extension.getId(), extension.getExtension(), extension.getSoftware().getId());
     }
     
     
-    public List<ExtensionDTO> extensionsToDTO(List<Extension> extensions){
+    public static List<ExtensionDTO> extensionsToDTO(List<Extension> extensions){
         List<ExtensionDTO> dtos = new ArrayList<>();
         for (Extension extension : extensions) {
             dtos.add(extensionToDTO(extension));

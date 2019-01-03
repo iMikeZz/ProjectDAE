@@ -277,7 +277,7 @@ public class MaterialBean {
         }
     }
     
-    public MaterialDTO materialToDTO(Material material){
+    public static MaterialDTO materialToDTO(Material material){
         if (material.getConfig() != null) {
             return new MaterialDTO(material.getId(), material.getDescription(), material.getImgUrl(), material.getConfig().getId());
         }
@@ -285,7 +285,7 @@ public class MaterialBean {
     }
     
     
-    public List<MaterialDTO> materialsToDTO(List<Material> materials){
+    public static List<MaterialDTO> materialsToDTO(List<Material> materials){
         List<MaterialDTO> dtos = new ArrayList<>();
         for (Material material : materials) {
             dtos.add(materialToDTO(material));

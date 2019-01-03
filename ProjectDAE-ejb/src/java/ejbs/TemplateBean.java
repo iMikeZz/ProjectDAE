@@ -92,6 +92,29 @@ public class TemplateBean {
         }
     }
     
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("template/{id}")
+    public TemplateDTO getTemplate(@PathParam("id") int id){
+        try {
+            Template template = em.find(Template.class, id);
+            TemplateDTO templateDTO = new TemplateDTO();
+            templateDTO.setSoftwareCode(template.getSoftware().getId());
+            templateDTO.setExtensions(ExtensionBean.extensionsToDTO(template.getExtensions()));
+            templateDTO.setLicenses(LicenseBean.licensesToDTO(template.getLicenses()));
+            templateDTO.setMaterials(MaterialBean.materialsToDTO(template.getMaterials()));
+            templateDTO.setModules(ModuleBean.modulesToDTO(template.getModules()));
+            templateDTO.setParameters(ParameterBean.parametersToDTO(template.getParameters()));
+            templateDTO.setServices(ServiceBean.servicesToDTO(template.getServices()));
+            templateDTO.setRepositories(RepositoryBean.repositoriesToDTO(template.getRepositories()));
+            
+            return templateDTO;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @POST
     //@RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -198,12 +221,12 @@ public class TemplateBean {
         }
     }
     
-    public TemplateDTO templateToDTO(Template template){
+    public static TemplateDTO templateToDTO(Template template){
         return new TemplateDTO(template.getId(), template.getDescription(), template.getSoftware().getId(), template.getSoftware().getName());
     }
     
     
-    public List<TemplateDTO> templatesToDTO(List<Template> templates){
+    public static List<TemplateDTO> templatesToDTO(List<Template> templates){
         List<TemplateDTO> dtos = new ArrayList<>();
         for (Template template : templates) {
             dtos.add(templateToDTO(template));

@@ -245,7 +245,7 @@ public class ParameterBean {
         }
     }
     
-    public ParameterDTO parameterToDTO(Parameter parameter){
+    public static ParameterDTO parameterToDTO(Parameter parameter){
         if (parameter.getConfig() != null) {
             return new ParameterDTO(parameter.getId(), parameter.getParameter(), parameter.getValue(), parameter.getConfig().getId());
         }
@@ -254,7 +254,7 @@ public class ParameterBean {
     }
     
     
-    public List<ParameterDTO> parametersToDTO(List<Parameter> parameters){
+    public static List<ParameterDTO> parametersToDTO(List<Parameter> parameters){
         List<ParameterDTO> dtos = new ArrayList<>();
         for (Parameter parameter : parameters) {
             dtos.add(parameterToDTO(parameter));

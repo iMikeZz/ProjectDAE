@@ -221,6 +221,10 @@
                              <f:setPropertyActionListener target="#{manager.currentTemplate}" value="#{template}"/>
                          </h:commandLink>
                          &nbsp;
+                         <h:commandLink value="New Configuration With Template" action="configurations/admin_configuration_create?facelet-redirect=true" actionListener="#{configurationManager.createConfigurationWithTemplate}" styleClass="btn btn-primary btn-sm">
+                             <f:param name="createConfiguration" id="createConfigurationTemplate" value="#{template}" />
+                         </h:commandLink>
+                         &nbsp;
                          <h:commandLink value="Remove" actionListener="#{configurationManager.removeTemplate}" styleClass="btn btn-danger btn-sm">
                              <f:param name="deleteClientId" id="deleteTemplateId" value="#{template.id}" />
                          </h:commandLink>
@@ -293,7 +297,11 @@
                             <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
                         </h:commandLink>
                         &nbsp;
-                        <h:commandLink value="Update" action="configurations/admin_configuraiton_update?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                        <h:commandLink value="Details" action="configurations/admin_configuration_details?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                            <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Update" action="configurations/admin_configuration_update?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
                             <f:setPropertyActionListener target="#{manager.currentConfiguration}" value="#{configuration}"/>
                         </h:commandLink>
                         &nbsp;
@@ -304,7 +312,7 @@
                 </h:dataTable>
             </h:form>
             <h:link value="New Configuration" outcome="configurations/admin_configuration_create" styleClass="btn btn-primary btn-sm"/>
-            <br/><br/>
+            <br/>
         </div>
     </h:body>
 </html>
