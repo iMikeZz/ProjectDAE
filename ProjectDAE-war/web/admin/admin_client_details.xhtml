@@ -18,6 +18,9 @@
             
             <h:outputLabel for="contactPerson" value="Contact Person: "/>
             <h:outputText id="contactPerson" value="#{administratorManager.currentClient.contactPerson}" />
+            
+            <h:outputLabel for="email" value="Email: "/>
+            <h:outputText id="email" value="#{administratorManager.currentClient.email}" />
         </h:panelGrid>
         
         <h:link value="Return to the main page" outcome="admin_index" />

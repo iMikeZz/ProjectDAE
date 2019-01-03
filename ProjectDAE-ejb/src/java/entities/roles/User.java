@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "USERS")
@@ -36,8 +37,12 @@ public class User implements Serializable {
     @NotNull(message = "Name can not be empty")
     protected String name;
     
-    //@NotNull(message = "Email can not be empty")
-    protected String email;
+    @NotNull(message = "Email can not be empty")
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+"
+            + "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{invalid.email}")
+    private String email;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     protected UserGroup group;
@@ -45,10 +50,11 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String username, String password, String name, GROUP group) {
+    public User(String username, String password, String name, String email, GROUP group) {
         this.username = username;
         this.password = hashPassword(password);
         this.name = name;
+        this.email = email;
         this.group = new UserGroup(group, this);
     }
     

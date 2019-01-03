@@ -63,9 +63,9 @@ public class ConfigBean {
         administratorBean.create(new AdministratorDTO("admin", "admin", "Pedro", "dae.ei.ipleiria@gmail.com", "Gestor"));
         
         // Clients
-        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC"));
-        clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
-        clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC"));
+        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC", "miguel.angelo_14@gmail.com"));
+        clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL", "miguel.angelo_14@gmail.com"));
+        clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC", "miguel.angelo_14@gmail.com"));
         
         softwareBean.create(1, "Sim", "2.0");
         softwareBean.create(2, "Nao", "2.0");

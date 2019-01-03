@@ -33,31 +33,15 @@ import javax.validation.constraints.Pattern;
 })
 public class Administrator extends User implements Serializable{
     
-    @NotNull(message = "Email can not be empty")
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+"
-            + "[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "{invalid.email}")
-    private String email;
-    
     @NotNull(message = "Role can not be empty")
     private String role; //se der problema mudar 
     
     public Administrator() {
     }
 
-    public Administrator(String username, String password, String name, String email, String role) {
-        super(username, password, name, UserGroup.GROUP.Administrator);
-        this.email = email;
+    public Administrator(String username, String password, String name, String role, String email) {
+        super(username, password, name, email, UserGroup.GROUP.Administrator);
         this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getRole() {
@@ -67,4 +51,6 @@ public class Administrator extends User implements Serializable{
     public void setRole(String role) {
         this.role = role;
     }
+    
+    
 }
