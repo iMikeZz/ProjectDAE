@@ -36,10 +36,11 @@
 
             <h:form>
                 <h:commandButton
-                            styleClass="btn btn-primary btn-sm"
-                            id="cancel"
-                            value="Return to the main page"
-                            onclick="history.back(); return false;" />
+                        styleClass="btn btn-primary btn-sm"
+                        id="cancel"
+                        value="Return to the main page"
+                        action="#{configurationManager.cancelCurrentTemplateDetailsAndUpdate}" 
+                        />
             </h:form>
             <br/><br/>
             <h4> Extensions </h4>

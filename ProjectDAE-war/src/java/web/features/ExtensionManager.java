@@ -136,7 +136,7 @@ public class ExtensionManager extends Manager implements Serializable {
         if (manager.getCurrentTemplate() != null)
             return "/admin/templates/admin_template_update?faces-redirect=true";
         
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        return null;
     }
     
     public String addExtension(ActionEvent event){
@@ -186,6 +186,7 @@ public class ExtensionManager extends Manager implements Serializable {
         }
     }
     
+    //para apagar
     public String createExtensionConfiguration() {
         try {
             newExtension.setSoftware_id(manager.getCurrentSoftwareId());

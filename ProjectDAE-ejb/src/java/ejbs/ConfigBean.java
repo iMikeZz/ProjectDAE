@@ -15,6 +15,7 @@ import dtos.MaterialDTO;
 import dtos.QuestionDTO;
 import dtos.TemplateDTO;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -25,6 +26,7 @@ import javax.ejb.Startup;
  */
 @Singleton
 @Startup
+@RunAs("Administrator")
 public class ConfigBean {
     @EJB
     private AdministratorBean administratorBean;

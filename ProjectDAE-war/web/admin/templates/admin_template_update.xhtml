@@ -56,11 +56,15 @@
                     action="#{configurationManager.updateTemplate}" />
                 <h:message for="submit" errorStyle="color:red" />
                 
-                
+                <h:commandButton
+                        styleClass="btn btn-primary btn-sm"
+                        id="cancel"
+                        value="Cancel"
+                        action="#{configurationManager.cancelCurrentTemplateDetailsAndUpdate}" 
+                        />
             </h:panelGrid >
             </h:form>
             <br/>
-            <h:link value="Cancel" outcome="/admin/admin_index" />
             <br/>
             <br/>
             <h4>Current Template Extensions </h4>

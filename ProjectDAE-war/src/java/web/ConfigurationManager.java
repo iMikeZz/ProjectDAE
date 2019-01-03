@@ -202,6 +202,11 @@ public class ConfigurationManager extends Manager implements Serializable {
         return "/admin/admin_index?faces-redirect=true";
     }
     
+    public String cancelCurrentTemplateDetailsAndUpdate() {
+        manager.setCurrentTemplate(null);
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
     public String createConfiguration() {
         try {
             client.target(baseUri)
@@ -267,6 +272,7 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .path("templates/update")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
+            manager.setCurrentTemplate(null);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateTemplate", logger);
             return null;
@@ -287,7 +293,7 @@ public class ConfigurationManager extends Manager implements Serializable {
         return "/admin/admin_index?facelet-redirect=true";
     }
     
-    public String removeTemplate(ActionEvent event) {
+    public void removeTemplate(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteTemplateId");
             int username = Integer.parseInt(param.getValue().toString());
@@ -295,12 +301,11 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .path("/templates/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
+            manager.setCurrentTemplate(null);
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem removing template in method removeTemplate ", logger);
-            return null;
         }
-        return "/admin/admin_index?faces-redirect=true"; //todo mudar
     }
     
     public String removeConfiguration(ActionEvent event) {
