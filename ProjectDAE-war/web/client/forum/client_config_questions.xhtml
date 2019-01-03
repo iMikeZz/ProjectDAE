@@ -61,10 +61,8 @@
                     </h:column>
                 </h:dataTable>
                 <h:link value="Add Question" outcome="client_question_create" styleClass="btn btn-success"/>
-                <br/><br/>
-                <h:outputLink value="client_index.xhtml" >
-                    Back
-                </h:outputLink>
+                <br/>
+                <h:commandLink value="Back" action="/client/client_index?facelet-redirect=true" styleClass="btn btn-link btn-sm"></h:commandLink>
             </h:form>
         </div>
     </h:body>
