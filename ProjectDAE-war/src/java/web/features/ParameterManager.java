@@ -166,4 +166,71 @@ public class ParameterManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    //***************CONFIGURATIONS********************
+   public String createParameterConfiguration() {
+        try {
+            if (manager.getCurrentConfiguration() != null) {
+                newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
+            client.target(baseUri)
+                    .path("parameters/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newParameter));
+            newParameter.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentConfiguration() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addParameterConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addParameterId");
+            int parameter_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/parameters/addToConfiguration/" + parameter_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding parameter in method addParameterConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeParameterConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeParameterId");
+            int parameter_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/parameters/removeFromConfiguration/" + parameter_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing parameter in method removeParameterConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<ParameterDTO> getParametersNotInConfiguration(){
+        try {
+            return client.target(baseUri)
+                    .path("/parameters/parametersNotInTemplate/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ParameterDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getParametersNotInConfiguration", logger);
+            return null;
+        }
+    }
 }

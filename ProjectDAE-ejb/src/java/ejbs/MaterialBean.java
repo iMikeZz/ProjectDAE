@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
 import dtos.TemplateDTO;
@@ -196,6 +197,82 @@ public class MaterialBean {
             }
             material.setImgUrl(materialDTO.getImgUrl());
         }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    //*************CONFIGURATIONS***************    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{material_id}")
+    public void addMaterialToConfiguration(ConfigurationDTO configurationDTO, @PathParam("material_id") int material_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Material material = em.find(Material.class, material_id);
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            
+            if (configBase.getMaterials().contains(material)) {
+                return;
+            }
+            
+            configBase.addMaterial(material);
+            material.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{material_id}")
+    public void removeMaterialFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("material_id") int material_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Material material = em.find(Material.class, material_id);
+            if (material == null) {
+                throw new EJBException("Material doesn't exists");
+            }
+            
+            if (!configBase.getMaterials().contains(material)) {
+                return;
+            }
+            
+            configBase.removeMaterial(material);
+            material.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("materialsNotInConfiguration/{id_config}")
+    public List<MaterialDTO> getMaterialsNotInConfiguration(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Material> allMaterials = em.createNamedQuery("getAllMaterials").getResultList();
+            
+            allMaterials.removeAll(configBase.getMaterials());
+            
+            return materialsToDTO(allMaterials);
+        } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }

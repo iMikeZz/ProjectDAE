@@ -5,6 +5,7 @@
  */
 package entities.roles;
 
+import entities.ConfigBase;
 import entities.Configuration;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -32,10 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getAllClientsOrderedByUsername",
             query = "SELECT t FROM Client t ORDER BY t.username"
+    ),
+    @NamedQuery(
+            name = "getAllClientsExceptMe",
+            query = "SELECT t FROM Client t WHERE UPPER(t.username) != UPPER(:username) ORDER BY t.name"
     )
 })
-@XmlRootElement(name = "Client")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Client extends User implements Serializable {
     
     @NotNull(message = "Address can not be empty")
@@ -50,15 +53,15 @@ public class Client extends User implements Serializable {
     public Client() {
         configurations = new LinkedList<>();
     }
-    
-    public Client(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password, companyName, UserGroup.GROUP.Client);
+
+    public Client(String username, String password, String address, String contactPerson, String name, String email) {
+        super(username, password, name, email, UserGroup.GROUP.Client);
         this.address = address;
         this.contactPerson = contactPerson;
         
         configurations = new LinkedList<>();
     }
-
+    
     public String getAddress() {
         return address;
     }
@@ -81,5 +84,13 @@ public class Client extends User implements Serializable {
 
     public void setConfigurations(List<Configuration> configurations) {
         this.configurations = configurations;
+    }
+    
+    public void addConfig(Configuration configBase){
+        this.configurations.add(configBase);
+    }
+    
+    public void removeConfig(Configuration configBase){
+        this.configurations.remove(configBase);
     }
 }

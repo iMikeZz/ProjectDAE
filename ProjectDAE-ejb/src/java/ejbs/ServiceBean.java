@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.ServiceDTO;
 import dtos.TemplateDTO;
@@ -151,6 +152,82 @@ public class ServiceBean {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("servicesNotInTemplate/{id_config}")
     public List<ServiceDTO> getRepositoriesNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Service> allServices = em.createNamedQuery("getAllServices").getResultList();
+            
+            allServices.removeAll(configBase.getServices());
+            
+            return servicesToDTO(allServices);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    //******************CONFIGURATION*******************
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{service_id}")
+    public void addServiceToConfiguration(ConfigurationDTO configurationDTO, @PathParam("service_id") int service_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Service service = em.find(Service.class, service_id);
+            if (service == null) {
+                throw new EJBException("Service doesn't exists");
+            }
+            
+            if (configBase.getServices().contains(service)) {
+                return;
+            }
+            
+            configBase.addService(service);
+            service.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{service_id}")
+    public void removeServiceFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("service_id") int service_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Service service = em.find(Service.class, service_id);
+            if (service == null) {
+                throw new EJBException("Service doesn't exists");
+            }
+            
+            if (!configBase.getServices().contains(service)) {
+                return;
+            }
+            
+            configBase.removeService(service);
+            service.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("servicesNotInConfiguration/{id_config}")
+    public List<ServiceDTO> getRepositoriesNotInConfiguration(@PathParam("id_config")int id_config) {
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id_config);
             if (configBase == null) {

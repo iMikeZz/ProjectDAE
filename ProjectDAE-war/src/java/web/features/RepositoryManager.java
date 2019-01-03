@@ -159,4 +159,71 @@ public class RepositoryManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    //*****************CONFIGURATIONS**************************
+    public String createRepositoryConfiguration() {
+        try {
+            if (manager.getCurrentConfiguration() != null) {
+                newRepository.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
+            client.target(baseUri)
+                    .path("repositories/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newRepository));
+            newRepository.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentConfiguration() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addRepositoryConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addRepositoryId");
+            int repository_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/repositories/addToConfiguration/" + repository_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding repository in method addRepositoryConfiguration", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeRepositoryConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeRepositoryId");
+            int repository_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/repositories/removeFromConfiguration/" + repository_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing repository in method removeRepositoryConfiguration", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<RepositoryDTO> getRepositoriesNotInConfiguration(){
+        try {
+            return client.target(baseUri)
+                    .path("/repositories/repositoriesNotInConfiguration/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<RepositoryDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getRepositoriesNotInConfiguration", logger);
+            return null;
+        }
+    }
 }

@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
 import dtos.TemplateDTO;
@@ -183,6 +184,92 @@ public class LicenseBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    //************************CONFIGURATION*****************************
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{license_id}")
+    public void addLicenseToConfiguration(ConfigurationDTO configurationDTO, @PathParam("license_id") int license_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            License license = em.find(License.class, license_id);
+            if (license == null) {
+                throw new EJBException("License doesn't exists");
+            }
+            
+            if (configBase.getLicenses().contains(license)) {
+                return;
+            }
+            
+            if (license.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.addLicense(license);
+            license.addConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{license_id}")
+    public void removeLicenseFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("license_id") int license_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            License license = em.find(License.class, license_id);
+            if (license == null) {
+                throw new EJBException("License doesn't exists");
+            }
+            
+            if (!license.getConfigs().contains(configBase)) {
+                return;
+            }
+            
+            configBase.removeLicense(license);
+            license.removeConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("licensesNotInConfiguration/{id_config}/{id_software}")
+    public List<LicenseDTO> getLicensesNotInConfiguration(@PathParam("id_config")int id_config, @PathParam("id_software")int id_software) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Software software = em.find(Software.class, id_software);
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            
+            List<License> allLicenses = new ArrayList<>(software.getLicenses());
+            
+            allLicenses.removeAll(configBase.getLicenses());
+            
+            return licensesToDTO(allLicenses);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     
     public LicenseDTO licenseToDTO(License license){
         return new LicenseDTO(license.getId(), license.getLicense(), license.getSoftware().getId());

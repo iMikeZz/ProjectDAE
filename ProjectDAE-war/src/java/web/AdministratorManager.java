@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
@@ -36,6 +37,9 @@ public class AdministratorManager extends Manager implements Serializable {
     private static final String SEARCHCLIENTSBYNAME = "SEARCHCLIENTSBYNAME";
     private static final String SORTCLIENTSBYNAME = "SORTCLIENTSBYNAME";
     private static final String SORTCLIENTSBYUSERNAME = "SORTCLIENTSBYUSERNAME";
+    
+    @ManagedProperty("#{manager}")
+    protected Manager manager;
     
     @EJB
     private AdministratorBean administratorBean;
@@ -174,6 +178,14 @@ public class AdministratorManager extends Manager implements Serializable {
     public String getSORTCLIENTSBYUSERNAME() {
         return SORTCLIENTSBYUSERNAME;
     }
+        
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
     
     //*********************ADMINISTRATORS*****************************
     public List<AdministratorDTO> getAllAdministrators(){
@@ -268,6 +280,14 @@ public class AdministratorManager extends Manager implements Serializable {
         }
     }
     
+    public List<ClientDTO> getAllClientsExceptMe(){
+        try {
+            return getClientsListByUrl("/clients/allExceptMe/" + manager.getCurrentConfiguration().getClientUsername());           
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all clients in method getAllClients", logger);
+            return null;
+        }
+    }    
     
     public String createClient() {
         try {

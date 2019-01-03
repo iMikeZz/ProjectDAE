@@ -2,9 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Configuration Update</title>
     </h:head>
     <h:body>
         <h:form id="form" prependId="true">
@@ -34,6 +35,36 @@
                 </h:selectOneMenu>
                 <br></br>
                 
+                <h:outputLabel for="client" value="Client: " />
+                <h:selectOneMenu id="client" value="#{manager.currentConfiguration.clientUsername}">
+                    <f:selectItems value="#{administratorManager.allClients}"
+                                   var="client"
+                                   itemValue="#{client.username}"
+                                   itemLabel="#{client.name}" />
+                </h:selectOneMenu>
+                
+                <br></br>
+                
+                <h:outputLabel for="state" value="State: " />
+                <h:selectOneMenu id="state" value="#{manager.currentConfiguration.state}" onchange="submit()" 
+                                 valueChangeListener="#{manager.stateChangeListener}">
+                    <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE" />
+                    <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE" />
+                    <f:selectItem itemValue="SUSPENDED" itemLabel="SUSPENDED" />
+                </h:selectOneMenu>
+                
+                <br></br>
+                
+                <h:outputLabel for="contractData" value="Contract data: " />
+                <h:inputText
+                    id="contractData"
+                    size="20"
+                    required="#{param['form:submit']!=null}"
+                    requiredMessage="Error: dataContract cannot be empty"
+                    value="#{manager.currentConfiguration.contractData}" />
+                <h:message for="contractData" errorStyle="color:red" />
+                
+                
                 <h:commandButton
                     id="submit"
                     value="Update"
@@ -44,11 +75,11 @@
             </h:panelGrid >
             </h:form>
             
-            <h4> Template Extensions </h4>
+           <h4> Configuration Extensions </h4>
             <h:dataTable
                 var="extension"
                 summary="List of all Extensions"
-                value="#{extensionManager.allTemplateExtensions}"
+                value="#{extensionManager.allConfigurationExtensions}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -68,7 +99,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{extensionManager.removeExtension}">
+                        <h:commandLink value="Remove" actionListener="#{extensionManager.removeExtensionConfiguration}">
                             <f:param name="removeExtensionId" id="removeExtensionId" value="#{extension.id}" />
                         </h:commandLink>
                     </h:form>
@@ -79,7 +110,7 @@
             <h:dataTable
                 var="extension"
                 summary="List of all Extensions"
-                value="#{extensionManager.extensionsNotInTemplate}"
+                value="#{extensionManager.extensionsNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -99,7 +130,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{extensionManager.addExtension}">
+                        <h:commandLink value="Add" actionListener="#{extensionManager.addExtensionConfiguration}">
                             <f:param name="addExtensionId" id="addExtensionId" value="#{extension.id}" />
                         </h:commandLink>
                     </h:form>
@@ -107,11 +138,11 @@
             </h:dataTable>
             <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create"/>
             
-            <h4> Template Licenses </h4>
+            <h4> Configuration Licenses </h4>
             <h:dataTable
                 var="license"
                 summary="List of all Licenses"
-                value="#{licenseManager.allTemplateLicenses}"
+                value="#{licenseManager.allConfigurationLicenses}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -131,7 +162,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{licenseManager.removeLicense}">
+                        <h:commandLink value="Remove" actionListener="#{licenseManager.removeLicenseConfiguration}">
                             <f:param name="removeLicenseId" id="removeLicenseId" value="#{license.id}" />
                         </h:commandLink>
                     </h:form>
@@ -142,7 +173,7 @@
             <h:dataTable
                 var="license"
                 summary="List of all Licenses"
-                value="#{licenseManager.licensesNotInTemplate}"
+                value="#{licenseManager.licensesNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -162,7 +193,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{licenseManager.addLicense}">
+                        <h:commandLink value="Add" actionListener="#{licenseManager.addLicenseConfiguration}">
                             <f:param name="addLicenseId" id="addLicenseId" value="#{license.id}" />
                         </h:commandLink>
                     </h:form>
@@ -170,11 +201,11 @@
             </h:dataTable>
             <h:link value="New License" outcome="/admin/templates/features/admin_license_create"/>
             
-            <h4> Template Materials </h4>
+            <h4> Configuration Materials </h4>
             <h:dataTable
                 var="material"
                 summary="List of all materials"
-                value="#{materialManager.allTemplateMaterials}"
+                value="#{materialManager.allConfigurationMaterials}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -194,7 +225,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{materialManager.removeMaterial}">
+                        <h:commandLink value="Remove" actionListener="#{materialManager.removeMaterialConfiguration}">
                             <f:param name="removeMaterialId" id="removeMaterialId" value="#{material.id}" />
                         </h:commandLink>
                     </h:form>
@@ -205,7 +236,7 @@
             <h:dataTable
                 var="material"
                 summary="List of all materials"
-                value="#{materialManager.materialsNotInTemplate}"
+                value="#{materialManager.materialsNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -225,19 +256,26 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{materialManager.addMaterial}">
+                        <h:commandLink value="Add" actionListener="#{materialManager.addMaterialConfiguration}">
                             <f:param name="addMaterialId" id="addMaterialId" value="#{material.id}" />
                         </h:commandLink>
+                    </h:form>
+                    <h:form enctype="multipart/form-data">
+                        <p:growl id="messages" showDetail="true" />
+                        <p:fileUpload value="#{uploadManager.file}" mode="simple" skinSimple="true"/>
+                        <p:commandButton value="Submit" ajax="false" actionListener="#{uploadManager.upload}">
+                            <f:param name="materialToUpdate" id="materialToUpdate" value="#{material}"/>
+                        </p:commandButton>
                     </h:form>
                 </h:column>
             </h:dataTable>
             <h:link value="New Material" outcome="/admin/templates/features/admin_material_create"/>
             
-            <h4> Template Modules </h4>
+            <h4> Configuration Modules </h4>
             <h:dataTable
                 var="module"
                 summary="List of all modules"
-                value="#{moduleManager.allTemplateModules}"
+                value="#{moduleManager.allConfigurationModules}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -257,7 +295,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModule}">
+                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModuleConfiguration}">
                             <f:param name="removeModuleId" id="removeModuleId" value="#{module.id}" />
                         </h:commandLink>
                     </h:form>
@@ -268,7 +306,7 @@
             <h:dataTable
                 var="module"
                 summary="List of all modules"
-                value="#{moduleManager.modulesNotInTemplate}"
+                value="#{moduleManager.modulesNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -296,11 +334,11 @@
             </h:dataTable>
             <h:link value="New Module" outcome="/admin/templates/features/admin_module_create"/>
             
-            <h4> Template Parameters </h4>
+            <h4> Configuration Parameters </h4>
             <h:dataTable
                 var="parameter"
                 summary="List of all parameters"
-                value="#{parameterManager.allTemplateParameters}"
+                value="#{parameterManager.allConfigurationParameters}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -326,7 +364,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameter}">
+                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameterConfiguration}">
                             <f:param name="removeParameterId" id="removeParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
@@ -337,7 +375,7 @@
             <h:dataTable
                 var="parameter"
                 summary="List of all parameters"
-                value="#{parameterManager.parametersNotInTemplate}"
+                value="#{parameterManager.parametersNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -363,7 +401,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameter}">
+                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameterConfiguration}">
                             <f:param name="addParameterId" id="addParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
@@ -371,11 +409,11 @@
             </h:dataTable>
             <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create"/>
             
-            <h4> Template Repositories </h4>
+            <h4> Configuration Repositories </h4>
             <h:dataTable
                 var="repository"
                 summary="List of all subjects"
-                value="#{repositoryManager.allTemplateRepositories}"
+                value="#{repositoryManager.allConfigurationRepositories}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -395,7 +433,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{repositoryManager.removeRepository}">
+                        <h:commandLink value="Remove" actionListener="#{repositoryManager.removeRepositoryConfiguration}">
                             <f:param name="removeRepositoryId" id="removeRepositoryId" value="#{repository.id}" />
                         </h:commandLink>
                     </h:form>
@@ -406,7 +444,7 @@
             <h:dataTable
                 var="repository"
                 summary="List of all subjects"
-                value="#{repositoryManager.repositoriesNotInTemplate}"
+                value="#{repositoryManager.repositoriesNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -426,7 +464,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{repositoryManager.addRepository}">
+                        <h:commandLink value="Add" actionListener="#{repositoryManager.addRepositoryConfiguration}">
                             <f:param name="addRepositoryId" id="addRepositoryId" value="#{repository.id}" />
                         </h:commandLink>
                     </h:form>
@@ -434,11 +472,11 @@
             </h:dataTable>
             <h:link value="New Repository" outcome="/admin/templates/features/admin_repository_create"/>
             
-            <h4> Template Services </h4>
+            <h4> Configuration Services </h4>
             <h:dataTable
                 var="service"
                 summary="List of all subjects"
-                value="#{serviceManager.allTemplateServices}"
+                value="#{serviceManager.allConfigurationServices}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -458,7 +496,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{serviceManager.removeService}">
+                        <h:commandLink value="Remove" actionListener="#{serviceManager.removeServiceConfiguration}">
                             <f:param name="removeServiceId" id="removeServiceId" value="#{service.id}" />
                         </h:commandLink>
                     </h:form>
@@ -469,7 +507,7 @@
             <h:dataTable
                 var="service"
                 summary="List of all subjects"
-                value="#{serviceManager.servicesNotInTemplate}"
+                value="#{serviceManager.servicesNotInConfiguration}"
                 rules="all"
                 cellpadding="5">
                 <h:column>
@@ -489,7 +527,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{serviceManager.addService}">
+                        <h:commandLink value="Add" actionListener="#{serviceManager.addServiceConfiguration}">
                             <f:param name="addServiceId" id="addServiceId" value="#{service.id}" />
                         </h:commandLink>
                     </h:form>

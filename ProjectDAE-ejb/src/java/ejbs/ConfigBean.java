@@ -63,9 +63,9 @@ public class ConfigBean {
         administratorBean.create(new AdministratorDTO("admin", "admin", "Pedro", "dae.ei.ipleiria@gmail.com", "Gestor"));
         
         // Clients
-        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC"));
-        clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL"));
-        clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC"));
+        clientBean.create(new ClientDTO("1234567", "Joao", "Leiria", "ADMIN", "AMC", "miguel.angelo_14@gmail.com"));
+        clientBean.create(new ClientDTO("c1", "c1", "Leiria", "ADMIN", "IPL", "miguel.angelo_14@gmail.com"));
+        clientBean.create(new ClientDTO("a123", "Zé", "Leiria", "ADMIN", "ABC", "miguel.angelo_14@gmail.com"));
         
         softwareBean.create(1, "Sim", "2.0");
         softwareBean.create(2, "Nao", "2.0");
@@ -86,8 +86,9 @@ public class ConfigBean {
         ConfigurationDTO config1 = new ConfigurationDTO(2, "config1", 1, "Sim", "ACTIVE", "c1", "ContractDataAQUI");
         configurationBean.create(config1);
         
-        questionBean.create(new QuestionDTO(1, "First question ever on the new epic forum", config1.getId(), "1234567"));
-        answerBean.create(new AnswerDTO(1, "I answered this question", 1, "1234567"));
+        //questionBean.create(new QuestionDTO(1, "First question ever on the new epic forum", config1.getId(), "1234567"));
+        //answerBean.create(new AnswerDTO(1, "I answered this question", 1, "1234567"));
+        
         //materialBean.addMaterialToTemplate(template1, 1);
         //materialBean.removeMaterialFromTemplate(template1, 1);
         //extensionBean.addExtensionToTemplate(, 1); //testado pela web

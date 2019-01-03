@@ -17,32 +17,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Administrator")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AdministratorDTO extends UserDTO implements Serializable {
-    
-    private String email;
     private String role;
 
     public AdministratorDTO() {
     }
 
     public AdministratorDTO(String username, String password, String name, String email, String role) {
-        super(username, password, name);
-        this.email = email;
+        super(username, password, name, email);
         this.role = role;
     }
 
     @Override
     public void reset() {
         super.reset(); //To change body of generated methods, choose Tools | Templates.
-        setEmail(null);
         setRole(null);
-    }
-    
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getRole() {

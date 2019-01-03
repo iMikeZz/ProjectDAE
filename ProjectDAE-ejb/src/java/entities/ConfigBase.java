@@ -42,15 +42,15 @@ public class ConfigBase implements Serializable {
     @NotNull
     @ManyToMany
     @JoinTable(name = "CONFIGS_LICENSES",
-            joinColumns = @JoinColumn(name = "LICENSE_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "LICENSE_ID", referencedColumnName = "ID"))
     private List<License> licenses;
         
     @NotNull
     @ManyToMany
     @JoinTable(name = "CONFIGS_MODULES",
-            joinColumns = @JoinColumn(name = "MODULE_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "MODULE_ID", referencedColumnName = "ID"))
     private List<Module> modules;
         
     @NotNull
@@ -72,8 +72,8 @@ public class ConfigBase implements Serializable {
     @NotNull
     @ManyToMany
     @JoinTable(name = "CONFIGS_EXTENSIONS",
-            joinColumns = @JoinColumn(name = "EXTENSION_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "CONFIG_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "EXTENSION_ID", referencedColumnName = "ID"))
     private List<Extension> extensions;
     
     public ConfigBase() {

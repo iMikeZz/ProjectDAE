@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ParameterDTO;
 import dtos.RepositoryDTO;
 import dtos.TemplateDTO;
@@ -149,6 +150,82 @@ public class RepositoryBean {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("repositoriesNotInTemplate/{id_config}")
     public List<RepositoryDTO> getRepositoriesNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Repository> allRepositories = em.createNamedQuery("getAllRepositories").getResultList();
+            
+            allRepositories.removeAll(configBase.getRepositories());
+            
+            return repositoriesToDTO(allRepositories);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    //*************CONFIGURATION*******************   
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{repository_id}")
+    public void addRepositoryToConfiguration(ConfigurationDTO configurationDTO, @PathParam("repository_id") int repository_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Repository repository = em.find(Repository.class, repository_id);
+            if (repository == null) {
+                throw new EJBException("Repository doesn't exists");
+            }
+            
+            if (configBase.getRepositories().contains(repository)) {
+                return;
+            }
+            
+            configBase.addRepository(repository);
+            repository.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{repository_id}")
+    public void removeRepositoryFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("repository_id") int repository_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Repository repository = em.find(Repository.class, repository_id);
+            if (repository == null) {
+                throw new EJBException("Repository doesn't exists");
+            }
+            
+            if (!configBase.getRepositories().contains(repository)) {
+                return;
+            }
+            
+            configBase.removeRepository(repository);
+            repository.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("repositoriesNotInConfiguration/{id_config}")
+    public List<RepositoryDTO> getRepositoriesNotInConfiguration(@PathParam("id_config")int id_config) {
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id_config);
             if (configBase == null) {

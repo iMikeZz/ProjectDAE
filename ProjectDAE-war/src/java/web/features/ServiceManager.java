@@ -168,4 +168,72 @@ public class ServiceManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    //*******************CONFIGURATION******************
+    public String createServiceConfiguration() {
+        try {
+            if (manager.getCurrentConfiguration() != null) {
+                newService.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
+            client.target(baseUri)
+                    .path("services/create")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newService));
+            newService.reset();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        
+        if (manager.getCurrentTemplate() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        
+        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+    }
+    
+    public String addServiceConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("addServiceId");
+            int service_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/services/add/" + service_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem adding sevice in method addServiceConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public String removeServiceConfiguration(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeServiceId");
+            int service_id = Integer.parseInt(param.getValue().toString());
+            client.target(baseUri)
+                    .path("/services/removeFromConfiguration/" + service_id)
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem removing sevice in method removeServiceConfiguration ", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true"; //todo mudar
+    }
+    
+    public List<ServiceDTO> getServicesNotInConfiguration(){
+        try {
+            return client.target(baseUri)
+                    .path("/services/servicesNotInTemplate/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<ServiceDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Problem getting all templates in method getServicesNotInConfiguration", logger);
+            return null;
+        }
+    }
 }

@@ -53,6 +53,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     private TemplateDTO newTemplate;
     private ConfigurationDTO newConfiguration;
     
+    private TemplateDTO TemplateChoosed;
+    
     private String configurationsVersion = ALLCONFIGURATIONS;
     
     @ManagedProperty("#{manager}")
@@ -115,6 +117,15 @@ public class ConfigurationManager extends Manager implements Serializable {
         this.newTemplate = newTemplate;
     }
 
+        
+    public TemplateDTO getTemplateChoosed() {
+        return TemplateChoosed;
+    }
+
+    public void setTemplateChoosed(TemplateDTO TemplateChoosed) {
+        this.TemplateChoosed = TemplateChoosed;
+    }
+  
     public String getSORTTEMPLATESBYID() {
         return SORTTEMPLATESBYID;
     }
@@ -130,6 +141,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
+   
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -168,6 +180,7 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
     }
     
+        
     public String createTemplate() {
         try {
             client.target(baseUri)
@@ -194,7 +207,7 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .path("configurations/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newConfiguration));
-            newTemplate.reset();
+            newConfiguration.reset();
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -202,7 +215,22 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
         return "/admin/admin_index?faces-redirect=true";
     }
-     
+    
+    public String copyConfiguration() {
+        try {
+            client.target(baseUri)
+                    .path("configurations/create/" + manager.getCurrentClientUsername())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
     public String updateTemplate(){
         try {
             client.target(baseUri)
@@ -389,6 +417,125 @@ public class ConfigurationManager extends Manager implements Serializable {
             newTemplate.addService(serviceDTO);
         }
     }
+    
+    //*************CONFIGURATIONS*********************
+    public void removeExtensionConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtension");
+        ExtensionDTO extensionDTO = (ExtensionDTO)param.getValue();
+        if (newConfiguration.getExtensions().contains(extensionDTO)) {
+            newConfiguration.removeExtension(extensionDTO);
+        }
+    }
+    
+    public void addExtensionConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addExtension");
+        ExtensionDTO extensionDTO = (ExtensionDTO)param.getValue();
+        if (!newConfiguration.getExtensions().contains(extensionDTO)) {
+            newConfiguration.addExtension(extensionDTO);
+        }
+    }
+    
+    public void removeLicenseConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeLicense");
+        LicenseDTO licenseDTO = (LicenseDTO)param.getValue();
+        if (newConfiguration.getLicenses().contains(licenseDTO)) {
+            newConfiguration.removeLicense(licenseDTO);
+        }
+    }
+    
+    public void addLicenseConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addLicense");
+        LicenseDTO licenseDTO = (LicenseDTO)param.getValue();
+        if (!newConfiguration.getLicenses().contains(licenseDTO)) {
+            newConfiguration.addLicense(licenseDTO);
+        }
+    }
+    
+    public void removeMaterialConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterial");
+        MaterialDTO materialDTO = (MaterialDTO)param.getValue();
+        if (newConfiguration.getMaterials().contains(materialDTO)) {
+            newConfiguration.removeMaterial(materialDTO);
+        }
+    }
+    
+    public void addMaterialConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterial");
+        MaterialDTO materialDTO = (MaterialDTO)param.getValue();
+        if (!newConfiguration.getMaterials().contains(materialDTO)) {
+            newConfiguration.addMaterial(materialDTO);
+        }
+    }
+    
+    public void removeModuleConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeModule");
+        ModuleDTO moduleDTO = (ModuleDTO)param.getValue();
+        if (newConfiguration.getModules().contains(moduleDTO)) {
+            newConfiguration.removeModule(moduleDTO);
+        }
+    }
+    
+    public void addModuleConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addModule");
+        ModuleDTO moduleDTO = (ModuleDTO)param.getValue();
+        if (!newConfiguration.getModules().contains(moduleDTO)) {
+            newConfiguration.addModule(moduleDTO);
+        }
+    }
+    
+    public void removeParamaterConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeParamater");
+        ParameterDTO parameterDTO = (ParameterDTO)param.getValue();
+        if (newConfiguration.getParameters().contains(parameterDTO)) {
+            newConfiguration.removeParameter(parameterDTO);
+        }
+    }
+    
+    public void addParamaterConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addParamater");
+        ParameterDTO parameterDTO = (ParameterDTO)param.getValue();
+        if (!newConfiguration.getParameters().contains(parameterDTO)) {
+            newConfiguration.addParameter(parameterDTO);
+        }
+    }
+    
+    public void removeRepositoryConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeRepository");
+        RepositoryDTO repositoryDTO = (RepositoryDTO)param.getValue();
+        if (newConfiguration.getRepositories().contains(repositoryDTO)) {
+            newConfiguration.removeRepository(repositoryDTO);
+        }
+    }
+    
+    public void addRepositoryConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addRepository");
+         RepositoryDTO repositoryDTO = (RepositoryDTO)param.getValue();
+        if (!newConfiguration.getRepositories().contains(repositoryDTO)) {
+            newConfiguration.addRepository(repositoryDTO);
+        }
+    }
+    
+    public void removeServiceConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("removeService");
+        ServiceDTO serviceDTO = (ServiceDTO)param.getValue();
+        if (newConfiguration.getServices().contains(serviceDTO)) {
+            newConfiguration.removeService(serviceDTO);
+        }
+    }
+    
+    public void addServiceConfiguration(ActionEvent event){
+        UIParameter param = (UIParameter) event.getComponent().findComponent("addService");
+        ServiceDTO serviceDTO = (ServiceDTO)param.getValue();
+        if (!newConfiguration.getServices().contains(serviceDTO)) {
+            newConfiguration.addService(serviceDTO);
+        }
+    }
+    
+    public String cancelCreateConfiguration() {
+        newConfiguration.reset();
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
     //*************CONFIGURATIONS*********************
         public List<ConfigurationDTO> getAllConfigurations(){
         try {

@@ -62,7 +62,7 @@
                         requiredMessage="Error: Role cannot be empty"
                         value="#{administratorManager.newClient.contactPerson}" >
                     </h:inputText>    
-                    <h:message for="email" errorStyle="color:red" />
+                    <h:message for="contactPerson" errorStyle="color:red" />
 
                     <h:outputLabel for="address" value="Address: " />
                     <h:inputText
@@ -73,8 +73,18 @@
                         requiredMessage="Error: Address cannot be empty"
                         value="#{administratorManager.newClient.address}" >
                     </h:inputText>    
-                    <h:message for="contactPerson" errorStyle="color:red" />
-
+                    <h:message for="address" errorStyle="color:red" />
+                    
+                    <h:inputText
+                       id="email"
+                        size="20"
+                        required="true"
+                        requiredMessage="Error: Email cannot be empty"
+                       <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                        value="#{administratorManager.newClient.email}" >
+                    </h:inputText>    
+                    <h:message for="email" errorStyle="color:red" />
+                    <h:outputLabel for="email" value="Email: " />
                     <br></br>
 
                     <h:commandButton

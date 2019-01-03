@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -71,6 +72,17 @@
                     </h:inputText>    
                     <h:message for="contactPerson" errorStyle="color:red" />
 
+
+                    <h:message for="contactPerson" errorStyle="color:red" />
+                    </h:inputText>    
+                        requiredMessage="Error: Contact Person cannot be empty"
+                        required="true"
+                        value="#{administratorManager.currentClient.contactPerson}" >
+                        size="20"
+                        id="contactPerson"
+                    <h:inputText
+                    <h:outputLabel for="email" value="Email: " />
+                    
                     <br></br>
 
                     <h:commandButton

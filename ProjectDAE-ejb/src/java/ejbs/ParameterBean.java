@@ -5,6 +5,7 @@
 */
 package ejbs;
 
+import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.MaterialDTO;
 import dtos.ParameterDTO;
@@ -152,6 +153,82 @@ public class ParameterBean {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("parametersNotInTemplate/{id_config}")
     public List<ParameterDTO> getParametersNotInTemplate(@PathParam("id_config")int id_config) {
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, id_config);
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            List<Parameter> allParameters = em.createNamedQuery("getAllParameters").getResultList();
+            
+            allParameters.removeAll(configBase.getParameters());
+            
+            return parametersToDTO(allParameters);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    //*****************CONFIGURATION*****************  
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("addToConfiguration/{parameter_id}")
+    public void addParameterToConfiguration(ConfigurationDTO configurationDTO, @PathParam("parameter_id") int parameter_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Parameter parameter = em.find(Parameter.class, parameter_id);
+            if (parameter == null) {
+                throw new EJBException("Parameter doesn't exists");
+            }
+            
+            if (configBase.getParameters().contains(parameter)) {
+                return;
+            }
+            
+            configBase.addParameter(parameter);
+            parameter.setConfig(configBase);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("removeFromConfiguration/{parameter_id}")
+    public void removeParameterFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("parameter_id") int parameter_id){
+        try {
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            Parameter parameter = em.find(Parameter.class, parameter_id);
+            if (parameter == null) {
+                throw new EJBException("Parameter doesn't exists");
+            }
+            
+            if (!configBase.getParameters().contains(parameter)) {
+                return;
+            }
+            
+            configBase.removeParameter(parameter);
+            parameter.setConfig(null);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("parametersNotInConfiguration/{id_config}")
+    public List<ParameterDTO> getParametersNotInConfiguration(@PathParam("id_config")int id_config) {
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id_config);
             if (configBase == null) {

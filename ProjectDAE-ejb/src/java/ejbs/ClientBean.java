@@ -47,7 +47,7 @@ public class ClientBean {
                 throw new EJBException("Client already exists");
             }
             Client client = new Client(clientDTO.getUsername()
-                    , clientDTO.getPassword(), clientDTO.getAddress(), clientDTO.getContactPerson(), clientDTO.getName());
+                    , clientDTO.getPassword(), clientDTO.getAddress(), clientDTO.getContactPerson(),clientDTO.getName(), clientDTO.getEmail());
             em.persist(client);   
         }catch(Exception e){
             throw new EJBException(e.getMessage());
@@ -106,6 +106,21 @@ public class ClientBean {
     @GET
     @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allExceptMe/{username}")
+    public List<ClientDTO> getAllExceptMe(@PathParam("username") String username){
+        try {
+            List<Client> clients = em.createNamedQuery("getAllClientsExceptMe")
+                    .setParameter("username", username)
+                    .getResultList();
+            return clientsToDTO(clients);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{name}")
     public List<ClientDTO> getAll(@PathParam("name") String name){
         try {
@@ -132,7 +147,7 @@ public class ClientBean {
     }
     
     public ClientDTO clientToDTO(Client client){
-        return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getName());
+        return new ClientDTO(client.getUsername(), null, client.getAddress(), client.getContactPerson(), client.getName(), client.getEmail());
     }
     
     

@@ -36,7 +36,7 @@ public class Manager implements Serializable {
     protected int currentSoftwareId = 1;
     
     protected TemplateDTO currentTemplate;
-    
+        
     protected ConfigurationDTO currentConfiguration;
     
     protected QuestionDTO currentQuestion;
@@ -120,5 +120,13 @@ public class Manager implements Serializable {
     public void setCurrentQuestion(QuestionDTO currentQuestion) {
         this.currentQuestion = currentQuestion;
     }    
+
+    public String getCurrentClientUsername() {
+        return currentClientUsername;
+    }
+
+    public void setCurrentClientUsername(String currentClientUsername) {
+        this.currentClientUsername = currentClientUsername;
+    }
     
 }
