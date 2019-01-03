@@ -25,12 +25,12 @@ public class ClientDTO extends UserDTO implements Serializable {
     public ClientDTO() {
     }
 
-    public ClientDTO(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password, companyName);
+    public ClientDTO(String username, String password, String address, String contactPerson, String name, String email) {
+        super(username, password, name, email);
         this.address = address;
         this.contactPerson = contactPerson;
     }
-
+    
     @Override
     public void reset() {
         super.reset(); //To change body of generated methods, choose Tools | Templates.
@@ -52,5 +52,13 @@ public class ClientDTO extends UserDTO implements Serializable {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

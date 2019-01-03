@@ -47,7 +47,7 @@ public class AdministratorBean {
                 throw new EJBException("Administrator already exists");
             }
             Administrator administrator = new Administrator(administratorDTO.getUsername(), 
-                    administratorDTO.getPassword(), administratorDTO.getName(), administratorDTO.getEmail(), administratorDTO.getRole());
+                    administratorDTO.getPassword(), administratorDTO.getName(), administratorDTO.getRole(), administratorDTO.getEmail());
             em.persist(administrator);
         }catch(Exception e){
             throw new EJBException(e.getMessage());

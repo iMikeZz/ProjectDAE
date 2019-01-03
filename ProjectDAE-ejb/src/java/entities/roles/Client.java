@@ -53,15 +53,15 @@ public class Client extends User implements Serializable {
     public Client() {
         configurations = new LinkedList<>();
     }
-    
-    public Client(String username, String password, String address, String contactPerson, String companyName) {
-        super(username, password, companyName, UserGroup.GROUP.Client);
+
+    public Client(String username, String password, String address, String contactPerson, String name, String email) {
+        super(username, password, name, email, UserGroup.GROUP.Client);
         this.address = address;
         this.contactPerson = contactPerson;
         
         configurations = new LinkedList<>();
     }
-
+    
     public String getAddress() {
         return address;
     }
