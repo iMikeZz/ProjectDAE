@@ -191,7 +191,7 @@ public class ModuleManager extends Manager implements Serializable {
     public String createModuleConfiguration() {
         try {
             newModule.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentTemplate() != null){
+            if (manager.getCurrentConfiguration() != null){
                 client.target(baseUri)
                         .path("modules/create/" + manager.getCurrentConfiguration().getId())
                         .request(MediaType.APPLICATION_XML)
@@ -249,7 +249,7 @@ public class ModuleManager extends Manager implements Serializable {
     
     public List<ModuleDTO> getModulesNotInConfiguration(){
         try {
-            manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
+            manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
             return client.target(baseUri)
                     .path("/modules/modulesNotInConfiguration/" + manager.getCurrentConfiguration().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)

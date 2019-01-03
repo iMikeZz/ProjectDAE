@@ -8,8 +8,8 @@
         <title>Configuration Details</title>
     </h:head>
     <h:body>
+        <h3>Configuration Details</h3>
         <h:panelGrid columns="2">
-            <h3>Configuration Details</h3>
             
             <h:outputLabel for="id" value="Id: "/>
             <h:outputText id="id" value="#{manager.currentConfiguration.id}" />
@@ -29,9 +29,26 @@
             <h:outputLabel for="contractData" value="Contract Data: "/>
             <h:outputText id="contractData" value="#{manager.currentConfiguration.contractData}" />
         </h:panelGrid>
-        
+                
         <h:link value="Return to the main page" outcome="/admin/admin_index" />
         
+        <h:form>
+            <h4>Copy this configuration</h4>
+            <h:outputLabel for="client" value="Client: " />
+            <h:selectOneMenu id="client" value="#{manager.currentClientUsername}">
+                <f:selectItems value="#{administratorManager.allClientsExceptMe}"
+                                   var="client"
+                                   itemValue="#{client.username}"
+                                   itemLabel="#{client.name}" />
+                </h:selectOneMenu>
+                
+                <h:commandButton
+                    id="submit"
+                    value="Copy"
+                    action="#{configurationManager.copyConfiguration}" />
+                <h:message for="submit" errorStyle="color:red" />
+        </h:form>
+                
         <h4> Configuration Extensions </h4>
         <h:dataTable
             var="extension"

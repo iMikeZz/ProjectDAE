@@ -120,5 +120,13 @@ public class Manager implements Serializable {
     public void setCurrentQuestion(QuestionDTO currentQuestion) {
         this.currentQuestion = currentQuestion;
     }    
+
+    public String getCurrentClientUsername() {
+        return currentClientUsername;
+    }
+
+    public void setCurrentClientUsername(String currentClientUsername) {
+        this.currentClientUsername = currentClientUsername;
+    }
     
 }

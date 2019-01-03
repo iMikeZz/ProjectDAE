@@ -59,7 +59,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
-    
+                
     public ConfigurationManager() {
         this.newTemplate = new TemplateDTO();
         this.newConfiguration = new ConfigurationDTO();
@@ -141,6 +141,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
+   
     //*******************TEMPLATES********************************
     public List<TemplateDTO> getAllTemplates(){
         try {
@@ -214,7 +215,22 @@ public class ConfigurationManager extends Manager implements Serializable {
         }
         return "/admin/admin_index?faces-redirect=true";
     }
-     
+    
+    public String copyConfiguration() {
+        try {
+            client.target(baseUri)
+                    .path("configurations/create/" + manager.getCurrentClientUsername())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(manager.getCurrentConfiguration()));
+        }
+        
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "/admin/admin_index?faces-redirect=true";
+    }
+    
     public String updateTemplate(){
         try {
             client.target(baseUri)

@@ -233,6 +233,92 @@ public class ConfigurationBean {
         }
     }
     
+    @POST
+    //@RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("create/{username}")
+    public void copyConfiguration(ConfigurationDTO configurationDTO, @PathParam("username")String clientUsername){
+        try{
+            Software software = em.find(Software.class, configurationDTO.getSoftwareCode());
+            if (software == null) {
+                throw new EJBException("Software doesn't exists");
+            }
+            Client client = em.find(Client.class, clientUsername);
+            if (client == null) {
+                throw new EJBException("Client doesn't exists");
+            }
+            ConfigBase configuration = new Configuration(configurationDTO.getId(), client, configurationDTO.getDescription(), configurationDTO.getContractData(), configurationDTO.getState(), software);
+            software.addConfig(configuration);
+            
+            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            if (configBase == null) {
+                throw new EJBException("Config doesn't exists");
+            }
+            
+            if (!configBase.getExtensions().isEmpty()) {
+                for (Extension extension : configBase.getExtensions()) {
+                    configuration.addExtension(extension);
+                    extension.addConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getLicenses().isEmpty()) {
+                for (License license : configBase.getLicenses()) {
+                    configuration.addLicense(license);
+                    license.addConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getMaterials().isEmpty()) {
+                for (Material material : configBase.getMaterials()) {
+                    configuration.addMaterial(material);
+                    material.setConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getModules().isEmpty()) {
+                for (Module module : configBase.getModules()) {
+                    configuration.addModule(module);
+                    module.addConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getParameters().isEmpty()) {
+                for (Parameter parameter : configBase.getParameters()) {
+                    configuration.addParameter(parameter);
+                    parameter.setConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getRepositories().isEmpty()) {
+                for (Repository repository : configBase.getRepositories()) {
+                    configuration.addRepository(repository);
+                    repository.setConfig(configuration);
+                }
+            }
+            
+            if (!configBase.getServices().isEmpty()) {
+                for (Service service : configBase.getServices()) {
+                    configuration.addService(service);
+                    service.setConfig(configuration);
+                }
+            }
+            
+            em.persist(configuration);   
+            
+            /*
+            // Email to client
+            emailBean.send(
+                    "miguelsousa.14@gmail.com",
+                    "Configuration Created",
+                    mailTemplateConfigurationCreated(configuration, "created")
+            );
+            */
+        }catch(Exception e){
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @PUT
     //@RolesAllowed({"Administrator"})
     @Path("update")

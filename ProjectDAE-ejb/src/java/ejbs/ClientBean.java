@@ -106,6 +106,21 @@ public class ClientBean {
     @GET
     @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allExceptMe/{username}")
+    public List<ClientDTO> getAllExceptMe(@PathParam("username") String username){
+        try {
+            List<Client> clients = em.createNamedQuery("getAllClientsExceptMe")
+                    .setParameter("username", username)
+                    .getResultList();
+            return clientsToDTO(clients);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{name}")
     public List<ClientDTO> getAll(@PathParam("name") String name){
         try {

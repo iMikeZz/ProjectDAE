@@ -33,6 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getAllClientsOrderedByUsername",
             query = "SELECT t FROM Client t ORDER BY t.username"
+    ),
+    @NamedQuery(
+            name = "getAllClientsExceptMe",
+            query = "SELECT t FROM Client t WHERE UPPER(t.username) != UPPER(:username) ORDER BY t.name"
     )
 })
 public class Client extends User implements Serializable {
