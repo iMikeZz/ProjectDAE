@@ -73,15 +73,17 @@
                     <h:message for="contactPerson" errorStyle="color:red" />
 
 
-                    <h:message for="contactPerson" errorStyle="color:red" />
-                    </h:inputText>    
-                        requiredMessage="Error: Contact Person cannot be empty"
-                        required="true"
-                        value="#{administratorManager.currentClient.contactPerson}" >
-                        size="20"
-                        id="contactPerson"
-                    <h:inputText
                     <h:outputLabel for="email" value="Email: " />
+                <h:inputText
+                    styleClass="form-control"
+                    id="email"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Email cannot be empty"
+                    value="#{administratorManager.currentClient.email}" >
+                   <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                </h:inputText>    
+                <h:message for="email" errorStyle="color:red" />
                     
                     <br></br>
 

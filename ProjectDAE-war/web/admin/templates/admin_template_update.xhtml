@@ -127,7 +127,7 @@
                 </h:column>
             </h:dataTable>
             <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create" styleClass="btn btn-primary btn-sm"/>
-            
+            <br/><br/>
             <h4> Template Licenses </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -192,7 +192,7 @@
                 </h:column>
             </h:dataTable>
             <h:link value="New License" outcome="/admin/templates/features/admin_license_create" styleClass="btn btn-primary btn-sm"/>
-            
+            <br/><br/>
             <h4> Template Materials </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -263,8 +263,8 @@
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Material" outcome="/admin/templates/features/admin_material_create"/>
-            
+            <h:link value="New Material" outcome="/admin/templates/features/admin_material_create" styleClass="btn btn-primary btn-sm"/>
+            <br/><br/>
             <h4> Template Modules </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -290,7 +290,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModule}">
+                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModule}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeModuleId" id="removeModuleId" value="#{module.id}" />
                         </h:commandLink>
                     </h:form>
@@ -322,14 +322,14 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{moduleManager.addModule}">
+                        <h:commandLink value="Add" actionListener="#{moduleManager.addModule}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addModuleId" id="addModuleId" value="#{module.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Module" outcome="/admin/templates/features/admin_module_create"/>
-            
+            <h:link value="New Module" outcome="/admin/templates/features/admin_module_create" styleClass="btn btn-primary btn-sm"/>
+            <br/><br/>
             <h4> Template Parameters </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -361,7 +361,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameter}">
+                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameter}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeParameterId" id="removeParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
@@ -399,14 +399,14 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameter}">
+                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameter}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addParameterId" id="addParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create"/>
-            
+            <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create" styleClass="btn btn-primary btn-sm"/>
+            <br/><br/>
             <h4> Template Repositories </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -432,7 +432,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{repositoryManager.removeRepository}">
+                        <h:commandLink value="Remove" actionListener="#{repositoryManager.removeRepository}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeRepositoryId" id="removeRepositoryId" value="#{repository.id}" />
                         </h:commandLink>
                     </h:form>
@@ -464,14 +464,14 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{repositoryManager.addRepository}">
+                        <h:commandLink value="Add" actionListener="#{repositoryManager.addRepository}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addRepositoryId" id="addRepositoryId" value="#{repository.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Repository" outcome="/admin/templates/features/admin_repository_create"/>
-            
+            <h:link value="New Repository" outcome="/admin/templates/features/admin_repository_create" styleClass="btn btn-primary btn-sm"/>
+            <br/><br/>
             <h4> Template Services </h4>
             <h:dataTable
                 styleClass="table table-bordered table-hover w-100"
@@ -497,7 +497,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{serviceManager.removeService}">
+                        <h:commandLink value="Remove" actionListener="#{serviceManager.removeService}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeServiceId" id="removeServiceId" value="#{service.id}" />
                         </h:commandLink>
                     </h:form>
@@ -529,13 +529,13 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{serviceManager.addService}">
+                        <h:commandLink value="Add" actionListener="#{serviceManager.addService}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addServiceId" id="addServiceId" value="#{service.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Service" outcome="/admin/templates/features/admin_service_create"/>
+            <h:link value="New Service" outcome="/admin/templates/features/admin_service_create" styleClass="btn btn-primary btn-sm"/>
         </div>
     </h:body>
 </html>

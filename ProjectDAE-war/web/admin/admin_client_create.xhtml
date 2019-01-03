@@ -75,16 +75,18 @@
                     </h:inputText>    
                     <h:message for="address" errorStyle="color:red" />
                     
+                    <h:outputLabel for="email" value="Email: " />
                     <h:inputText
+                        styleClass="form-control"
                        id="email"
                         size="20"
                         required="true"
                         requiredMessage="Error: Email cannot be empty"
-                       <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                         value="#{administratorManager.newClient.email}" >
+                       <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color:red" />
-                    <h:outputLabel for="email" value="Email: " />
+                    
                     <br></br>
 
                     <h:commandButton

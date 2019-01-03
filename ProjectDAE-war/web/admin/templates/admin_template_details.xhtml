@@ -5,192 +5,214 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+        <title>Template Details</title>
     </h:head>
     <h:body>
-        <h:panelGrid columns="2">
-            <h3>Template Details</h3>
-            
-            <h:outputLabel for="id" value="Id: "/>
-            <h:outputText id="id" value="#{manager.currentTemplate.id}" />
-            
-            <h:outputLabel for="description" value="Description: "/>
-            <h:outputText id="description" value="#{manager.currentTemplate.description}" />
-            
-            <h:outputLabel for="software" value="Software: "/>
-            <h:outputText id="software" value="#{manager.currentTemplate.softwareName}" />
-        </h:panelGrid>
-        
-        <h:form>
-            <h:commandButton
-                        id="cancel"
-                        value="Return to the main page"
-                        onclick="history.back(); return false;" />
-        </h:form>
-        
-        <h4> Template Extensions </h4>
-        <h:dataTable
-            var="extension"
-            summary="List of all Extensions"
-            value="#{extensionManager.allTemplateExtensions}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Extension"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.extension}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Licenses </h4>
-        <h:dataTable
-            var="license"
-            summary="List of all Licenses"
-            value="#{licenseManager.allTemplateLicenses}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="License"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.license}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Materials </h4>
-        <h:dataTable
-            var="material"
-            summary="List of all materials"
-            value="#{materialManager.allTemplateMaterials}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.description}"></h:outputText>
-            </h:column>
-            <h:column rendered="#{material.imgUrl != null}">
-                <f:facet name="header">
-                    <h:outputText value="Actions"></h:outputText>
-                </f:facet>
-                <h:form>
-                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-                        <f:setPropertyActionListener target="#{downloadManager.materialId}" value="#{material.id}"/>
-                        <p:fileDownload value="#{downloadManager.file}" />
-                    </p:commandButton>
-                </h:form>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Modules </h4>
-        <h:dataTable
-            var="module"
-            summary="List of all modules"
-            value="#{moduleManager.allTemplateModules}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.description}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Parameters </h4>
-        <h:dataTable
-            var="parameter"
-            summary="List of all parameters"
-            value="#{parameterManager.allTemplateParameters}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Parameter"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.parameter}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Value"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.value}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Repositories </h4>
-        <h:dataTable
-            var="repository"
-            summary="List of all subjects"
-            value="#{repositoryManager.allTemplateRepositories}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Link"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.link}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Template Services </h4>
-        <h:dataTable
-            var="service"
-            summary="List of all subjects"
-            value="#{serviceManager.allTemplateServices}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Service"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.service}"></h:outputText>
-            </h:column>
-        </h:dataTable>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Template Details</h3>
+            <h:panelGrid columns="2">
+                
+                <h:outputLabel for="id" value="Id: "/>
+                <h:outputText id="id" value="#{manager.currentTemplate.id}" styleClass="form-control"/>
+
+                <h:outputLabel for="description" value="Description: "/>
+                <h:outputText id="description" value="#{manager.currentTemplate.description}" styleClass="form-control"/>
+
+                <h:outputLabel for="software" value="Software: "/>
+                <h:outputText id="software" value="#{manager.currentTemplate.softwareName}" styleClass="form-control"/>
+            </h:panelGrid>
+
+            <h:form>
+                <h:commandButton
+                            styleClass="btn btn-primary btn-sm"
+                            id="cancel"
+                            value="Return to the main page"
+                            onclick="history.back(); return false;" />
+            </h:form>
+            <br/><br/>
+            <h4> Extensions </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="extension"
+                summary="List of all Extensions"
+                value="#{extensionManager.allTemplateExtensions}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{extension.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Extension"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{extension.extension}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Licenses </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="license"
+                summary="List of all Licenses"
+                value="#{licenseManager.allTemplateLicenses}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{license.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="License"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{license.license}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Materials </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="material"
+                summary="List of all materials"
+                value="#{materialManager.allTemplateMaterials}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{material.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{material.description}"></h:outputText>
+                </h:column>
+                <h:column rendered="#{material.imgUrl != null}">
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                    <h:form>
+                        <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" styleClass="btn btn-primary btn-sm">
+                            <f:setPropertyActionListener target="#{downloadManager.materialId}" value="#{material.id}"/>
+                            <p:fileDownload value="#{downloadManager.file}" />
+                        </p:commandButton>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Modules </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="module"
+                summary="List of all modules"
+                value="#{moduleManager.allTemplateModules}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{module.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{module.description}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Parameters </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="parameter"
+                summary="List of all parameters"
+                value="#{parameterManager.allTemplateParameters}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Parameter"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.parameter}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Value"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.value}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Repositories </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="repository"
+                summary="List of all subjects"
+                value="#{repositoryManager.allTemplateRepositories}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{repository.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Link"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{repository.link}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Services </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="service"
+                summary="List of all subjects"
+                value="#{serviceManager.allTemplateServices}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{service.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Service"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{service.service}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+        </div>
     </h:body>
 </html>
 

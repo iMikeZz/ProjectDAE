@@ -5,18 +5,31 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+        <title>New Material</title>
     </h:head>
     <h:body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
         
-        
-        <h3>New Material</h3>
+        <h3 class="text-center">New Material</h3>
         <h:form>
             
             <h:panelGrid columns="3">
                 
                 <h:outputLabel for="description" value="Description: " />
                 <h:inputText
+                    styleClass="form-control"
                     id="description"
                     size="20"
                     required="true"
@@ -27,6 +40,7 @@
                 <br></br>
                 
                 <h:commandButton
+                    styleClass="btn btn-success btn-sm"
                     id="submit"
                     value="Create"
                     action="#{materialManager.createMaterial}" 
@@ -35,10 +49,12 @@
                 
                 
                 <h:commandButton
+                    styleClass="btn btn-primary btn-sm"
                     id="cancel"
                     value="Cancel"
                     onclick="history.back(); return false;" />
             </h:panelGrid >        
         </h:form>
+        </div>
     </h:body> 
 </html>
