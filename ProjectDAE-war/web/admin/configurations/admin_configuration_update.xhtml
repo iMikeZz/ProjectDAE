@@ -5,19 +5,34 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Configuration Update</title>
     </h:head>
     <h:body>
-        <h:form id="form" prependId="true">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Configuration Update</h3>
+            <h:form id="form" prependId="true">
             
             <h:panelGrid columns="3">
                 
                 <h:outputLabel for="id" value="Id: "/>
-                <h:outputText id="id" value="#{manager.currentConfiguration.id}" />
+                <h:outputText id="id" value="#{manager.currentConfiguration.id}" styleClass="form-control"/>
                 <br></br>
                 
                 <h:outputLabel for="description" value="Description: " />
                 <h:inputText
+                    styleClass="form-control"
                     id="description"
                     size="20"
                     required="#{param['form:submit']!=null}"
@@ -26,8 +41,8 @@
                 <h:message for="description" errorStyle="color:red" />
                 
                 <h:outputLabel for="software" value="Software: " />
-                <h:selectOneMenu id="software" value="#{manager.currentConfiguration.softwareCode}" onchange="submit()" 
-                                 valueChangeListener="#{manager.softwareChangeListener}">
+                <h:selectOneMenu id="software" value="#{manager.currentConfiguration.softwareCode}" onchange="submit()"  
+                                 valueChangeListener="#{manager.softwareChangeListener}" styleClass="form-control">
                     <f:selectItems value="#{configurationManager.allSoftwares}"
                                    var="software"
                                    itemValue="#{software.id}"
@@ -36,7 +51,7 @@
                 <br></br>
                 
                 <h:outputLabel for="client" value="Client: " />
-                <h:selectOneMenu id="client" value="#{manager.currentConfiguration.clientUsername}">
+                <h:selectOneMenu id="client" value="#{manager.currentConfiguration.clientUsername}" styleClass="form-control">
                     <f:selectItems value="#{administratorManager.allClients}"
                                    var="client"
                                    itemValue="#{client.username}"
@@ -47,7 +62,7 @@
                 
                 <h:outputLabel for="state" value="State: " />
                 <h:selectOneMenu id="state" value="#{manager.currentConfiguration.state}" onchange="submit()" 
-                                 valueChangeListener="#{manager.stateChangeListener}">
+                                 valueChangeListener="#{manager.stateChangeListener}" styleClass="form-control">
                     <f:selectItem itemValue="ACTIVE" itemLabel="ACTIVE" />
                     <f:selectItem itemValue="INACTIVE" itemLabel="INACTIVE" />
                     <f:selectItem itemValue="SUSPENDED" itemLabel="SUSPENDED" />
@@ -57,6 +72,7 @@
                 
                 <h:outputLabel for="contractData" value="Contract data: " />
                 <h:inputText
+                    styleClass="form-control"
                     id="contractData"
                     size="20"
                     required="#{param['form:submit']!=null}"
@@ -66,6 +82,7 @@
                 
                 
                 <h:commandButton
+                    styleClass="btn btn-primary btn-sm"
                     id="submit"
                     value="Update"
                     action="#{configurationManager.updateConfiguration}" />
@@ -77,6 +94,7 @@
             
            <h4> Configuration Extensions </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="extension"
                 summary="List of all Extensions"
                 value="#{extensionManager.allConfigurationExtensions}"
@@ -99,7 +117,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{extensionManager.removeExtensionConfiguration}">
+                        <h:commandLink value="Remove" actionListener="#{extensionManager.removeExtensionConfiguration}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeExtensionId" id="removeExtensionId" value="#{extension.id}" />
                         </h:commandLink>
                     </h:form>
@@ -108,6 +126,7 @@
             
             <h4> Available Extensions </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="extension"
                 summary="List of all Extensions"
                 value="#{extensionManager.extensionsNotInConfiguration}"
@@ -130,16 +149,17 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{extensionManager.addExtensionConfiguration}">
+                        <h:commandLink value="Add" actionListener="#{extensionManager.addExtensionConfiguration}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addExtensionId" id="addExtensionId" value="#{extension.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create"/>
+            <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create" styleClass="btn btn-primary btn-sm"/>
             
             <h4> Configuration Licenses </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="license"
                 summary="List of all Licenses"
                 value="#{licenseManager.allConfigurationLicenses}"
@@ -162,7 +182,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{licenseManager.removeLicenseConfiguration}">
+                        <h:commandLink value="Remove" actionListener="#{licenseManager.removeLicenseConfiguration}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeLicenseId" id="removeLicenseId" value="#{license.id}" />
                         </h:commandLink>
                     </h:form>
@@ -171,6 +191,7 @@
             
             <h4> Available Licenses </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="license"
                 summary="List of all Licenses"
                 value="#{licenseManager.licensesNotInConfiguration}"
@@ -193,16 +214,17 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{licenseManager.addLicenseConfiguration}">
+                        <h:commandLink value="Add" actionListener="#{licenseManager.addLicenseConfiguration}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addLicenseId" id="addLicenseId" value="#{license.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New License" outcome="/admin/templates/features/admin_license_create"/>
+            <h:link value="New License" outcome="/admin/templates/features/admin_license_create" styleClass="btn btn-primary btn-sm"/>
             
             <h4> Configuration Materials </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="material"
                 summary="List of all materials"
                 value="#{materialManager.allConfigurationMaterials}"
@@ -225,7 +247,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{materialManager.removeMaterialConfiguration}">
+                        <h:commandLink value="Remove" actionListener="#{materialManager.removeMaterialConfiguration}" styleClass="btn btn-primary btn-sm">
                             <f:param name="removeMaterialId" id="removeMaterialId" value="#{material.id}" />
                         </h:commandLink>
                     </h:form>
@@ -234,6 +256,7 @@
             
             <h4> Available Materials </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="material"
                 summary="List of all materials"
                 value="#{materialManager.materialsNotInConfiguration}"
@@ -256,7 +279,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{materialManager.addMaterialConfiguration}">
+                        <h:commandLink value="Add" actionListener="#{materialManager.addMaterialConfiguration}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addMaterialId" id="addMaterialId" value="#{material.id}" />
                         </h:commandLink>
                     </h:form>
@@ -269,10 +292,11 @@
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Material" outcome="/admin/templates/features/admin_material_create"/>
+            <h:link value="New Material" outcome="/admin/templates/features/admin_material_create" styleClass="btn btn-primary btn-sm"/>
             
             <h4> Configuration Modules </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="module"
                 summary="List of all modules"
                 value="#{moduleManager.allConfigurationModules}"
@@ -295,7 +319,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModuleConfiguration}">
+                        <h:commandLink value="Remove" actionListener="#{moduleManager.removeModuleConfiguration}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeModuleId" id="removeModuleId" value="#{module.id}" />
                         </h:commandLink>
                     </h:form>
@@ -304,6 +328,7 @@
             
             <h4> Available Modules </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="module"
                 summary="List of all modules"
                 value="#{moduleManager.modulesNotInConfiguration}"
@@ -326,16 +351,17 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{moduleManager.addModule}">
+                        <h:commandLink value="Add" actionListener="#{moduleManager.addModule}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addModuleId" id="addModuleId" value="#{module.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Module" outcome="/admin/templates/features/admin_module_create"/>
+            <h:link value="New Module" outcome="/admin/templates/features/admin_module_create" styleClass="btn btn-primary btn-sm"/>
             
             <h4> Configuration Parameters </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="parameter"
                 summary="List of all parameters"
                 value="#{parameterManager.allConfigurationParameters}"
@@ -364,7 +390,7 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameterConfiguration}">
+                        <h:commandLink value="Remove" actionListener="#{parameterManager.removeParameterConfiguration}" styleClass="btn btn-danger btn-sm">
                             <f:param name="removeParameterId" id="removeParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
@@ -373,6 +399,7 @@
             
             <h4> Available Parameters </h4>
             <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
                 var="parameter"
                 summary="List of all parameters"
                 value="#{parameterManager.parametersNotInConfiguration}"
@@ -401,13 +428,13 @@
                         <h:outputText value="Actions"></h:outputText>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameterConfiguration}">
+                        <h:commandLink value="Add" actionListener="#{parameterManager.addParameterConfiguration}" styleClass="btn btn-primary btn-sm">
                             <f:param name="addParameterId" id="addParameterId" value="#{parameter.id}" />
                         </h:commandLink>
                     </h:form>
                 </h:column>
             </h:dataTable>
-            <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create"/>
+            <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create" styleClass="btn btn-primary btn-sm"/>
             
             <h4> Configuration Repositories </h4>
             <h:dataTable
@@ -534,6 +561,7 @@
                 </h:column>
             </h:dataTable>
             <h:link value="New Service" outcome="/admin/templates/features/admin_service_create"/>
+        </div>
     </h:body>
 </html>
 

@@ -5,213 +5,235 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
         <title>Configuration Details</title>
     </h:head>
     <h:body>
-        <h3>Configuration Details</h3>
-        <h:panelGrid columns="2">
-            
-            <h:outputLabel for="id" value="Id: "/>
-            <h:outputText id="id" value="#{manager.currentConfiguration.id}" />
-            
-            <h:outputLabel for="description" value="Description: "/>
-            <h:outputText id="description" value="#{manager.currentConfiguration.description}" />
-            
-            <h:outputLabel for="software" value="Software: "/>
-            <h:outputText id="software" value="#{manager.currentConfiguration.softwareName}" />
-                    
-            <h:outputLabel for="client" value="Client: "/>
-            <h:outputText id="client" value="#{manager.currentConfiguration.clientUsername}" />
-                     
-            <h:outputLabel for="state" value="State: "/>
-            <h:outputText id="state" value="#{manager.currentConfiguration.state}" />
-                       
-            <h:outputLabel for="contractData" value="Contract Data: "/>
-            <h:outputText id="contractData" value="#{manager.currentConfiguration.contractData}" />
-        </h:panelGrid>
-                
-        <h:link value="Return to the main page" outcome="/admin/admin_index" />
-        
-        <h:form>
-            <h4>Copy this configuration</h4>
-            <h:outputLabel for="client" value="Client: " />
-            <h:selectOneMenu id="client" value="#{manager.currentClientUsername}">
-                <f:selectItems value="#{administratorManager.allClientsExceptMe}"
-                                   var="client"
-                                   itemValue="#{client.username}"
-                                   itemLabel="#{client.name}" />
-                </h:selectOneMenu>
-                
-                <h:commandButton
-                    id="submit"
-                    value="Copy"
-                    action="#{configurationManager.copyConfiguration}" />
-                <h:message for="submit" errorStyle="color:red" />
-        </h:form>
-                
-        <h4> Configuration Extensions </h4>
-        <h:dataTable
-            var="extension"
-            summary="List of all Extensions"
-            value="#{extensionManager.allConfigurationExtensions}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Extension"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{extension.extension}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Licenses </h4>
-        <h:dataTable
-            var="license"
-            summary="List of all Licenses"
-            value="#{licenseManager.allConfigurationLicenses}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="License"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{license.license}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Materials </h4>
-        <h:dataTable
-            var="material"
-            summary="List of all materials"
-            value="#{materialManager.allConfigurationMaterials}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{material.description}"></h:outputText>
-            </h:column>
-            <h:column rendered="#{material.imgUrl != null}">
-                <f:facet name="header">
-                    <h:outputText value="Actions"></h:outputText>
-                </f:facet>
-                <h:form>
-                    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-                        <f:setPropertyActionListener target="#{downloadManager.materialId}" value="#{material.id}"/>
-                        <p:fileDownload value="#{downloadManager.file}" />
-                    </p:commandButton>
-                </h:form>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Modules </h4>
-        <h:dataTable
-            var="module"
-            summary="List of all modules"
-            value="#{moduleManager.allConfigurationModules}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Description"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{module.description}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Parameters </h4>
-        <h:dataTable
-            var="parameter"
-            summary="List of all parameters"
-            value="#{parameterManager.allConfigurationParameters}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Parameter"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.parameter}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Value"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{parameter.value}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Repositories </h4>
-        <h:dataTable
-            var="repository"
-            summary="List of all subjects"
-            value="#{repositoryManager.allConfigurationRepositories}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Link"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{repository.link}"></h:outputText>
-            </h:column>
-        </h:dataTable>
-        
-        <h4> Configuration Services </h4>
-        <h:dataTable
-            var="service"
-            summary="List of all subjects"
-            value="#{serviceManager.allConfigurationServices}"
-            rules="all"
-            cellpadding="5">
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.id}"></h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Service"></h:outputText>
-                </f:facet>
-                <h:outputText value="#{service.service}"></h:outputText>
-            </h:column>
-        </h:dataTable>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="navbar-text">
+                Logged in as: #{userManager.username}
+            </span>
+            <h:form style="position: absolute;right: 15px;">
+                <h:commandButton value="Logout" action="#{userManager.logout}" styleClass="btn btn-secondary"/>
+            </h:form>
+        </nav>
+        <br/>
+        <div class="container">
+            <h3 class="text-center">Configuration Details</h3>
+            <h:panelGrid columns="2">
+
+                <h:outputLabel for="id" value="Id: "/>
+                <h:outputText id="id" value="#{manager.currentConfiguration.id}" styleClass="form-control"/>
+
+                <h:outputLabel for="description" value="Description: "/>
+                <h:outputText id="description" value="#{manager.currentConfiguration.description}" styleClass="form-control"/>
+
+                <h:outputLabel for="software" value="Software: "/>
+                <h:outputText id="software" value="#{manager.currentConfiguration.softwareName}" styleClass="form-control"/>
+
+                <h:outputLabel for="client" value="Client: "/>
+                <h:outputText id="client" value="#{manager.currentConfiguration.clientUsername}" styleClass="form-control"/>
+
+                <h:outputLabel for="state" value="State: "/>
+                <h:outputText id="state" value="#{manager.currentConfiguration.state}" styleClass="form-control"/>
+
+                <h:outputLabel for="contractData" value="Contract Data: "/>
+                <h:outputText id="contractData" value="#{manager.currentConfiguration.contractData}" styleClass="form-control"/>
+            </h:panelGrid>
+
+            <h:link value="Return to the main page" outcome="/admin/admin_index" styleClass="btn btn-primary btn-sm"/>
+
+            <h:form>
+                <h4>Copy this configuration</h4>
+                <h:outputLabel for="client" value="Client: " />
+                <h:selectOneMenu id="client" value="#{manager.currentClientUsername}" styleClass="form-control">
+                    <f:selectItems value="#{administratorManager.allClientsExceptMe}"
+                                       var="client"
+                                       itemValue="#{client.username}"
+                                       itemLabel="#{client.name}" />
+                    </h:selectOneMenu>
+
+                    <h:commandButton
+                        styleClass="btn btn-primary btn-sm"
+                        id="submit"
+                        value="Copy"
+                        action="#{configurationManager.copyConfiguration}" />
+                    <h:message for="submit" errorStyle="color:red" />
+            </h:form>
+
+            <h4> Configuration Extensions </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="extension"
+                summary="List of all Extensions"
+                value="#{extensionManager.allConfigurationExtensions}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{extension.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Extension"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{extension.extension}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Licenses </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="license"
+                summary="List of all Licenses"
+                value="#{licenseManager.allConfigurationLicenses}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{license.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="License"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{license.license}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Materials </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="material"
+                summary="List of all materials"
+                value="#{materialManager.allConfigurationMaterials}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{material.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{material.description}"></h:outputText>
+                </h:column>
+                <h:column rendered="#{material.imgUrl != null}">
+                    <f:facet name="header">
+                        <h:outputText value="Actions"></h:outputText>
+                    </f:facet>
+                    <h:form>
+                        <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+                            <f:setPropertyActionListener target="#{downloadManager.materialId}" value="#{material.id}"/>
+                            <p:fileDownload value="#{downloadManager.file}" />
+                        </p:commandButton>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Modules </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="module"
+                summary="List of all modules"
+                value="#{moduleManager.allConfigurationModules}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{module.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Description"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{module.description}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Parameters </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="parameter"
+                summary="List of all parameters"
+                value="#{parameterManager.allConfigurationParameters}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Parameter"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.parameter}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Value"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{parameter.value}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Repositories </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="repository"
+                summary="List of all subjects"
+                value="#{repositoryManager.allConfigurationRepositories}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{repository.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Link"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{repository.link}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+
+            <h4> Configuration Services </h4>
+            <h:dataTable
+                styleClass="table table-bordered table-hover w-100"
+                var="service"
+                summary="List of all subjects"
+                value="#{serviceManager.allConfigurationServices}"
+                rules="all"
+                cellpadding="5">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{service.id}"></h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Service"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{service.service}"></h:outputText>
+                </h:column>
+            </h:dataTable>
+        </div>
     </h:body>
 </html>
 
