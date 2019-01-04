@@ -43,8 +43,14 @@
                 <h:outputText id="contractData" value="#{manager.currentConfiguration.contractData}" styleClass="form-control"/>
             </h:panelGrid>
 
-            <h:link value="Return to the main page" outcome="/admin/admin_index" styleClass="btn btn-primary btn-sm"/>
-
+            <h:form>
+                <h:commandButton
+                        styleClass="btn btn-primary btn-sm"
+                        id="cancel"
+                        value="Return to the main page"
+                        action="#{configurationManager.cancelCurrentConfigurationDetailsAndUpdate}" 
+                        />
+            </h:form>
             <h:form>
                 <h4>Copy this configuration</h4>
                 <h:outputLabel for="client" value="Client: " />

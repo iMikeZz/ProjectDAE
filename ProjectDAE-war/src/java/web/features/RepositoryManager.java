@@ -33,7 +33,8 @@ public class RepositoryManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
-   
+    
+    private String creationPage;
   
     public RepositoryManager() {
         this.newRepository = new RepositoryDTO();
@@ -99,6 +100,9 @@ public class RepositoryManager extends Manager implements Serializable {
             if (manager.getCurrentTemplate() != null) {
                 newRepository.setConfig_id(manager.getCurrentTemplate().getId());
             }
+            if (manager.getCurrentConfiguration()!= null) {
+                newRepository.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
             client.target(baseUri)
                     .path("repositories/create")
                     .request(MediaType.APPLICATION_XML)
@@ -109,10 +113,30 @@ public class RepositoryManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        
+        if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
         if (manager.getCurrentTemplate() != null)
             return "/admin/templates/admin_template_update?faces-redirect=true";
         
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        return null;
+    }
+    
+    public void newRepositoryRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newRepository");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String addRepository(ActionEvent event){

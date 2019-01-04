@@ -45,7 +45,7 @@ and open the template in the editor.
                 <h:outputLabel for="software" value="Software: " />
                 <h:selectOneMenu id="software" value="#{configurationManager.newConfiguration.softwareCode}" onchange="submit()" 
                                  valueChangeListener="#{manager.softwareChangeListener}"
-                                 styleClass="form-control">
+                                 styleClass="form-control" disabled="#{manager.currentTemplate!=null}">
                     <f:selectItems value="#{configurationManager.allSoftwares}"
                                    var="software"
                                    itemValue="#{software.id}"
@@ -168,8 +168,12 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New Extension" outcome="/admin/templates/features/admin_extension_create" styleClass="btn btn-primary btn-sm"/>
-        
+        <h:form>
+            <h:commandLink value="New Extension" actionListener="#{extensionManager.newExtensionRedirect}" action="/admin/templates/features/admin_extension_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newExtension" id="newExtension" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
+                
         <h4> Configuration Licenses </h4>
         <h:dataTable
             styleClass="table table-bordered table-hover w-100"
@@ -233,7 +237,11 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New License" outcome="/admin/templates/features/admin_license_create" styleClass="btn btn-primary btn-sm"/>
+        <h:form>
+            <h:commandLink value="New License" actionListener="#{licenseManager.newLicenseRedirect}" action="/admin/templates/features/admin_license_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newLicense" id="newLicense" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
         
         <h4> Configuration Materials </h4>
         <h:dataTable
@@ -305,7 +313,11 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New Material" outcome="/admin/templates/features/admin_material_create" styleClass="btn btn-primary btn-sm"/>
+        <h:form>
+            <h:commandLink value="New Material" actionListener="#{materialManager.newMaterialRedirect}" action="/admin/templates/features/admin_material_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newMaterial" id="newMaterial" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
         
         <h4> Configuration Modules </h4>
         <h:dataTable
@@ -370,7 +382,11 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New Module" outcome="/admin/templates/features/admin_module_create" styleClass="btn btn-primary btn-sm"/>
+        <h:form>
+            <h:commandLink value="New Module" actionListener="#{moduleManager.newModuleRedirect}" action="/admin/templates/features/admin_module_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newModule" id="newModule" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
         
         <h4> Configuration Parameters </h4>
         <h:dataTable
@@ -447,7 +463,11 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New Parameter" outcome="/admin/templates/features/admin_parameter_create" styleClass="btn btn-primary btn-sm"/>
+        <h:form>
+            <h:commandLink value="New Parameter" actionListener="#{parameterManager.newParameterRedirect}" action="/admin/templates/features/admin_parameter_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newParameter" id="newParameter" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
 
         <h4> Configuration Repositories </h4>
         <h:dataTable
@@ -512,7 +532,11 @@ and open the template in the editor.
                 </h:form>
             </h:column>
         </h:dataTable>
-        <h:link value="New Repository" outcome="/admin/templates/features/admin_repository_create" styleClass="btn btn-primary btn-sm"/>
+        <h:form>
+            <h:commandLink value="New Repository" actionListener="#{repositoryManager.newRepositoryRedirect}" action="/admin/templates/features/admin_repository_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newRepository" id="newRepository" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
         
         <h4> Configuration Services </h4>
         <h:dataTable
@@ -576,8 +600,12 @@ and open the template in the editor.
                     </h:commandLink>
                 </h:form>
             </h:column>
-        </h:dataTable>
-        <h:link value="New Service" outcome="/admin/templates/features/admin_service_create" styleClass="btn btn-primary btn-sm"/>
+        </h:dataTable>        
+        <h:form>
+            <h:commandLink value="New Service" actionListener="#{serviceManager.newServiceRedirect}" action="/admin/templates/features/admin_service_create?facelet-redirect=true" styleClass="btn btn-primary btn-sm">
+                <f:param name="newService" id="newService" value="newConfiguration" />
+            </h:commandLink>
+        </h:form>
         </div>
     </h:body> 
 </html>

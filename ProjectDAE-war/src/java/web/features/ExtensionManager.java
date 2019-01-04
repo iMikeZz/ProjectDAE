@@ -32,6 +32,8 @@ public class ExtensionManager extends Manager implements Serializable {
     
     private ExtensionDTO newExtension;
     
+    private String creationPage;
+    
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
@@ -54,7 +56,7 @@ public class ExtensionManager extends Manager implements Serializable {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
-    
+        
     //*******************TEMPLATES********************************
     public List<ExtensionDTO> getAllTemplateExtensions(){
         try {
@@ -118,6 +120,12 @@ public class ExtensionManager extends Manager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newExtension));
                 newExtension.reset();  
+            } else if(manager.getCurrentConfiguration() != null){
+                client.target(baseUri)
+                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();  
             } else{
                 client.target(baseUri)
                     .path("extensions/create/" + 0)
@@ -130,13 +138,29 @@ public class ExtensionManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
         if (manager.getCurrentConfiguration() != null){
             return "/admin/configurations/admin_configuration_update?faces-redirect=true";
         }
-        if (manager.getCurrentTemplate() != null)
+        if (manager.getCurrentTemplate() != null){
             return "/admin/templates/admin_template_update?faces-redirect=true";
-        
+        }
         return null;
+    }
+    
+    public void newExtensionRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newExtension");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String addExtension(ActionEvent event){
@@ -185,35 +209,7 @@ public class ExtensionManager extends Manager implements Serializable {
             return null;
         }
     }
-    
-    //para apagar
-    public String createExtensionConfiguration() {
-        try {
-            newExtension.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentConfiguration() != null){
-              client.target(baseUri)
-                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();  
-            } else {
-                client.target(baseUri)
-                    .path("extensions/create/" + 0)
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();
-            }
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        if (manager.getCurrentConfiguration() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
         
-        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-    }
-    
     public String addExtensionConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");

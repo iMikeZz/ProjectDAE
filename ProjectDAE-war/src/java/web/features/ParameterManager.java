@@ -41,6 +41,8 @@ public class ParameterManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
+    
+    private String creationPage;
    
     public ParameterManager() {
         this.newParameter = new ParameterDTO();
@@ -106,6 +108,9 @@ public class ParameterManager extends Manager implements Serializable {
             if (manager.getCurrentTemplate() != null) {
                 newParameter.setConfig_id(manager.getCurrentTemplate().getId());
             }
+            if (manager.getCurrentConfiguration()!= null) {
+                newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
             client.target(baseUri)
                     .path("parameters/create")
                     .request(MediaType.APPLICATION_XML)
@@ -116,10 +121,30 @@ public class ParameterManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+        
+         if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
         if (manager.getCurrentTemplate() != null)
             return "/admin/templates/admin_template_update?faces-redirect=true";
         
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        return null;
+    }
+   
+    public void newParameterRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newParameter");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String addParameter(ActionEvent event){

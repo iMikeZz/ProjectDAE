@@ -88,7 +88,12 @@
                     action="#{configurationManager.updateConfiguration}" />
                 <h:message for="submit" errorStyle="color:red" />
                 
-                <h:link value="Cancel" outcome="/admin/admin_index" />
+                <h:commandButton
+                        styleClass="btn btn-primary btn-sm"
+                        id="cancel"
+                        value="Return to the main page"
+                        action="#{configurationManager.cancelCurrentConfigurationDetailsAndUpdate}" 
+                        />
             </h:panelGrid >
             </h:form>
             

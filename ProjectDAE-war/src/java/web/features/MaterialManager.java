@@ -32,6 +32,8 @@ public class MaterialManager extends Manager implements Serializable {
 
     private MaterialDTO newMaterial;
     
+    private String creationPage;
+    
     @ManagedProperty("#{manager}")
     protected Manager manager;
 
@@ -100,6 +102,9 @@ public class MaterialManager extends Manager implements Serializable {
             if (manager.getCurrentTemplate() != null) {
                 newMaterial.setConfig_id(manager.getCurrentTemplate().getId());
             }
+            if (manager.getCurrentConfiguration() != null) {
+                newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
+            }
             client.target(baseUri)
                     .path("materials/create")
                     .request(MediaType.APPLICATION_XML)
@@ -110,10 +115,29 @@ public class MaterialManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
+         if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
         if (manager.getCurrentTemplate() != null)
             return "/admin/templates/admin_template_update?faces-redirect=true";
         
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        return null;
+    }
+    
+    public void newMaterialRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newMaterial");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String cancelCreateMaterial(){

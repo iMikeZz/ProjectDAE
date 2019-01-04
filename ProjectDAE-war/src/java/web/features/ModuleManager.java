@@ -35,6 +35,8 @@ public class ModuleManager extends Manager implements Serializable {
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
+    private String creationPage;
+    
     public ModuleManager() {
         this.newModule = new ModuleDTO();
     }
@@ -106,6 +108,12 @@ public class ModuleManager extends Manager implements Serializable {
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
                 newModule.reset();
+            } else if(manager.getCurrentConfiguration() != null){
+                client.target(baseUri)
+                    .path("modules/create/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newModule));
+                newModule.reset();  
             } else{
                 client.target(baseUri)
                         .path("modules/create/" + 0)
@@ -118,10 +126,29 @@ public class ModuleManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        if (manager.getCurrentTemplate() != null)
+        if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
+        if (manager.getCurrentTemplate() != null){
             return "/admin/templates/admin_template_update?faces-redirect=true";
-        
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        return null;
+    }
+    
+    public void newModuleRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newModule");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String addModule(ActionEvent event){

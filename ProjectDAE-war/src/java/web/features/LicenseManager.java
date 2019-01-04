@@ -31,6 +31,8 @@ public class LicenseManager extends Manager implements Serializable {
     
     private LicenseDTO newLicense;
     
+    private String creationPage;
+    
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
@@ -106,6 +108,12 @@ public class LicenseManager extends Manager implements Serializable {
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newLicense));
                 newLicense.reset();
+            }else if(manager.getCurrentConfiguration() != null){
+                client.target(baseUri)
+                    .path("licenses/create/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newLicense));
+                newLicense.reset();  
             }else{
                 client.target(baseUri)
                         .path("licenses/create/" + 0)
@@ -118,10 +126,29 @@ public class LicenseManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        if (manager.getCurrentTemplate() != null)
+        if (creationPage.equals("newTemplate")){
+            return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        if (creationPage.equals("newConfiguration")){
+            return "/admin/configurations/admin_configuration_create?faces-redirect=true";
+        }
+        if (manager.getCurrentConfiguration() != null){
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
+        }
+        if (manager.getCurrentTemplate() != null){
             return "/admin/templates/admin_template_update?faces-redirect=true";
-        
-        return "/admin/templates/admin_template_create?faces-redirect=true";
+        }
+        return null;
+    }
+    
+    public void newLicenseRedirect(ActionEvent event){
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("newLicense");
+            creationPage = param.getValue().toString();
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     public String addLicense(ActionEvent event){

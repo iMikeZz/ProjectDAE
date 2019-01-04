@@ -92,6 +92,7 @@ public class ConfigurationDTO implements Serializable{
         setSoftwareCode(0);
         setSoftwareName(null);
         setState(null);
+        setContractData(null);
         
         licenses = new LinkedList<>();
         modules = new LinkedList<>();
