@@ -46,10 +46,14 @@ public class MaterialBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(MaterialDTO materialDTO){
+        create_config(materialDTO);
+    }
+    
+    public void create_config(MaterialDTO materialDTO){
         try{
             ConfigBase config = em.find(ConfigBase.class, materialDTO.getConfig_id());
             if (config == null) {

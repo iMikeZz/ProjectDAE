@@ -45,10 +45,14 @@ public class LicenseBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create/{id}")
     public void create(LicenseDTO licenseDTO, @PathParam("id") int config_id){
+        create_config(licenseDTO, config_id);
+    }
+    
+    public void create_config(LicenseDTO licenseDTO, @PathParam("id") int config_id){
         try{
             Software software = em.find(Software.class, licenseDTO.getSoftware_id());
             if (software == null) {

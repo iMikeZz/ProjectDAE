@@ -46,10 +46,14 @@ public class ModuleBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create/{id}")
     public void create(ModuleDTO moduleDTO, @PathParam("id")int config_id){
+        create_config(moduleDTO, config_id);
+    }
+    
+    public void create_config(ModuleDTO moduleDTO, @PathParam("id")int config_id){
         try{
             Software software = em.find(Software.class, moduleDTO.getSoftware_id());
             if (software == null) {

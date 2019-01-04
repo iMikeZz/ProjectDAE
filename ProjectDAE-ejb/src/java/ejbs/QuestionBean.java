@@ -66,10 +66,14 @@ public class QuestionBean {
     }
     
     @POST
-    //@RolesAllowed({"Client"})
+    @RolesAllowed({"Client"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(QuestionDTO questionDTO){
+        create_config(questionDTO);
+    }
+    
+    public void create_config(QuestionDTO questionDTO){
         try{
             Configuration configuration = em.find(Configuration.class, questionDTO.getConfiguration());
             if (configuration == null) {

@@ -130,6 +130,24 @@
             <url-pattern>/faces/admin/templates/admin_template_details.xhtml</url-pattern>
         </web-resource-collection>
     </security-constraint>
+    <security-constraint>
+        <display-name>BothConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Answers</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/answers/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Questions</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/questions/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Client</role-name>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>BASIC</auth-method>
         <realm-name>project_dae_realm</realm-name>

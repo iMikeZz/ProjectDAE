@@ -38,10 +38,14 @@ public class AdministratorBean {
     EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(AdministratorDTO administratorDTO){
+        create_config(administratorDTO);
+    }
+    
+    public void create_config(AdministratorDTO administratorDTO){
         try{
             if (em.find(Administrator.class, administratorDTO.getUsername()) != null) {
                 throw new EJBException("Administrator already exists");

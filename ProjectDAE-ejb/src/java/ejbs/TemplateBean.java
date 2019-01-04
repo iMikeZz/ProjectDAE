@@ -114,10 +114,14 @@ public class TemplateBean {
     }
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(TemplateDTO templateDTO){
+        create_config(templateDTO);
+    }
+    
+    public void create_config(TemplateDTO templateDTO){
         try{
             Software software = em.find(Software.class, templateDTO.getSoftwareCode());
             if (software == null) {

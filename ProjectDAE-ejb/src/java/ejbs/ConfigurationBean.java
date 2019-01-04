@@ -154,10 +154,14 @@ public class ConfigurationBean {
     }
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(ConfigurationDTO configurationDTO){
+        create_config(configurationDTO);
+    }
+    
+    public void create_config(ConfigurationDTO configurationDTO){
         try{
             Software software = em.find(Software.class, configurationDTO.getSoftwareCode());
             if (software == null) {

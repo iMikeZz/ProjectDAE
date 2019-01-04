@@ -46,10 +46,14 @@ public class ServiceBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(ServiceDTO serviceDTO){
+        create_config(serviceDTO);
+    }
+    
+    public void create_config(ServiceDTO serviceDTO){
         try{
             ConfigBase config = em.find(ConfigBase.class, serviceDTO.getConfig_id());
             if (config == null) {

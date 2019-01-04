@@ -55,10 +55,14 @@ public class AnswerBean {
     }
     
     @POST
-    //@RolesAllowed({"Client", "Administrator"})
+    @RolesAllowed({"Client", "Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(AnswerDTO answerDTO){
+        create_config(answerDTO);
+    }
+    
+    public void create_config(AnswerDTO answerDTO){
         try{
             Question question = em.find(Question.class, answerDTO.getQuestion());
             if (question == null) {

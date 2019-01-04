@@ -43,10 +43,14 @@ public class ExtensionBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create/{id}")
     public void create(ExtensionDTO extensionDTO, @PathParam("id") int config_id){
+        create_config(extensionDTO, config_id);
+    }
+    
+    public void create_config(ExtensionDTO extensionDTO, @PathParam("id") int config_id){
         try{
             Software software = em.find(Software.class, extensionDTO.getSoftware_id());
             if (software == null) {

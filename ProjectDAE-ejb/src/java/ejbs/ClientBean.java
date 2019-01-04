@@ -38,10 +38,14 @@ public class ClientBean {
     EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(ClientDTO clientDTO){
+        create_config(clientDTO);
+    }
+    
+    public void create_config(ClientDTO clientDTO){
         try{
             if (em.find(Client.class, clientDTO.getUsername()) != null) {
                 throw new EJBException("Client already exists");
@@ -69,6 +73,7 @@ public class ClientBean {
             client.setName(clientDTO.getName());
             client.setAddress(clientDTO.getAddress());
             client.setContactPerson(clientDTO.getContactPerson());
+            client.setEmail(clientDTO.getEmail());
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }

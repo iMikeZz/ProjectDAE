@@ -44,10 +44,14 @@ public class RepositoryBean {
             EntityManager em;
     
     @POST
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(RepositoryDTO repositoryDTO){
+        create_config(repositoryDTO);
+    }
+    
+    public void create_config(RepositoryDTO repositoryDTO){
         try{
             ConfigBase config = em.find(ConfigBase.class, repositoryDTO.getConfig_id());
             if (config == null) {

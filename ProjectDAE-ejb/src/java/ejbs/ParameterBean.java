@@ -51,6 +51,10 @@ public class ParameterBean {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("create")
     public void create(ParameterDTO parameterDTO){
+        create_config(parameterDTO);
+    }
+    
+    public void create_config(ParameterDTO parameterDTO){
         try{
             ConfigBase config = em.find(ConfigBase.class, parameterDTO.getConfig_id());
             if (config == null) {
@@ -67,7 +71,7 @@ public class ParameterBean {
     }
     
     @GET
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
     public List<ParameterDTO> getAll(){
