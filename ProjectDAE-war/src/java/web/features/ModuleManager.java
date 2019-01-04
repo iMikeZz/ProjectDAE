@@ -36,7 +36,7 @@ public class ModuleManager extends Manager implements Serializable {
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
-    private String creationPage;
+    private String creationPage = "";
     
     public ModuleManager() {
         this.newModule = new ModuleDTO();

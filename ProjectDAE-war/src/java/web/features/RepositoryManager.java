@@ -35,7 +35,7 @@ public class RepositoryManager extends Manager implements Serializable {
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
-    private String creationPage;
+    private String creationPage = "";
   
     public RepositoryManager() {
         this.newRepository = new RepositoryDTO();

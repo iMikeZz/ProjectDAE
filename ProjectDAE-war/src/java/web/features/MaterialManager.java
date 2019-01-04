@@ -33,7 +33,7 @@ public class MaterialManager extends Manager implements Serializable {
 
     private MaterialDTO newMaterial;
     
-    private String creationPage;
+    private String creationPage = "";
     
     @ManagedProperty("#{manager}")
     protected Manager manager;

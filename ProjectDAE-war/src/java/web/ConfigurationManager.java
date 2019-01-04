@@ -27,6 +27,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import util.URILookup;
 
 /**
@@ -169,7 +170,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     public List<SoftwareDTO> getAllSoftwares(){
         try {
-            return client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            return manager.getClient().target(URILookup.getBaseAPI())
                     .path("/softwares/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<SoftwareDTO>>() {
@@ -183,7 +185,8 @@ public class ConfigurationManager extends Manager implements Serializable {
         
     public String createTemplate() {
         try {
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("templates/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newTemplate));
@@ -216,7 +219,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     public String createConfiguration() {
         try {
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("configurations/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newConfiguration));
@@ -235,6 +239,7 @@ public class ConfigurationManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("createConfigurationTemplate");
             TemplateDTO template = (TemplateDTO)param.getValue();
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
             templateDTOFromDatabase = manager.getClient().target(URILookup.getBaseAPI())
                     .path("/templates/template/" + template.getId())
                     .request(MediaType.APPLICATION_XML)
@@ -260,7 +265,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     public String copyConfiguration() {
         try {
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("configurations/create/" + manager.getCurrentClientUsername())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(manager.getCurrentConfiguration()));
@@ -275,7 +281,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     public String updateTemplate(){
         try {
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("templates/update")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -289,7 +296,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     
      public String updateConfiguration(){
         try {
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("configurations/update")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -305,7 +313,8 @@ public class ConfigurationManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteTemplateId");
             int username = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/templates/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
@@ -320,7 +329,8 @@ public class ConfigurationManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteConfigurationId");
             int username = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/configurations/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
@@ -333,7 +343,10 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     //**************COSTUM METHODS
     private List<TemplateDTO> getTemplatesListByUrl(String url){
-        return client.target(URILookup.getBaseAPI())
+        if (userManager.getUsername() != null && userManager.getPassword() != null) {
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+        }
+        return manager.getClient().target(URILookup.getBaseAPI())
                 .path(url)
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<TemplateDTO>>() {
@@ -341,7 +354,8 @@ public class ConfigurationManager extends Manager implements Serializable {
     } 
     
     private List<ConfigurationDTO> getConfigurationsListByUrl(String url){
-        return client.target(URILookup.getBaseAPI())
+        manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+        return manager.getClient().target(URILookup.getBaseAPI())
                 .path(url)
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<ConfigurationDTO>>() {

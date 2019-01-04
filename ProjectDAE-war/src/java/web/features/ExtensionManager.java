@@ -33,7 +33,7 @@ public class ExtensionManager extends Manager implements Serializable {
     
     private ExtensionDTO newExtension;
     
-    private String creationPage;
+    private String creationPage = "";
     
     @ManagedProperty("#{manager}")
     protected Manager manager;

@@ -43,7 +43,7 @@ public class ParameterManager extends Manager implements Serializable {
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
-    private String creationPage;
+    private String creationPage = "";
    
     public ParameterManager() {
         this.newParameter = new ParameterDTO();

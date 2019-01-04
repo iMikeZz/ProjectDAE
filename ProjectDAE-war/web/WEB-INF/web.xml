@@ -43,22 +43,22 @@
             <url-pattern>/webapi/clients/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
-            <web-resource-name>Admin Templates APi</web-resource-name>
+            <web-resource-name>software api</web-resource-name>
             <description/>
-            <url-pattern>/webapi/templates/*</url-pattern>
-            <http-method>PUT</http-method>
-            <http-method>POST</http-method>
-            <http-method>DELETE</http-method>
-        </web-resource-collection>
-        <web-resource-collection>
-            <web-resource-name>Get Template</web-resource-name>
-            <description/>
-            <url-pattern>/webapi/templates/template/*</url-pattern>
+            <url-pattern>/webapi/softwares/all</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>Administrator</role-name>
         </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Public</display-name>
+        <web-resource-collection>
+            <web-resource-name>TemplateDetails</web-resource-name>
+            <description/>
+            <url-pattern>/faces/admin/templates/admin_template_details.xhtml</url-pattern>
+        </web-resource-collection>
     </security-constraint>
     <login-config>
         <auth-method>BASIC</auth-method>

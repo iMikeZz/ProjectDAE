@@ -185,8 +185,15 @@ public class ConfigurationBean {
             if (!configurationDTO.getMaterials().isEmpty()) {
                 for (MaterialDTO materialDTO : configurationDTO.getMaterials()) {
                     Material material = em.find(Material.class, materialDTO.getId());
-                    configuration.addMaterial(material);
-                    material.setConfig(configuration);
+                    if (material.getConfig() != null) {
+                        Material newMaterial = new Material(material.getId(), material.getDescription(), material.getImgUrl(), configuration);
+                        em.persist(newMaterial);
+                        configuration.addMaterial(newMaterial);
+                        newMaterial.setConfig(configuration); 
+                    }else{
+                       configuration.addMaterial(material);
+                       material.setConfig(configuration); 
+                    }
                 }
             }
             if (!configurationDTO.getModules().isEmpty()) {
@@ -199,22 +206,43 @@ public class ConfigurationBean {
             if (!configurationDTO.getParameters().isEmpty()) {
                 for (ParameterDTO parameterDTO : configurationDTO.getParameters()) {
                     Parameter parameter = em.find(Parameter.class, parameterDTO.getId());
-                    configuration.addParameter(parameter);
-                    parameter.setConfig(configuration);
+                    if (parameter.getConfig() != null) {
+                        Parameter newParameter = new Parameter(parameter.getId(), parameter.getParameter(), parameter.getValue(), configuration);
+                        em.persist(newParameter);
+                        configuration.addParameter(newParameter);
+                        newParameter.setConfig(configuration); 
+                    }else{
+                       configuration.addParameter(parameter);
+                        parameter.setConfig(configuration); 
+                    }
                 }
             }
             if (!configurationDTO.getRepositories().isEmpty()) {
                 for (RepositoryDTO repositoryDTO : configurationDTO.getRepositories()) {
                     Repository repository = em.find(Repository.class, repositoryDTO.getId());
-                    configuration.addRepository(repository);
-                    repository.setConfig(configuration);
+                    if (repository.getConfig() != null) {
+                        Repository newRepository = new Repository(repository.getId(), repository.getLink(), configuration);
+                        em.persist(newRepository);
+                        configuration.addRepository(newRepository);
+                        newRepository.setConfig(configuration); 
+                    }else{
+                        configuration.addRepository(repository);
+                        repository.setConfig(configuration);
+                    }
                 }
             }
             if (!configurationDTO.getServices().isEmpty()) {
                 for (ServiceDTO serviceDTO : configurationDTO.getServices()) {
                     Service service = em.find(Service.class, serviceDTO.getId());
-                    configuration.addService(service);
-                    service.setConfig(configuration);
+                    if (service.getConfig() != null) {
+                        Service newService = new Service(service.getId(), service.getService(), configuration);
+                        em.persist(newService);
+                        configuration.addService(newService);
+                        newService.setConfig(configuration); 
+                    }else{
+                        configuration.addService(service);
+                        service.setConfig(configuration);
+                    }
                 }
             }
             
@@ -250,7 +278,7 @@ public class ConfigurationBean {
             ConfigBase configuration = new Configuration(configurationDTO.getId(), client, configurationDTO.getDescription(), configurationDTO.getContractData(), configurationDTO.getState(), software);
             software.addConfig(configuration);
             
-            ConfigBase configBase = em.find(ConfigBase.class, configurationDTO.getId());
+            Configuration configBase = em.find(Configuration.class, configurationDTO.getId());
             if (configBase == null) {
                 throw new EJBException("Config doesn't exists");
             }
@@ -271,8 +299,10 @@ public class ConfigurationBean {
             
             if (!configBase.getMaterials().isEmpty()) {
                 for (Material material : configBase.getMaterials()) {
-                    configuration.addMaterial(material);
-                    material.setConfig(configuration);
+                    Material newMaterial = new Material(material.getId(), material.getDescription(), material.getImgUrl(), configuration);
+                    em.persist(newMaterial);
+                    configuration.addMaterial(newMaterial);
+                    newMaterial.setConfig(configuration);
                 }
             }
             
@@ -285,22 +315,28 @@ public class ConfigurationBean {
             
             if (!configBase.getParameters().isEmpty()) {
                 for (Parameter parameter : configBase.getParameters()) {
-                    configuration.addParameter(parameter);
-                    parameter.setConfig(configuration);
+                    Parameter newParameter = new Parameter(parameter.getId(), parameter.getParameter(), parameter.getValue(), configuration);
+                    em.persist(newParameter);
+                    configuration.addParameter(newParameter);
+                    newParameter.setConfig(configuration);
                 }
             }
             
             if (!configBase.getRepositories().isEmpty()) {
                 for (Repository repository : configBase.getRepositories()) {
-                    configuration.addRepository(repository);
-                    repository.setConfig(configuration);
+                    Repository newRepository = new Repository(repository.getId(), repository.getLink(), configuration);
+                    em.persist(newRepository);
+                    configuration.addRepository(newRepository);
+                    newRepository.setConfig(configuration);
                 }
             }
             
             if (!configBase.getServices().isEmpty()) {
                 for (Service service : configBase.getServices()) {
-                    configuration.addService(service);
-                    service.setConfig(configuration);
+                    Service newService = new Service(service.getId(), service.getService(), configuration);
+                    em.persist(newService);
+                    configuration.addService(newService);
+                    newService.setConfig(configuration);
                 }
             }
             
@@ -408,7 +444,7 @@ public class ConfigurationBean {
                 + "Date: " + date.format(RFC_1123_DATE_TIME) + "\n"
                 + "Description: " + configuration.getDescription() + "\n"
                 + "Software Name: " + configuration.getSoftware().getName() + "\n"  
-                + "Software Version: " + configuration.getSoftware().getVersion() + "\n"
+                + "Software Version: " + configuration.getSoftware().getVersion()
                 + "\n\n");
                 
         return sb.toString();

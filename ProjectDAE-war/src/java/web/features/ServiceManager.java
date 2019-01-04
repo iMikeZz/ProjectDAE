@@ -44,7 +44,7 @@ public class ServiceManager extends Manager implements Serializable {
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
-    private String creationPage;
+    private String creationPage = "";
     
     public ServiceManager() {
         this.newService = new ServiceDTO();

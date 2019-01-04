@@ -32,7 +32,7 @@ public class LicenseManager extends Manager implements Serializable {
     
     private LicenseDTO newLicense;
     
-    private String creationPage;
+    private String creationPage = "";
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
