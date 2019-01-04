@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -59,7 +60,7 @@ public class LicenseManager extends Manager implements Serializable {
     //*******************TEMPLATES********************************
     public List<LicenseDTO> getAllTemplateLicenses(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
@@ -72,7 +73,7 @@ public class LicenseManager extends Manager implements Serializable {
     
     public List<LicenseDTO> getAllConfigurationLicenses(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
@@ -88,7 +89,7 @@ public class LicenseManager extends Manager implements Serializable {
             if (manager.getCurrentTemplate() != null) {
                 manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
             }
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/all/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
@@ -103,7 +104,7 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             newLicense.setSoftware_id(manager.getCurrentSoftwareId());
             if (manager.getCurrentTemplate() != null){ //significa q estamos no update
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("licenses/create/" + manager.getCurrentTemplate().getId())
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newLicense));
@@ -115,7 +116,7 @@ public class LicenseManager extends Manager implements Serializable {
                     .post(Entity.xml(newLicense));
                 newLicense.reset();  
             }else{
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("licenses/create/" + 0)
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newLicense));
@@ -155,7 +156,7 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addLicenseId");
             int license_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/licenses/addToTemplate/" + license_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -171,7 +172,7 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeLicenseId");
             int license_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/licenses/removeFromTemplate/"+ license_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -186,7 +187,7 @@ public class LicenseManager extends Manager implements Serializable {
     public List<LicenseDTO> getLicensesNotInTemplate(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/licensesNotInTemplate/" + manager.getCurrentTemplate().getId()+ "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
@@ -205,7 +206,7 @@ public class LicenseManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
             }
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/all/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {
@@ -220,13 +221,13 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             newLicense.setSoftware_id(manager.getCurrentSoftwareId());
             if (manager.getCurrentConfiguration() != null){ //significa q estamos no update
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("licenses/create/" + manager.getCurrentConfiguration().getId())
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newLicense));
                 newLicense.reset();
             }else{
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("licenses/create/" + 0)
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newLicense));
@@ -247,7 +248,7 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addLicenseId");
             int license_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/licenses/addToConfiguration/" + license_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -263,7 +264,7 @@ public class LicenseManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeLicenseId");
             int license_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/licenses/removeFromConfiguration/"+ license_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -278,7 +279,7 @@ public class LicenseManager extends Manager implements Serializable {
     public List<LicenseDTO> getLicensesNotInConfiguration(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/licenses/licensesNotInTemplate/" + manager.getCurrentConfiguration().getId()+ "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<LicenseDTO>>() {

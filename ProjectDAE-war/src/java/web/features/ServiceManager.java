@@ -27,6 +27,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -67,7 +68,7 @@ public class ServiceManager extends Manager implements Serializable {
     
     public List<ServiceDTO> getAllTemplateServices(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/services/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ServiceDTO>>() {
@@ -80,7 +81,7 @@ public class ServiceManager extends Manager implements Serializable {
     
     public List<ServiceDTO> getAllConfigurationServices(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/services/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ServiceDTO>>() {
@@ -93,7 +94,7 @@ public class ServiceManager extends Manager implements Serializable {
     
     public List<ServiceDTO> getAllServices(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/services/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ServiceDTO>>() {
@@ -112,7 +113,7 @@ public class ServiceManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration()!= null) {
                 newService.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("services/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newService));
@@ -152,7 +153,7 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/services/add/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -168,7 +169,7 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/services/removeFromTemplate/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -182,7 +183,7 @@ public class ServiceManager extends Manager implements Serializable {
     
     public List<ServiceDTO> getServicesNotInTemplate(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/services/servicesNotInTemplate/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ServiceDTO>>() {
@@ -199,7 +200,7 @@ public class ServiceManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 newService.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("services/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newService));
@@ -220,7 +221,7 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/services/add/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -236,7 +237,7 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/services/removeFromConfiguration/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -250,7 +251,7 @@ public class ServiceManager extends Manager implements Serializable {
     
     public List<ServiceDTO> getServicesNotInConfiguration(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/services/servicesNotInTemplate/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ServiceDTO>>() {

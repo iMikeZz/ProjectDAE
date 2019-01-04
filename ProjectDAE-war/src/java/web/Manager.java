@@ -31,8 +31,6 @@ public class Manager implements Serializable {
     @ManagedProperty("#{userManager}")
     protected UserManager userManager;
     
-    protected static final String baseUri = "http://localhost:8080/ProjectDAE-war/webapi";
-    
     protected int currentSoftwareId = 1;
     
     protected TemplateDTO currentTemplate;

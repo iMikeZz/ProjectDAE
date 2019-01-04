@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -58,7 +59,7 @@ public class RepositoryManager extends Manager implements Serializable {
     
     public List<RepositoryDTO> getAllTemplateRepositories(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/repositories/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<RepositoryDTO>>() {
@@ -71,7 +72,7 @@ public class RepositoryManager extends Manager implements Serializable {
     
     public List<RepositoryDTO> getAllConfigurationRepositories(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/repositories/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<RepositoryDTO>>() {
@@ -84,7 +85,7 @@ public class RepositoryManager extends Manager implements Serializable {
    
     public List<RepositoryDTO> getAllRepositories(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/repositories/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<RepositoryDTO>>() {
@@ -103,7 +104,7 @@ public class RepositoryManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration()!= null) {
                 newRepository.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("repositories/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newRepository));
@@ -143,7 +144,7 @@ public class RepositoryManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addRepositoryId");
             int repository_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/repositories/addToTemplate/" + repository_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -159,7 +160,7 @@ public class RepositoryManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeRepositoryId");
             int repository_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/repositories/removeFromTemplate/" + repository_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -173,7 +174,7 @@ public class RepositoryManager extends Manager implements Serializable {
     
     public List<RepositoryDTO> getRepositoriesNotInTemplate(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/repositories/repositoriesNotInTemplate/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<RepositoryDTO>>() {
@@ -190,7 +191,7 @@ public class RepositoryManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 newRepository.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("repositories/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newRepository));
@@ -210,7 +211,7 @@ public class RepositoryManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addRepositoryId");
             int repository_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/repositories/addToConfiguration/" + repository_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -226,7 +227,7 @@ public class RepositoryManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeRepositoryId");
             int repository_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/repositories/removeFromConfiguration/" + repository_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -240,7 +241,7 @@ public class RepositoryManager extends Manager implements Serializable {
     
     public List<RepositoryDTO> getRepositoriesNotInConfiguration(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/repositories/repositoriesNotInConfiguration/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<RepositoryDTO>>() {

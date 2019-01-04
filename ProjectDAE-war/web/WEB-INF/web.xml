@@ -7,7 +7,7 @@
     <context-param>
         <param-name>SERVER_DOCUMENTS_FOLDER</param-name>
         <param-value>C:/DAE_UPLOADS/</param-value>
-    </context-param> 
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -41,6 +41,19 @@
             <web-resource-name>Admin Clients Api</web-resource-name>
             <description/>
             <url-pattern>/webapi/clients/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Admin Templates APi</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/templates/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Get Template</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/templates/template/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>

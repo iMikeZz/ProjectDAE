@@ -21,6 +21,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 @ManagedBean(name = "administratorManager")
 @SessionScoped
@@ -213,7 +214,7 @@ public class AdministratorManager extends Manager implements Serializable {
     
     public String createAdministrator() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("administrators/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newAdministrator));
@@ -228,7 +229,7 @@ public class AdministratorManager extends Manager implements Serializable {
     
     public String updateAdministrator(){
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("administrators/update")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentAdministrator));
@@ -243,7 +244,7 @@ public class AdministratorManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteAdministratorId");
             String username = param.getValue().toString();
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("administrators/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
@@ -291,7 +292,7 @@ public class AdministratorManager extends Manager implements Serializable {
     
     public String createClient() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("clients/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newClient));
@@ -306,7 +307,7 @@ public class AdministratorManager extends Manager implements Serializable {
     
     public String updateClient(){
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("clients/update")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentClient));
@@ -321,7 +322,7 @@ public class AdministratorManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("deleteClientId");
             String username = param.getValue().toString();
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/clients/" + username)
                     .request(MediaType.APPLICATION_XML)
                     .delete(Boolean.class);
@@ -335,7 +336,7 @@ public class AdministratorManager extends Manager implements Serializable {
     
     //**************COSTUM METHODS
     private List<ClientDTO> getClientsListByUrl(String url){
-        return client.target(baseUri)
+        return client.target(URILookup.getBaseAPI())
                 .path(url)
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<ClientDTO>>() {
@@ -343,7 +344,7 @@ public class AdministratorManager extends Manager implements Serializable {
     }
     
     private List<AdministratorDTO> getAdminsListByUrl(String url){
-        return client.target(baseUri)
+        return client.target(URILookup.getBaseAPI())
                 .path(url)
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<AdministratorDTO>>() {

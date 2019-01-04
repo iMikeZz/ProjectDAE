@@ -16,7 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import static web.Manager.baseUri;
+import util.URILookup;
 
 /**
  *
@@ -40,7 +40,7 @@ public class ForumManager extends Manager implements Serializable {
     }
     public List<AnswerDTO> getAllQuestionAnswers() {
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/answers/" + manager.currentQuestion.getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<AnswerDTO>>() {});
@@ -52,7 +52,7 @@ public class ForumManager extends Manager implements Serializable {
     
     public List<QuestionDTO> getAllConfigurationQuestions() {
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/questions/" + manager.currentConfiguration.getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<QuestionDTO>>() {});
@@ -66,7 +66,7 @@ public class ForumManager extends Manager implements Serializable {
         try {
             newQuestion.setConfiguration(manager.currentConfiguration.getId());
             newQuestion.setUserID(userManager.getUsername());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("questions/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newQuestion));
@@ -83,7 +83,7 @@ public class ForumManager extends Manager implements Serializable {
         try {
             newAnswer.setQuestion(manager.currentQuestion.getId());
             newAnswer.setUserID(userManager.getUsername());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("answers/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newAnswer));

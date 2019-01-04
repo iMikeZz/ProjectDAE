@@ -19,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -60,7 +61,7 @@ public class ExtensionManager extends Manager implements Serializable {
     //*******************TEMPLATES********************************
     public List<ExtensionDTO> getAllTemplateExtensions(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/extensions/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
@@ -73,7 +74,7 @@ public class ExtensionManager extends Manager implements Serializable {
     
     public List<ExtensionDTO> getAllConfigurationExtensions(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/extensions/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
@@ -86,7 +87,7 @@ public class ExtensionManager extends Manager implements Serializable {
     
     public List<ExtensionDTO> getAllExtensions(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/extensions/all/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
@@ -100,7 +101,7 @@ public class ExtensionManager extends Manager implements Serializable {
     public List<ExtensionDTO> getExtensionsNotInTemplate(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/extensions/extensionsNotInTemplate/" + manager.getCurrentTemplate().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
@@ -115,7 +116,7 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             newExtension.setSoftware_id(manager.getCurrentSoftwareId());
             if (manager.getCurrentTemplate() != null){
-              client.target(baseUri)
+              client.target(URILookup.getBaseAPI())
                     .path("extensions/create/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newExtension));
@@ -127,7 +128,7 @@ public class ExtensionManager extends Manager implements Serializable {
                     .post(Entity.xml(newExtension));
                 newExtension.reset();  
             } else{
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                     .path("extensions/create/" + 0)
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newExtension));
@@ -167,7 +168,7 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/extensions/addToTemplate/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -183,7 +184,7 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/extensions/removeFromTemplate/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -199,7 +200,7 @@ public class ExtensionManager extends Manager implements Serializable {
     public List<ExtensionDTO> getExtensionsNotInConfiguration(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/extensions/extensionsNotInConfiguration/" + manager.getCurrentConfiguration().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ExtensionDTO>>() {
@@ -214,7 +215,7 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/extensions/addToConfiguration/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -230,7 +231,7 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/extensions/removeFromConfiguration/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));

@@ -19,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -60,7 +61,7 @@ public class MaterialManager extends Manager implements Serializable {
     //MATERIALS
     public List<MaterialDTO> getAllTemplateMaterials(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/materials/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<MaterialDTO>>() {
@@ -73,7 +74,7 @@ public class MaterialManager extends Manager implements Serializable {
     
     public List<MaterialDTO> getAllConfigurationMaterials(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/materials/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<MaterialDTO>>() {
@@ -86,7 +87,7 @@ public class MaterialManager extends Manager implements Serializable {
     
     public List<MaterialDTO> getAllMaterials(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/materials/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<MaterialDTO>>() {
@@ -105,7 +106,7 @@ public class MaterialManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("materials/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newMaterial));
@@ -152,7 +153,7 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/materials/addToTemplate/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -168,7 +169,7 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/materials/removeFromTemplate/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -182,7 +183,7 @@ public class MaterialManager extends Manager implements Serializable {
     
     public List<MaterialDTO> getMaterialsNotInTemplate(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/materials/materialsNotInTemplate/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<MaterialDTO>>() {
@@ -200,7 +201,7 @@ public class MaterialManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("materials/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newMaterial));
@@ -220,7 +221,7 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/materials/addToConfiguration/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -236,7 +237,7 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/materials/removeFromConfiguration/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -250,7 +251,7 @@ public class MaterialManager extends Manager implements Serializable {
     
     public List<MaterialDTO> getMaterialsNotInConfiguration(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/materials/materialsNotInConfiguration/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<MaterialDTO>>() {

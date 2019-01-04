@@ -19,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -59,7 +60,7 @@ public class ModuleManager extends Manager implements Serializable {
     
     public List<ModuleDTO> getAllTemplateModules(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
@@ -72,7 +73,7 @@ public class ModuleManager extends Manager implements Serializable {
     
     public List<ModuleDTO> getAllConfigurationModules(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
@@ -88,7 +89,7 @@ public class ModuleManager extends Manager implements Serializable {
             if (manager.getCurrentTemplate() != null) {
                 manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
             }
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/all/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
@@ -103,7 +104,7 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             newModule.setSoftware_id(manager.getCurrentSoftwareId());
             if (manager.getCurrentTemplate() != null){
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("modules/create/" + manager.getCurrentTemplate().getId())
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
@@ -115,7 +116,7 @@ public class ModuleManager extends Manager implements Serializable {
                     .post(Entity.xml(newModule));
                 newModule.reset();  
             } else{
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("modules/create/" + 0)
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
@@ -155,7 +156,7 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/modules/addToTemplate/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -171,7 +172,7 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/modules/removeFromTemplate/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -186,7 +187,7 @@ public class ModuleManager extends Manager implements Serializable {
     public List<ModuleDTO> getModulesNotInTemplate(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentTemplate().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/modulesNotInTemplate/" + manager.getCurrentTemplate().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
@@ -204,7 +205,7 @@ public class ModuleManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
             }
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/all/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {
@@ -219,13 +220,13 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             newModule.setSoftware_id(manager.getCurrentSoftwareId());
             if (manager.getCurrentConfiguration() != null){
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("modules/create/" + manager.getCurrentConfiguration().getId())
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
                 newModule.reset();
             } else{
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                         .path("modules/create/" + 0)
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
@@ -246,7 +247,7 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/modules/addToConfiguration/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -262,7 +263,7 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/modules/removeFromConfiguration/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -277,7 +278,7 @@ public class ModuleManager extends Manager implements Serializable {
     public List<ModuleDTO> getModulesNotInConfiguration(){
         try {
             manager.setCurrentSoftwareId(manager.getCurrentConfiguration().getSoftwareCode());
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/modules/modulesNotInConfiguration/" + manager.getCurrentConfiguration().getId() + "/" + manager.getCurrentSoftwareId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ModuleDTO>>() {

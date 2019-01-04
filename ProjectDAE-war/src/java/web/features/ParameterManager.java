@@ -26,6 +26,7 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 
 /**
  *
@@ -66,7 +67,7 @@ public class ParameterManager extends Manager implements Serializable {
     
     public List<ParameterDTO> getAllTemplateParameters(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/parameters/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ParameterDTO>>() {
@@ -79,7 +80,7 @@ public class ParameterManager extends Manager implements Serializable {
     
     public List<ParameterDTO> getAllConfigurationParameters(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/parameters/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ParameterDTO>>() {
@@ -92,7 +93,7 @@ public class ParameterManager extends Manager implements Serializable {
     
     public List<ParameterDTO> getAllParameters(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/parameters/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ParameterDTO>>() {
@@ -111,7 +112,7 @@ public class ParameterManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration()!= null) {
                 newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("parameters/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newParameter));
@@ -151,7 +152,7 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/parameters/addToTemplate/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -167,7 +168,7 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/parameters/removeFromTemplate/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -181,7 +182,7 @@ public class ParameterManager extends Manager implements Serializable {
     
     public List<ParameterDTO> getParametersNotInTemplate(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/parameters/parametersNotInTemplate/" + manager.getCurrentTemplate().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ParameterDTO>>() {
@@ -198,7 +199,7 @@ public class ParameterManager extends Manager implements Serializable {
             if (manager.getCurrentConfiguration() != null) {
                 newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("parameters/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newParameter));
@@ -218,7 +219,7 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/parameters/addToConfiguration/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -234,7 +235,7 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/parameters/removeFromConfiguration/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -248,7 +249,7 @@ public class ParameterManager extends Manager implements Serializable {
     
     public List<ParameterDTO> getParametersNotInConfiguration(){
         try {
-            return client.target(baseUri)
+            return client.target(URILookup.getBaseAPI())
                     .path("/parameters/parametersNotInTemplate/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<ParameterDTO>>() {

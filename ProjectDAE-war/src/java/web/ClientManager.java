@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import util.URILookup;
 import utils.State;
 
 /**
@@ -74,7 +75,7 @@ public class ClientManager extends Manager implements Serializable {
         }
         
         try {
-              List<ConfigurationDTO> configs = client.target(baseUri)
+              List<ConfigurationDTO> configs = client.target(URILookup.getBaseAPI())
                 .path("/configurations/client")
                 .path(userManager.getUsername())
                 .path(filter)
