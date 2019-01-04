@@ -210,6 +210,31 @@ public class ExtensionManager extends Manager implements Serializable {
             return null;
         }
     }
+    
+    //para apagar
+    public String createExtensionConfiguration() {
+        try {
+            newExtension.setSoftware_id(manager.getCurrentSoftwareId());
+            if (manager.getCurrentConfiguration() != null){
+              client.target(baseUri)
+                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();  
+            } else {
+                client.target(baseUri)
+                    .path("extensions/create/" + 0)
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newExtension));
+                newExtension.reset();
+            }
+        }
+        catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        if (manager.getCurrentConfiguration() != null)
+            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
         
     public String addExtensionConfiguration(ActionEvent event){
         try {
