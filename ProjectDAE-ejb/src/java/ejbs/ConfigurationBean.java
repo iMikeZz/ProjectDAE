@@ -26,6 +26,7 @@ import entities.Software;
 import entities.roles.Client;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 import utils.State;
 import java.util.ArrayList;
@@ -248,14 +249,13 @@ public class ConfigurationBean {
             
             em.persist(configuration);   
             
-            /*
+            
             // Email to client
             emailBean.send(
-                    "miguelsousa.14@gmail.com",
-                    "Configuration Created",
-                    mailTemplateConfigurationCreated(configuration, "created")
+                    client.getEmail(),
+                    "Configuration " + configuration.getDescription() + " Created",
+                    mailTemplateConfigurationCreated(configuration, configurationDTO.getContractData(), configurationDTO.getState(),  "created")
             );
-            */
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -341,15 +341,14 @@ public class ConfigurationBean {
             }
             
             em.persist(configuration);   
-            
-            /*
+                        
             // Email to client
             emailBean.send(
-                    "miguelsousa.14@gmail.com",
-                    "Configuration Created",
-                    mailTemplateConfigurationCreated(configuration, "created")
+                    client.getEmail(),
+                    "Configuration " + configuration.getDescription() + " Created",
+                    mailTemplateConfigurationCreated(configuration, configurationDTO.getContractData(), configurationDTO.getState(),  "created")
             );
-            */
+            
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -381,14 +380,12 @@ public class ConfigurationBean {
             configuration.setState(configurationDTO.getState());
             
             
-            /*
             // Email to client
             emailBean.send(
-                    "miguelsousa.14@gmail.com",
-                    "Configuration Updated",
-                    mailTemplateConfigurationCreated(configuration, "updated")
+                    client.getEmail(),
+                    "Configuration " + configuration.getDescription() + " Updated",
+                    mailTemplateConfigurationCreated(configuration, configuration.getContractData(), configuration.getState(), "updated")
             );
-            */
             
         }catch(Exception e){
             throw new EJBException(e.getMessage());
@@ -407,14 +404,12 @@ public class ConfigurationBean {
             }
             em.remove(configuration);
             
-            /*
             // Email to client
             emailBean.send(
-                    "miguelsousa.14@gmail.com",
+                    configuration.getClient().getEmail(),
                     "Configuration " + configuration.getDescription() + " removed",
-                    mailTemplateConfigurationCreated(configuration, "removed")
+                    mailTemplateConfigurationCreated(configuration, configuration.getContractData(), configuration.getState(),  "removed")
             );
-            */
         }catch(Exception e){
             throw new EJBException(e.getMessage());
         }
@@ -433,18 +428,22 @@ public class ConfigurationBean {
         return dtos;
     }
     
-    private String mailTemplateConfigurationCreated(ConfigBase configuration, String type) {
+    private String mailTemplateConfigurationCreated(ConfigBase configuration, String contractData, String state, String type) {
 
-        LocalDateTime date = LocalDateTime.now();
-
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(formatter);
+        
         StringBuilder sb = new StringBuilder();
         sb.append("We would like to inform you that the following "
                 + "configuration was " +  type + "\n\n "
                 + "Details \n\n"
-                + "Date: " + date.format(RFC_1123_DATE_TIME) + "\n"
+                + "Date: " + formatDateTime + "\n"
                 + "Description: " + configuration.getDescription() + "\n"
                 + "Software Name: " + configuration.getSoftware().getName() + "\n"  
-                + "Software Version: " + configuration.getSoftware().getVersion()
+                + "Software Version: " + configuration.getSoftware().getVersion() + "\n"
+                + "State: " + state + "\n"
+                + "Contract Data: " + contractData + "\n"
                 + "\n\n");
                 
         return sb.toString();

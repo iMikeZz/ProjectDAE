@@ -219,6 +219,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     
     public String createConfiguration() {
         try {
+            manager.setCurrentTemplate(null);
             manager.clientRegister(userManager.getUsername(), userManager.getPassword());
             manager.getClient().target(URILookup.getBaseAPI())
                     .path("configurations/create")
