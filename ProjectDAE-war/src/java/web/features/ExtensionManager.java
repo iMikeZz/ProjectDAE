@@ -122,7 +122,7 @@ public class ExtensionManager extends Manager implements Serializable {
                     .post(Entity.xml(newExtension));
                 newExtension.reset();  
             } else if(manager.getCurrentConfiguration() != null){
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                     .path("extensions/create/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newExtension));
@@ -209,33 +209,7 @@ public class ExtensionManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
             return null;
         }
-    }
-    
-    //para apagar
-    public String createExtensionConfiguration() {
-        try {
-            newExtension.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentConfiguration() != null){
-              client.target(baseUri)
-                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();  
-            } else {
-                client.target(baseUri)
-                    .path("extensions/create/" + 0)
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();
-            }
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        if (manager.getCurrentConfiguration() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        
+    }        
     public String addExtensionConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");

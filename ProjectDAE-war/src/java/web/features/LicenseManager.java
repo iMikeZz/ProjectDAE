@@ -110,7 +110,7 @@ public class LicenseManager extends Manager implements Serializable {
                         .post(Entity.xml(newLicense));
                 newLicense.reset();
             }else if(manager.getCurrentConfiguration() != null){
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                     .path("licenses/create/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newLicense));

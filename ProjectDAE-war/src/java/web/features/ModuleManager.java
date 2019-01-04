@@ -110,7 +110,7 @@ public class ModuleManager extends Manager implements Serializable {
                         .post(Entity.xml(newModule));
                 newModule.reset();
             } else if(manager.getCurrentConfiguration() != null){
-                client.target(baseUri)
+                client.target(URILookup.getBaseAPI())
                     .path("modules/create/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newModule));
