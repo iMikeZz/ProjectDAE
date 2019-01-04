@@ -6,15 +6,7 @@
 package web.features;
 
 import web.*;
-import dtos.ExtensionDTO;
-import dtos.LicenseDTO;
-import dtos.MaterialDTO;
-import dtos.ModuleDTO;
-import dtos.ParameterDTO;
-import dtos.RepositoryDTO;
 import dtos.ServiceDTO;
-import dtos.SoftwareDTO;
-import dtos.TemplateDTO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -23,7 +15,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -43,8 +34,6 @@ public class ServiceManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
-    
-    private String creationPage = "";
     
     public ServiceManager() {
         this.newService = new ServiceDTO();
@@ -107,13 +96,14 @@ public class ServiceManager extends Manager implements Serializable {
     
     public String createService() {
         try {
-            if (manager.getCurrentTemplate() != null) {
+            if (manager.getCurrentTemplate() != null && !manager.getCreationPage().equals("newConfiguration")) {
                 newService.setConfig_id(manager.getCurrentTemplate().getId());
             }
             if (manager.getCurrentConfiguration()!= null) {
                 newService.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("services/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newService));
@@ -124,10 +114,10 @@ public class ServiceManager extends Manager implements Serializable {
             return null;
         }
         
-        if (creationPage.equals("newTemplate")){
+        if (manager.getCreationPage().equals("newTemplate")){
             return "/admin/templates/admin_template_create?faces-redirect=true";
         }
-        if (creationPage.equals("newConfiguration")){
+        if (manager.getCreationPage().equals("newConfiguration")){
             return "/admin/configurations/admin_configuration_create?faces-redirect=true";
         }
         if (manager.getCurrentConfiguration() != null){
@@ -142,7 +132,7 @@ public class ServiceManager extends Manager implements Serializable {
     public void newServiceRedirect(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("newService");
-            creationPage = param.getValue().toString();
+            manager.setCreationPage(param.getValue().toString());
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -153,8 +143,9 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
-                    .path("/services/add/" + service_id)
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
+                    .path("/services/addToTemplate/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
         }
@@ -169,7 +160,8 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/services/removeFromTemplate/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -195,34 +187,13 @@ public class ServiceManager extends Manager implements Serializable {
     }
     
     //*******************CONFIGURATION******************
-    public String createServiceConfiguration() {
-        try {
-            if (manager.getCurrentConfiguration() != null) {
-                newService.setConfig_id(manager.getCurrentConfiguration().getId());
-            }
-            client.target(URILookup.getBaseAPI())
-                    .path("services/create")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newService));
-            newService.reset();
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        
-        if (manager.getCurrentTemplate() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        
-        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-    }
-    
     public String addServiceConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
-                    .path("/services/add/" + service_id)
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
+                    .path("/services/addToTemplate/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
         }
@@ -237,7 +208,8 @@ public class ServiceManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeServiceId");
             int service_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/services/removeFromConfiguration/" + service_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));

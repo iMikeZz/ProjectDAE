@@ -32,6 +32,7 @@ import utils.State;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -355,7 +356,7 @@ public class ConfigurationBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Path("update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(ConfigurationDTO configurationDTO){
@@ -393,7 +394,7 @@ public class ConfigurationBean {
     }
     
     @DELETE
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") int username){

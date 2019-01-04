@@ -14,6 +14,7 @@ import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -100,7 +101,7 @@ public class ExtensionBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{id_extension}")
     public void addExtensionToTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
@@ -131,7 +132,7 @@ public class ExtensionBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{id_extension}")
     public void removeExtensionFromTemplate(TemplateDTO templateDTO, @PathParam("id_extension") int extension_id){
@@ -184,7 +185,7 @@ public class ExtensionBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{id_extension}")
     public void addExtensionToConfiguration(ConfigurationDTO configurationDTO, @PathParam("id_extension") int extension_id){
@@ -215,7 +216,7 @@ public class ExtensionBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{id_extension}")
     public void removeExtensionFromConfiguration(ConfigurationDTO configurationDTO, @PathParam("id_extension") int extension_id){

@@ -5,7 +5,6 @@
 */
 package web.features;
 
-import dtos.LicenseDTO;
 import web.*;
 import dtos.MaterialDTO;
 import java.io.Serializable;
@@ -100,13 +99,14 @@ public class MaterialManager extends Manager implements Serializable {
     
     public String createMaterial() {
         try {
-            if (manager.getCurrentTemplate() != null) {
+            if (manager.getCurrentTemplate() != null && !manager.getCreationPage().equals("newConfiguration")) {
                 newMaterial.setConfig_id(manager.getCurrentTemplate().getId());
             }
             if (manager.getCurrentConfiguration() != null) {
                 newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("materials/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newMaterial));
@@ -116,10 +116,10 @@ public class MaterialManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-         if (creationPage.equals("newTemplate")){
+         if (manager.getCreationPage().equals("newTemplate")){
             return "/admin/templates/admin_template_create?faces-redirect=true";
         }
-        if (creationPage.equals("newConfiguration")){
+        if (manager.getCreationPage().equals("newConfiguration")){
             return "/admin/configurations/admin_configuration_create?faces-redirect=true";
         }
         if (manager.getCurrentConfiguration() != null){
@@ -134,7 +134,7 @@ public class MaterialManager extends Manager implements Serializable {
     public void newMaterialRedirect(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("newMaterial");
-            creationPage = param.getValue().toString();
+            manager.setCreationPage(param.getValue().toString());
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -153,7 +153,8 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/materials/addToTemplate/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -169,7 +170,8 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/materials/removeFromTemplate/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -195,33 +197,12 @@ public class MaterialManager extends Manager implements Serializable {
     }
     
     //**************CONFIGURATION***********************
-    
-    public String createMaterialConfiguration() {
-        try {
-            if (manager.getCurrentConfiguration() != null) {
-                newMaterial.setConfig_id(manager.getCurrentConfiguration().getId());
-            }
-            client.target(URILookup.getBaseAPI())
-                    .path("materials/create")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newMaterial));
-            newMaterial.reset();
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        if (manager.getCurrentTemplate() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        
-        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-    }
-    
     public String addMaterialConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/materials/addToConfiguration/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -237,7 +218,8 @@ public class MaterialManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeMaterialId");
             int material_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/materials/removeFromConfiguration/" + material_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));

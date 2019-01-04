@@ -17,6 +17,7 @@ import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -111,7 +112,7 @@ public class MaterialBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{material_id}")
     public void addMaterialToTemplate(TemplateDTO templateDTO, @PathParam("material_id") int material_id){
@@ -138,7 +139,7 @@ public class MaterialBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{material_id}")
     public void removeMaterialFromTemplate(TemplateDTO templateDTO,@PathParam("material_id") int material_id){
@@ -186,7 +187,7 @@ public class MaterialBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Path("update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(MaterialDTO materialDTO){
@@ -203,7 +204,7 @@ public class MaterialBean {
     
     //*************CONFIGURATIONS***************    
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{material_id}")
     public void addMaterialToConfiguration(ConfigurationDTO configurationDTO, @PathParam("material_id") int material_id){
@@ -230,7 +231,7 @@ public class MaterialBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{material_id}")
     public void removeMaterialFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("material_id") int material_id){

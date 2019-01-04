@@ -42,8 +42,6 @@ public class ParameterManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
-    
-    private String creationPage = "";
    
     public ParameterManager() {
         this.newParameter = new ParameterDTO();
@@ -106,13 +104,14 @@ public class ParameterManager extends Manager implements Serializable {
     
     public String createParameter() {
         try {
-            if (manager.getCurrentTemplate() != null) {
+            if (manager.getCurrentTemplate() != null && !manager.getCreationPage().equals("newConfiguration")) {
                 newParameter.setConfig_id(manager.getCurrentTemplate().getId());
             }
             if (manager.getCurrentConfiguration()!= null) {
                 newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
             }
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("parameters/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newParameter));
@@ -123,10 +122,10 @@ public class ParameterManager extends Manager implements Serializable {
             return null;
         }
         
-         if (creationPage.equals("newTemplate")){
+         if (manager.getCreationPage().equals("newTemplate")){
             return "/admin/templates/admin_template_create?faces-redirect=true";
         }
-        if (creationPage.equals("newConfiguration")){
+        if (manager.getCreationPage().equals("newConfiguration")){
             return "/admin/configurations/admin_configuration_create?faces-redirect=true";
         }
         if (manager.getCurrentConfiguration() != null){
@@ -141,7 +140,7 @@ public class ParameterManager extends Manager implements Serializable {
     public void newParameterRedirect(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("newParameter");
-            creationPage = param.getValue().toString();
+            manager.setCreationPage(param.getValue().toString());
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -152,7 +151,8 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/parameters/addToTemplate/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -168,7 +168,8 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/parameters/removeFromTemplate/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -194,32 +195,12 @@ public class ParameterManager extends Manager implements Serializable {
     }
     
     //***************CONFIGURATIONS********************
-   public String createParameterConfiguration() {
-        try {
-            if (manager.getCurrentConfiguration() != null) {
-                newParameter.setConfig_id(manager.getCurrentConfiguration().getId());
-            }
-            client.target(URILookup.getBaseAPI())
-                    .path("parameters/create")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newParameter));
-            newParameter.reset();
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        if (manager.getCurrentConfiguration() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        
-        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-    }
-    
     public String addParameterConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/parameters/addToConfiguration/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -235,7 +216,8 @@ public class ParameterManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeParameterId");
             int parameter_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/parameters/removeFromConfiguration/" + parameter_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));

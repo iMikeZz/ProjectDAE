@@ -17,6 +17,7 @@ import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -103,7 +104,7 @@ public class ModuleBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{module_id}")
     public void addModuleToTemplate(TemplateDTO templateDTO, @PathParam("module_id") int module_id){
@@ -134,7 +135,7 @@ public class ModuleBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{license_id}")
     public void removeModuleFromTemplate(TemplateDTO templateDTO,@PathParam("module_id") int module_id){
@@ -188,7 +189,7 @@ public class ModuleBean {
     
     //*************CONFIGURATION***************    
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{module_id}")
     public void addModuleToConfiguration(ConfigurationDTO configurationDTO, @PathParam("module_id") int module_id){
@@ -219,7 +220,7 @@ public class ModuleBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{license_id}")
     public void removeModuleFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("module_id") int module_id){

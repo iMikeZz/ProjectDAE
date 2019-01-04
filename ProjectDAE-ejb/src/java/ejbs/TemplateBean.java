@@ -26,7 +26,6 @@ import entities.Template;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -92,7 +91,7 @@ public class TemplateBean {
     }
     
     @GET
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("template/{id}")
     public TemplateDTO getTemplate(@PathParam("id") int id){
@@ -183,7 +182,7 @@ public class TemplateBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Path("update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void update(TemplateDTO templateDTO){
@@ -205,7 +204,7 @@ public class TemplateBean {
     }
     
     @DELETE
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") int username){

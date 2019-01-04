@@ -15,6 +15,7 @@ import entities.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -92,7 +93,7 @@ public class RepositoryBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{repository_id}")
     public void addRepositoryToTemplate(TemplateDTO templateDTO, @PathParam("repository_id") int repository_id){
@@ -119,7 +120,7 @@ public class RepositoryBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{repository_id}")
     public void removeRepositoryFromTemplate(TemplateDTO templateDTO,@PathParam("repository_id") int repository_id){
@@ -168,7 +169,7 @@ public class RepositoryBean {
     
     //*************CONFIGURATION*******************   
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{repository_id}")
     public void addRepositoryToConfiguration(ConfigurationDTO configurationDTO, @PathParam("repository_id") int repository_id){
@@ -195,7 +196,7 @@ public class RepositoryBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{repository_id}")
     public void removeRepositoryFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("repository_id") int repository_id){

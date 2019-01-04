@@ -5,7 +5,6 @@
 */
 package web.features;
 
-import dtos.ConfigurationDTO;
 import web.*;
 import dtos.ExtensionDTO;
 import java.io.Serializable;
@@ -33,8 +32,6 @@ public class ExtensionManager extends Manager implements Serializable {
     
     private ExtensionDTO newExtension;
     
-    private String creationPage = "";
-    
     @ManagedProperty("#{manager}")
     protected Manager manager;
     
@@ -49,15 +46,15 @@ public class ExtensionManager extends Manager implements Serializable {
     public void setNewExtension(ExtensionDTO newExtension) {
         this.newExtension = newExtension;
     }
-
+    
     public Manager getManager() {
         return manager;
     }
-
+    
     public void setManager(Manager manager) {
         this.manager = manager;
     }
-        
+    
     //*******************TEMPLATES********************************
     public List<ExtensionDTO> getAllTemplateExtensions(){
         try {
@@ -115,23 +112,28 @@ public class ExtensionManager extends Manager implements Serializable {
     public String createExtension() {
         try {
             newExtension.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentTemplate() != null){
-              client.target(URILookup.getBaseAPI())
-                    .path("extensions/create/" + manager.getCurrentTemplate().getId())
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();  
+            if (manager.getCurrentTemplate() != null && !manager.getCreationPage().equals("newConfiguration")){
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
+                        .path("extensions/create/" + manager.getCurrentTemplate().getId())
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newExtension));
+                newExtension.reset();
+                return "/admin/templates/admin_template_update?faces-redirect=true";
             } else if(manager.getCurrentConfiguration() != null){
-                client.target(URILookup.getBaseAPI())
-                    .path("extensions/create/" + manager.getCurrentConfiguration().getId())
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
-                newExtension.reset();  
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
+                        .path("extensions/create/" + manager.getCurrentConfiguration().getId())
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newExtension));
+                newExtension.reset();
+                return "/admin/configurations/admin_configuration_update?faces-redirect=true";
             } else{
-                client.target(URILookup.getBaseAPI())
-                    .path("extensions/create/" + 0)
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newExtension));
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
+                        .path("extensions/create/" + 0)
+                        .request(MediaType.APPLICATION_XML)
+                        .post(Entity.xml(newExtension));
                 newExtension.reset();
             }
         }
@@ -139,17 +141,11 @@ public class ExtensionManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        if (creationPage.equals("newTemplate")){
+        if (manager.getCreationPage().equals("newTemplate")){
             return "/admin/templates/admin_template_create?faces-redirect=true";
         }
-        if (creationPage.equals("newConfiguration")){
+        if (manager.getCreationPage().equals("newConfiguration")){
             return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-        }
-        if (manager.getCurrentConfiguration() != null){
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        }
-        if (manager.getCurrentTemplate() != null){
-            return "/admin/templates/admin_template_update?faces-redirect=true";
         }
         return null;
     }
@@ -157,34 +153,34 @@ public class ExtensionManager extends Manager implements Serializable {
     public void newExtensionRedirect(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("newExtension");
-            creationPage = param.getValue().toString();
+            manager.setCreationPage(param.getValue().toString());
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
     
-    public String addExtension(ActionEvent event){
+    public void addExtension(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/extensions/addToTemplate/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem adding extension in method addExtension ", logger);
-            return null;
         }
-        return "/admin/admin_index?faces-redirect=true"; //todo mudar
     }
     
     public String removeExtension(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/extensions/removeFromTemplate/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -209,12 +205,13 @@ public class ExtensionManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Problem getting all templates in method getAllExtensions", logger);
             return null;
         }
-    }        
+    }
     public String addExtensionConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/extensions/addToConfiguration/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -230,7 +227,8 @@ public class ExtensionManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeExtensionId");
             int extension_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/extensions/removeFromConfiguration/"+ extension_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));

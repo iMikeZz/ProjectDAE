@@ -10,11 +10,9 @@ import dtos.QuestionDTO;
 import dtos.TemplateDTO;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -42,6 +40,8 @@ public class Manager implements Serializable {
     protected QuestionDTO currentQuestion;
 
     protected String currentClientUsername = null;
+    
+    protected String creationPage = "";
     
     public Manager() {
         client = ClientBuilder.newClient();
@@ -118,5 +118,12 @@ public class Manager implements Serializable {
     public void setCurrentClientUsername(String currentClientUsername) {
         this.currentClientUsername = currentClientUsername;
     }
-    
+
+    public String getCreationPage() {
+        return creationPage;
+    }
+
+    public void setCreationPage(String creationPage) {
+        this.creationPage = creationPage;
+    }
 }

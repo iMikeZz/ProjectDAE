@@ -94,7 +94,7 @@ public class ServiceBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{service_id}")
     public void addServiceToTemplate(TemplateDTO templateDTO, @PathParam("service_id") int service_id){
@@ -121,7 +121,7 @@ public class ServiceBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{service_id}")
     public void removeServiceFromTemplate(TemplateDTO templateDTO,@PathParam("service_id") int service_id){
@@ -151,7 +151,7 @@ public class ServiceBean {
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("servicesNotInTemplate/{id_config}")
-    public List<ServiceDTO> getRepositoriesNotInTemplate(@PathParam("id_config")int id_config) {
+    public List<ServiceDTO> getServicesNotInTemplate(@PathParam("id_config")int id_config) {
         try {
             ConfigBase configBase = em.find(ConfigBase.class, id_config);
             if (configBase == null) {
@@ -170,7 +170,7 @@ public class ServiceBean {
     
     //******************CONFIGURATION*******************
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{service_id}")
     public void addServiceToConfiguration(ConfigurationDTO configurationDTO, @PathParam("service_id") int service_id){
@@ -197,7 +197,7 @@ public class ServiceBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{service_id}")
     public void removeServiceFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("service_id") int service_id){

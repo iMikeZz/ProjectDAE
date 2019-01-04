@@ -5,7 +5,6 @@
 */
 package web.features;
 
-import dtos.ExtensionDTO;
 import web.*;
 import dtos.ModuleDTO;
 import java.io.Serializable;
@@ -35,8 +34,6 @@ public class ModuleManager extends Manager implements Serializable {
     
     @ManagedProperty("#{manager}")
     protected Manager manager;
-    
-    private String creationPage = "";
     
     public ModuleManager() {
         this.newModule = new ModuleDTO();
@@ -103,20 +100,25 @@ public class ModuleManager extends Manager implements Serializable {
     public String createModule() {
         try {
             newModule.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentTemplate() != null){
-                client.target(URILookup.getBaseAPI())
+            if (manager.getCurrentTemplate() != null && !manager.getCreationPage().equals("newConfiguration")){
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
                         .path("modules/create/" + manager.getCurrentTemplate().getId())
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
                 newModule.reset();
+                return "/admin/templates/admin_template_update?faces-redirect=true";
             } else if(manager.getCurrentConfiguration() != null){
-                client.target(URILookup.getBaseAPI())
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
                     .path("modules/create/" + manager.getCurrentConfiguration().getId())
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newModule));
-                newModule.reset();  
+                newModule.reset();
+                return "/admin/configurations/admin_configuration_update?faces-redirect=true";  
             } else{
-                client.target(URILookup.getBaseAPI())
+                manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+                manager.getClient().target(URILookup.getBaseAPI())
                         .path("modules/create/" + 0)
                         .request(MediaType.APPLICATION_XML)
                         .post(Entity.xml(newModule));
@@ -127,17 +129,11 @@ public class ModuleManager extends Manager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        if (creationPage.equals("newTemplate")){
+        if (manager.getCreationPage().equals("newTemplate")){
             return "/admin/templates/admin_template_create?faces-redirect=true";
         }
-        if (creationPage.equals("newConfiguration")){
+        if (manager.getCreationPage().equals("newConfiguration")){
             return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-        }
-        if (manager.getCurrentConfiguration() != null){
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        }
-        if (manager.getCurrentTemplate() != null){
-            return "/admin/templates/admin_template_update?faces-redirect=true";
         }
         return null;
     }
@@ -145,7 +141,7 @@ public class ModuleManager extends Manager implements Serializable {
     public void newModuleRedirect(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("newModule");
-            creationPage = param.getValue().toString();
+            manager.setCreationPage(param.getValue().toString());
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -156,7 +152,8 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/modules/addToTemplate/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -172,7 +169,8 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/modules/removeFromTemplate/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
@@ -216,38 +214,12 @@ public class ModuleManager extends Manager implements Serializable {
         }
     }
     
-    public String createModuleConfiguration() {
-        try {
-            newModule.setSoftware_id(manager.getCurrentSoftwareId());
-            if (manager.getCurrentConfiguration() != null){
-                client.target(URILookup.getBaseAPI())
-                        .path("modules/create/" + manager.getCurrentConfiguration().getId())
-                        .request(MediaType.APPLICATION_XML)
-                        .post(Entity.xml(newModule));
-                newModule.reset();
-            } else{
-                client.target(URILookup.getBaseAPI())
-                        .path("modules/create/" + 0)
-                        .request(MediaType.APPLICATION_XML)
-                        .post(Entity.xml(newModule));
-                newModule.reset();
-            }
-        }
-        catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        if (manager.getCurrentTemplate() != null)
-            return "/admin/configurations/admin_configuration_update?faces-redirect=true";
-        
-        return "/admin/configurations/admin_configuration_create?faces-redirect=true";
-    }
-    
     public String addModuleConfiguration(ActionEvent event){
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("addModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/modules/addToConfiguration/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
@@ -263,7 +235,8 @@ public class ModuleManager extends Manager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("removeModuleId");
             int module_id = Integer.parseInt(param.getValue().toString());
-            client.target(URILookup.getBaseAPI())
+            manager.clientRegister(userManager.getUsername(), userManager.getPassword());
+            manager.getClient().target(URILookup.getBaseAPI())
                     .path("/modules/removeFromConfiguration/" + module_id)
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));

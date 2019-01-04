@@ -5,7 +5,6 @@
 */
 package web;
 
-import dtos.ClientDTO;
 import dtos.ConfigurationDTO;
 import dtos.ExtensionDTO;
 import dtos.LicenseDTO;
@@ -27,7 +26,6 @@ import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import util.URILookup;
 
 /**
@@ -191,6 +189,7 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newTemplate));
             newTemplate.reset();
+            manager.setCreationPage("");
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -200,6 +199,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     }
     
     public String cancelCreateTemplate() {
+        manager.setCreationPage("");
         newTemplate.reset();
         return "/admin/admin_index?faces-redirect=true";
     }
@@ -208,11 +208,13 @@ public class ConfigurationManager extends Manager implements Serializable {
         if (manager.getUserManager().getUsername() == null && manager.getUserManager().getPassword() == null) {
             return "/index?faces-redirect=true";
         }
+        manager.setCreationPage("");
         manager.setCurrentTemplate(null);
         return "/admin/admin_index?faces-redirect=true";
     }
     
     public String cancelCurrentConfigurationDetailsAndUpdate() {
+        manager.setCreationPage("");
         manager.setCurrentConfiguration(null);
         return "/admin/admin_index?faces-redirect=true";
     }
@@ -225,7 +227,8 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .path("configurations/create")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newConfiguration));
-            newConfiguration.reset();
+            newConfiguration.reset(); 
+            manager.setCreationPage("");
         }
         catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -288,6 +291,7 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentTemplate()));
             manager.setCurrentTemplate(null);
+            manager.setCreationPage("");
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateTemplate", logger);
             return null;
@@ -303,6 +307,7 @@ public class ConfigurationManager extends Manager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(manager.getCurrentConfiguration()));
             manager.setCurrentConfiguration(null);
+            manager.setCreationPage("");
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Problem updating template in method updateConfiguration", logger);
             return null;
@@ -589,6 +594,7 @@ public class ConfigurationManager extends Manager implements Serializable {
     }
     
     public String cancelCreateConfiguration() {
+        manager.setCreationPage("");
         newConfiguration.reset();
         return "/admin/admin_index?faces-redirect=true";
     }

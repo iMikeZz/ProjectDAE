@@ -18,6 +18,7 @@ import entities.Software;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -95,7 +96,7 @@ public class ParameterBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToTemplate/{parameter_id}")
     public void addParameterToTemplate(TemplateDTO templateDTO, @PathParam("parameter_id") int parameter_id){
@@ -122,7 +123,7 @@ public class ParameterBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromTemplate/{parameter_id}")
     public void removeParameterFromTemplate(TemplateDTO templateDTO,@PathParam("parameter_id") int parameter_id){
@@ -171,7 +172,7 @@ public class ParameterBean {
     
     //*****************CONFIGURATION*****************  
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("addToConfiguration/{parameter_id}")
     public void addParameterToConfiguration(ConfigurationDTO configurationDTO, @PathParam("parameter_id") int parameter_id){
@@ -198,7 +199,7 @@ public class ParameterBean {
     }
     
     @PUT
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("removeFromConfiguration/{parameter_id}")
     public void removeParameterFromConfiguration(ConfigurationDTO configurationDTO,@PathParam("parameter_id") int parameter_id){

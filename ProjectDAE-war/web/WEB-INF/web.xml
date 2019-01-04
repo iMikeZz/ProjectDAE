@@ -47,6 +47,76 @@
             <description/>
             <url-pattern>/webapi/softwares/all</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Get template</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/templates/template/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Template update/create/delete</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/templates/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Services put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/services/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Repositories put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/repositories/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Parameters put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/parameters/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Modules put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/modules/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Materials put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/materials/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Licenses put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/licenses/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Extensions put</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/extensions/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Configurations update/create/delete</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/configurations/*</url-pattern>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>Administrator</role-name>
